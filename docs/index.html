@@ -318,6 +318,22 @@
         let currentMarket = 'TSE';
         let historyData = [];
 
+        // 智能偵測基礎路徑
+        function getBasePath() {
+            const path = window.location.pathname;
+            // 如果在 /docs/ 或 /docs/index.html，回到上一層
+            if (path.endsWith('/docs/') || path.endsWith('/docs/index.html')) {
+                return path.replace(/\/docs\/.*$/, '/');
+            }
+            // 如果 URL 包含儲存庫名稱，保留它
+            const match = path.match(/^(\/[^\/]+\/)/);
+            return match ? match[1] : '/';
+        }
+
+        const basePath = getBasePath();
+        console.log('Base path:', basePath);
+        console.log('Data URL will be:', basePath + 'data/latest.json');
+
         // 載入最新數據
         async function loadLatestData() {
             const loading = document.getElementById('loading');
@@ -327,8 +343,10 @@
             table.style.display = 'none';
 
             try {
-                // 使用相對路徑載入數據
-                const response = await fetch('../data/latest.json');
+                // 使用絕對路徑
+                const dataUrl = basePath + 'data/latest.json';
+                console.log('Fetching:', dataUrl);
+                const response = await fetch(dataUrl);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -466,7 +484,7 @@
         // 載入歷史記錄
         async function loadHistory() {
             try {
-                const response = await fetch('../data/data_list.json');
+                const response = await fetch(basePath + 'data/data_list.json');
                 historyData = await response.json();
                 displayHistory();
             } catch (error) {
@@ -497,7 +515,7 @@
         // 載入歷史數據
         async function loadHistoryData(filename) {
             try {
-                const response = await fetch(`../data/${filename}`);
+                const response = await fetch(basePath + `data/${filename}`);
                 const data = await response.json();
                 currentData = data;
 
