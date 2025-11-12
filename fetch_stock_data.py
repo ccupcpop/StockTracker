@@ -14,7 +14,7 @@ import random
 
 # ==================== 測試模式設定 ====================
 # 設為 True 時使用模擬數據，False 時從證交所抓取真實數據
-TEST_MODE = True
+TEST_MODE = False
 # ====================================================
 
 def create_robust_session():
