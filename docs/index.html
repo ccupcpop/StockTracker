@@ -321,13 +321,25 @@
         // 智能偵測基礎路徑
         function getBasePath() {
             const path = window.location.pathname;
-            // 如果在 /docs/ 或 /docs/index.html，回到上一層
-            if (path.endsWith('/docs/') || path.endsWith('/docs/index.html')) {
-                return path.replace(/\/docs\/.*$/, '/');
+            console.log('Current pathname:', path);
+            
+            // 如果路徑包含 /StockTracker/，提取基礎路徑
+            if (path.includes('/StockTracker/')) {
+                return '/StockTracker/';
             }
-            // 如果 URL 包含儲存庫名稱，保留它
-            const match = path.match(/^(\/[^\/]+\/)/);
-            return match ? match[1] : '/';
+            
+            // 如果路徑只是 /docs/ 或類似，可能是主頁部署
+            if (path === '/' || path === '/index.html') {
+                return '/';
+            }
+            
+            // 其他情況，嘗試提取儲存庫名稱
+            const parts = path.split('/').filter(p => p);
+            if (parts.length > 0 && parts[0] !== 'docs') {
+                return '/' + parts[0] + '/';
+            }
+            
+            return '/';
         }
 
         const basePath = getBasePath();
