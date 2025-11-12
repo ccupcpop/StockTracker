@@ -328,6 +328,16 @@
 
             try {
                 const response = await fetch('data/latest.json');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('回應不是 JSON 格式，請確認 GitHub Actions 是否已執行完成');
+                }
+                
                 const data = await response.json();
                 currentData = data;
 
@@ -342,7 +352,31 @@
                 loading.style.display = 'none';
                 table.style.display = 'table';
             } catch (error) {
-                loading.innerHTML = `<div style="color: #e74c3c;">❌ 載入失敗: ${error.message}</div>`;
+                console.error('載入錯誤:', error);
+                loading.innerHTML = `
+                    <div style="color: #e74c3c; padding: 30px;">
+                        <h3>❌ 載入失敗</h3>
+                        <p style="margin: 15px 0;">${error.message}</p>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: left; max-width: 600px; margin: 20px auto;">
+                            <h4 style="margin-bottom: 10px;">💡 可能的原因：</h4>
+                            <ol style="margin-left: 20px;">
+                                <li>GitHub Actions 尚未執行（請先手動執行一次）</li>
+                                <li>GitHub Pages 正在部署中（請等待 2-5 分鐘）</li>
+                                <li>data/latest.json 文件不存在</li>
+                            </ol>
+                            <h4 style="margin: 15px 0 10px 0;">🔧 解決方法：</h4>
+                            <ol style="margin-left: 20px;">
+                                <li>前往 Actions 標籤頁</li>
+                                <li>點擊「股票數據抓取」</li>
+                                <li>點擊「Run workflow」手動執行</li>
+                                <li>等待執行完成後重新整理此頁面</li>
+                            </ol>
+                        </div>
+                        <button onclick="loadLatestData()" style="margin-top: 20px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1em;">
+                            🔄 重新載入
+                        </button>
+                    </div>
+                `;
             }
         }
 
