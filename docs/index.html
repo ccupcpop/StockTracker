@@ -327,7 +327,8 @@
             table.style.display = 'none';
 
             try {
-                const response = await fetch('data/latest.json');
+                // 使用相對路徑載入數據
+                const response = await fetch('../data/latest.json');
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -345,6 +346,35 @@
                 document.getElementById('updateTime').textContent = data.time;
                 document.getElementById('tseCount').textContent = data.tse.length;
                 document.getElementById('otcCount').textContent = data.otc.length;
+
+                // 檢查是否有數據
+                if (data.tse.length === 0 && data.otc.length === 0) {
+                    loading.innerHTML = `
+                        <div style="color: #f39c12; padding: 30px;">
+                            <h3>📊 尚無數據</h3>
+                            <p style="margin: 15px 0;">系統尚未執行數據抓取</p>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: left; max-width: 600px; margin: 20px auto;">
+                                <h4 style="margin-bottom: 10px;">🚀 開始使用：</h4>
+                                <ol style="margin-left: 20px; line-height: 1.8;">
+                                    <li>前往 <strong>Actions</strong> 標籤頁</li>
+                                    <li>點擊左側的 <strong>「股票數據抓取」</strong></li>
+                                    <li>點擊右側的 <strong>「Run workflow」</strong> 按鈕</li>
+                                    <li>選擇 <strong>main</strong> 分支</li>
+                                    <li>點擊綠色的 <strong>「Run workflow」</strong> 確認</li>
+                                    <li>等待執行完成（約 2-3 分鐘）</li>
+                                    <li>重新整理此頁面</li>
+                                </ol>
+                                <p style="margin-top: 15px; padding: 10px; background: #fff3cd; border-left: 4px solid #f39c12; border-radius: 4px;">
+                                    💡 <strong>提示</strong>：首次執行建議使用測試模式（TEST_MODE = True），執行速度更快
+                                </p>
+                            </div>
+                            <button onclick="loadLatestData()" style="margin-top: 20px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1em;">
+                                🔄 重新載入
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
 
                 // 顯示數據
                 displayMarketData(currentMarket);
@@ -436,7 +466,7 @@
         // 載入歷史記錄
         async function loadHistory() {
             try {
-                const response = await fetch('data/data_list.json');
+                const response = await fetch('../data/data_list.json');
                 historyData = await response.json();
                 displayHistory();
             } catch (error) {
@@ -467,7 +497,7 @@
         // 載入歷史數據
         async function loadHistoryData(filename) {
             try {
-                const response = await fetch(`data/${filename}`);
+                const response = await fetch(`../data/${filename}`);
                 const data = await response.json();
                 currentData = data;
 
