@@ -45,47 +45,6 @@
             margin-bottom: 20px;
         }
 
-        .file-drop-zone {
-            border: 3px dashed #667eea;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 20px;
-            background: #f8f9ff;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .file-drop-zone:hover {
-            background: #eef1ff;
-            border-color: #5566d6;
-        }
-
-        .file-drop-zone.dragover {
-            background: #dde4ff;
-            border-color: #4455c5;
-            transform: scale(1.02);
-        }
-
-        .file-drop-zone h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .file-drop-zone p {
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .control-panel {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-
         .market-tabs {
             display: flex;
             gap: 10px;
@@ -98,310 +57,161 @@
             color: #666;
             border: none;
             padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 1.1em;
-            font-weight: 600;
+            border-radius: 10px;
             cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
             transition: all 0.3s;
+        }
+
+        .market-tab:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
         }
 
         .market-tab.active {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .market-tab:hover:not(.active):not(:disabled) {
-            background: #e0e0e0;
-        }
-
-        .market-tab:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .refresh-btn {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            color: white;
-            border: none;
-            padding: 12px 35px;
-            border-radius: 25px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
-        }
-
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
-        }
-
-        .refresh-btn:active {
-            transform: translateY(0);
-        }
-
-        .refresh-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            box-shadow: none;
         }
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
 
         .stat-box {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
+            color: white;
         }
 
         .stat-box .label {
-            font-size: 0.85em;
+            font-size: 0.9em;
             opacity: 0.9;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .stat-box .value {
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: bold;
         }
 
-        .main-content {
+        .table-container {
             background: white;
-            padding: 25px;
             border-radius: 15px;
+            padding: 25px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            overflow-x: auto;
         }
 
         .section-title {
-            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3em;
+            color: #333;
             margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #e74c3c;
-            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .sort-controls {
             display: flex;
             gap: 10px;
             align-items: center;
-            font-size: 0.6em;
         }
 
-        .sort-label {
-            color: #666;
-            font-weight: normal;
-        }
-
-        .sort-select {
-            padding: 8px 12px;
-            border: 2px solid #667eea;
-            border-radius: 8px;
-            font-size: 1em;
-            color: #667eea;
-            background: white;
-            cursor: pointer;
+        .sort-controls label {
             font-weight: 600;
+            color: #666;
         }
 
-        .sort-select:focus {
-            outline: none;
-            border-color: #5566d6;
+        select, button {
+            padding: 8px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .sort-btn {
+        select:hover, button:hover {
+            border-color: #667eea;
+        }
+
+        .download-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 1em;
+            padding: 10px 20px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .sort-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .sort-btn:active {
-            transform: translateY(0);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.95em;
         }
 
-        thead {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
         }
 
         th {
-            padding: 12px 8px;
-            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        tr:hover {
+            background: #f8f9ff;
+        }
+
+        .price-up { color: #e74c3c; font-weight: 600; }
+        .price-down { color: #27ae60; font-weight: 600; }
+        .price-neutral { color: #666; }
+
+        .news-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
             font-weight: 600;
         }
 
-        td {
-            padding: 10px 8px;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-        }
-
-        tbody tr:hover {
-            background-color: #f8f9fa;
-            transform: scale(1.01);
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-
-        .rank {
-            font-weight: bold;
-            color: #667eea;
+        .buy-ratio {
+            font-weight: 600;
             font-size: 1.1em;
         }
 
-        .rank-1 { color: #FFD700; font-size: 1.3em; }
-        .rank-2 { color: #C0C0C0; font-size: 1.2em; }
-        .rank-3 { color: #CD7F32; font-size: 1.15em; }
+        .buy-ratio.high { color: #e74c3c; }
+        .buy-ratio.medium { color: #f39c12; }
+        .buy-ratio.low { color: #27ae60; }
 
-        .stock-code {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .stock-name {
-            color: #34495e;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.8em;
-            margin-left: 5px;
-        }
-
-        .badge-hot {
-            background: #e74c3c;
+        footer {
+            text-align: center;
             color: white;
-        }
-
-        .badge-warm {
-            background: #f39c12;
-            color: white;
-        }
-
-        .price-up {
-            color: #e74c3c;
-            font-weight: 600;
-        }
-
-        .price-down {
-            color: #27ae60;
-            font-weight: 600;
-        }
-
-        .price-neutral {
-            color: #95a5a6;
-            font-weight: 600;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 50px;
-            font-size: 1.2em;
-            color: #666;
-        }
-
-        .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .message {
-            padding: 12px 20px;
-            margin: 10px 0;
-            border-radius: 8px;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .message.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-
-        .footer {
-            text-align: center;
             margin-top: 30px;
             padding: 20px;
-            color: white;
             font-size: 0.9em;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        .loaded-files {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .loaded-file-badge {
-            background: #27ae60;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-size: 0.9em;
+            opacity: 0.9;
         }
     </style>
 </head>
@@ -412,15 +222,13 @@
             <div class="subtitle">新聞熱度 × 買超排行 × 即時股價</div>
 
             <div class="market-tabs">
-                <button class="market-tab active" onclick="switchMarket('TSE')\" id="tabTSE">
+                <button class="market-tab active" onclick="switchMarket('TSE')" id="tabTSE">
                     📈 上市 (TSE)
                 </button>
                 <button class="market-tab" onclick="switchMarket('OTC')" id="tabOTC">
                     📊 上櫃 (OTC)
                 </button>
             </div>
-
-            <div id="messageBox"></div>
 
             <div class="stats">
                 <div class="stat-box">
@@ -442,245 +250,202 @@
             </div>
         </div>
 
-        <div class="main-content">
-            <h2 class="section-title">
-                <span>📊 熱門股票排行榜 (新聞熱度 + 買超)</span>
-                <div class="sort-controls">
-                    <span class="sort-label">排序:</span>
-                    <select id="sortField" class="sort-select">
-                        <option value="default">預設排序</option>
-                        <option value="change">漲跌</option>
-                        <option value="change_percent">漲跌幅</option>
-                        <option value="buy_volume">委買量</option>
-                        <option value="sell_volume">委賣量</option>
-                        <option value="buy_sell_ratio">買賣比</option>
-                    </select>
-                    <button class="sort-btn" id="sortBtn" onclick="toggleSortOrder()">
-                        <span id="sortIcon">🔽</span>
-                        <span id="sortText">高到低</span>
-                    </button>
-                </div>
-            </h2>
-            
-            <div id="loading" class="loading" style="display: none;">
-                <div class="loading-spinner"></div>
-                <div>載入中...</div>
+        <div class="table-container">
+            <div class="section-title">
+                📊 熱門股票排行榜 (新聞熱度 + 買超)
             </div>
 
-            <table id="dataTable" style="display: none;">
+            <div class="controls">
+                <div class="sort-controls">
+                    <label>排序:</label>
+                    <select id="sortField">
+                        <option value="news">預設排序</option>
+                        <option value="mention_count">新聞熱度</option>
+                        <option value="yesterday_buy">買超張數</option>
+                        <option value="change_percent">漲跌幅</option>
+                        <option value="buy_ratio">買賣比</option>
+                    </select>
+                </div>
+                <button class="download-btn" onclick="downloadCSV()">📥 萬到低</button>
+            </div>
+
+            <table id="dataTable">
                 <thead>
                     <tr>
-                        <th style="width: 50px;">排名</th>
-                        <th style="width: 90px;">代號</th>
-                        <th style="width: 120px;">名稱</th>
-                        <th style="width: 80px;">新聞<br>提及</th>
-                        <th style="width: 100px;">昨日<br>買超張數</th>
-                        <th style="width: 90px;">成交價</th>
-                        <th style="width: 90px;">開盤價</th>
-                        <th style="width: 80px;">漲跌</th>
-                        <th style="width: 80px;">漲跌幅</th>
-                        <th style="width: 100px;">委買量</th>
-                        <th style="width: 100px;">委賣量</th>
-                        <th style="width: 90px;">買賣比</th>
+                        <th>排名</th>
+                        <th>代號</th>
+                        <th>名稱</th>
+                        <th>新聞<br>提及</th>
+                        <th>昨日<br>買超張數</th>
+                        <th>成交價</th>
+                        <th>開盤價</th>
+                        <th>漲跌</th>
+                        <th>漲跌幅</th>
+                        <th>委買量</th>
+                        <th>委賣量</th>
+                        <th>買賣比</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <tr>
-                        <td colspan="11" style="padding: 30px; color: #999;">
-                            請點擊上方區域載入 JSON 資料檔
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="footer">
+        <footer>
             資料來源: Yahoo 股市 | 新聞來源: 財經新聞網 | 僅供參考,不構成投資建議
-        </div>
+        </footer>
     </div>
 
     <script>
-        let currentMarket = 'TSE';
         let tseData = null;
         let otcData = null;
-        let currentSortField = 'default';
-        let currentSortOrder = 'desc'; // 'desc' = 高到低, 'asc' = 低到高
-        let currentStocks = []; // 儲存當前顯示的股票資料
+        let currentMarket = 'TSE';
+        let currentSortField = 'news';
 
-        // 切換排序順序
-        function toggleSortOrder() {
-            currentSortOrder = currentSortOrder === 'desc' ? 'asc' : 'desc';
+        // 切換市場
+        function switchMarket(market) {
+            currentMarket = market;
+            document.getElementById('currentMarket').textContent = market;
             
-            // 更新按鈕顯示
-            const sortIcon = document.getElementById('sortIcon');
-            const sortText = document.getElementById('sortText');
-            
-            if (currentSortOrder === 'desc') {
-                sortIcon.textContent = '🔽';
-                sortText.textContent = '高到低';
-            } else {
-                sortIcon.textContent = '🔼';
-                sortText.textContent = '低到高';
+            document.querySelectorAll('.market-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById('tab' + market).classList.add('active');
+
+            const data = market === 'TSE' ? tseData : otcData;
+            if (data) {
+                updateDisplay(data);
             }
-            
-            // 重新排序
-            applySorting();
         }
 
-        // 套用排序
-        function applySorting() {
-            if (!currentStocks || currentStocks.length === 0) return;
+        // 更新顯示
+        function updateDisplay(data) {
+            document.getElementById('updateTime').textContent = 
+                data.update_time ? data.update_time.split(' ')[1] : '--:--';
             
-            let sortedStocks = [...currentStocks];
+            const newsStockCount = (data.stocks || []).filter(s => s.mention_count > 0).length;
+            document.getElementById('newsStockCount').textContent = newsStockCount;
             
-            if (currentSortField !== 'default') {
-                sortedStocks.sort((a, b) => {
-                    let aVal, bVal;
-                    
-                    switch(currentSortField) {
-                        case 'change':
-                            aVal = parseFloat(a.change) || 0;
-                            bVal = parseFloat(b.change) || 0;
-                            break;
-                        case 'change_percent':
-                            aVal = parseFloat(a.change_percent) || 0;
-                            bVal = parseFloat(b.change_percent) || 0;
-                            break;
-                        case 'buy_volume':
-                            aVal = parseInt(a.buy_volume) || 0;
-                            bVal = parseInt(b.buy_volume) || 0;
-                            break;
-                        case 'sell_volume':
-                            aVal = parseInt(a.sell_volume) || 0;
-                            bVal = parseInt(b.sell_volume) || 0;
-                            break;
-                        case 'buy_sell_ratio':
-                            const aBuy = parseInt(a.buy_volume) || 0;
-                            const aSell = parseInt(a.sell_volume) || 1;
-                            const bBuy = parseInt(b.buy_volume) || 0;
-                            const bSell = parseInt(b.sell_volume) || 1;
-                            aVal = aBuy / aSell;
-                            bVal = bBuy / bSell;
-                            break;
-                        default:
-                            return 0;
-                    }
-                    
-                    return currentSortOrder === 'desc' ? bVal - aVal : aVal - bVal;
+            const buyStockCount = (data.stocks || []).filter(s => s.yesterday_buy != 0).length;
+            document.getElementById('buyStockCount').textContent = buyStockCount;
+
+            renderTable(data.stocks || []);
+        }
+
+        // 渲染表格
+        function renderTable(stocks) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            stocks.forEach((stock, index) => {
+                const row = tbody.insertRow();
+                
+                const buyVol = parseInt(stock.buy_volume) || 0;
+                const sellVol = parseInt(stock.sell_volume) || 0;
+                const ratio = sellVol > 0 ? (buyVol / sellVol).toFixed(2) : '∞';
+                
+                let ratioClass = 'low';
+                if (ratio === '∞' || parseFloat(ratio) > 2) ratioClass = 'high';
+                else if (parseFloat(ratio) > 1) ratioClass = 'medium';
+
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${stock.code}</td>
+                    <td>${stock.name}</td>
+                    <td>${stock.mention_count > 0 ? '<span class="news-badge">' + stock.mention_count + '</span>' : '-'}</td>
+                    <td>${(stock.yesterday_buy || 0).toLocaleString()}</td>
+                    <td>${stock.current_price}</td>
+                    <td>${stock.open_price}</td>
+                    <td class="${getPriceClass(stock.change)}">${stock.change}</td>
+                    <td class="${getPriceClass(stock.change)}">${stock.change_percent}</td>
+                    <td>${(stock.buy_volume || 0).toLocaleString()}</td>
+                    <td>${(stock.sell_volume || 0).toLocaleString()}</td>
+                    <td class="buy-ratio ${ratioClass}">${ratio}</td>
+                `;
+            });
+        }
+
+        // 價格顏色
+        function getPriceClass(change) {
+            if (!change || change === '-') return 'price-neutral';
+            if (change.includes('+')) return 'price-up';
+            if (change.includes('-')) return 'price-down';
+            return 'price-neutral';
+        }
+
+        // 排序
+        document.getElementById('sortField').addEventListener('change', (e) => {
+            currentSortField = e.target.value;
+            const data = currentMarket === 'TSE' ? tseData : otcData;
+            if (!data) return;
+
+            let sorted = [...data.stocks];
+            
+            if (currentSortField === 'mention_count') {
+                sorted.sort((a, b) => (b.mention_count || 0) - (a.mention_count || 0));
+            } else if (currentSortField === 'yesterday_buy') {
+                sorted.sort((a, b) => (b.yesterday_buy || 0) - (a.yesterday_buy || 0));
+            } else if (currentSortField === 'change_percent') {
+                sorted.sort((a, b) => {
+                    const aVal = parseFloat((a.change_percent || '0').replace('%', '').replace('+', ''));
+                    const bVal = parseFloat((b.change_percent || '0').replace('%', '').replace('+', ''));
+                    return bVal - aVal;
+                });
+            } else if (currentSortField === 'buy_ratio') {
+                sorted.sort((a, b) => {
+                    const aRatio = (a.buy_volume || 0) / (a.sell_volume || 1);
+                    const bRatio = (b.buy_volume || 0) / (b.sell_volume || 1);
+                    return bRatio - aRatio;
                 });
             }
-            
-            updateTable(sortedStocks);
+
+            renderTable(sorted);
+        });
+
+        // 下載 CSV
+        function downloadCSV() {
+            const data = currentMarket === 'TSE' ? tseData : otcData;
+            if (!data || !data.stocks) return;
+
+            let csv = '排名,代號,名稱,新聞提及,昨日買超,成交價,開盤價,漲跌,漲跌幅,委買量,委賣量\n';
+            data.stocks.forEach((stock, i) => {
+                csv += `${i+1},${stock.code},${stock.name},${stock.mention_count},${stock.yesterday_buy},${stock.current_price},${stock.open_price},${stock.change},${stock.change_percent},${stock.buy_volume},${stock.sell_volume}\n`;
+            });
+
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${currentMarket}_熱門股票_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
         }
 
-        // 顯示訊息
-        function showMessage(message, type = 'info') {
-            const messageBox = document.getElementById('messageBox');
-            messageBox.innerHTML = `<div class="message ${type}">${message}</div>`;
-            
-            setTimeout(() => {
-                messageBox.innerHTML = '';
-            }, 5000);
-        }
-
-        // 更新已載入檔案顯示
-        function updateLoadedFiles() {
-            const container = document.getElementById('loadedFiles');
-            container.innerHTML = '';
-            
-            if (tseData) {
-                const badge = document.createElement('div');
-                badge.className = 'loaded-file-badge';
-                badge.textContent = '✓ TSE 已載入';
-                container.appendChild(badge);
-            }
-            
-            if (otcData) {
-                const badge = document.createElement('div');
-                badge.className = 'loaded-file-badge';
-                badge.textContent = '✓ OTC 已載入';
-                container.appendChild(badge);
-            }
-
-            // 更新市場切換按鈕狀態
-            document.getElementById('tabTSE').disabled = !tseData;
-            document.getElementById('tabOTC').disabled = !otcData;
-        }
-
-        // 格式化數字
-        function formatNumber(num) {
-            if (num === '無資料' || num === '-' || !num) return '-';
-            const n = parseInt(num);
-            if (isNaN(n)) return num;
-            return n.toLocaleString();
-        }
-
-        // 判斷漲跌顏色
-        function getPriceClass(change) {
-            if (!change || change === '-' || change === '無資料') return 'price-neutral';
-                // 從 GitHub 載入 TSE 資料
+        // 自動載入資料
+        async function autoLoadData() {
+            try {
                 const tseResponse = await fetch('./StockInfo/TSE_hotstock_data.json');
                 if (tseResponse.ok) {
                     tseData = await tseResponse.json();
                     console.log('✅ TSE 資料已載入');
                 }
-                
-                // 從 GitHub 載入 OTC 資料
+
                 const otcResponse = await fetch('./StockInfo/OTC_hotstock_data.json');
                 if (otcResponse.ok) {
                     otcData = await otcResponse.json();
                     console.log('✅ OTC 資料已載入');
                 }
-                
-                updateLoadedFiles();
-                
-                // 顯示當前市場的資料
-                const currentData = currentMarket === 'TSE' ? tseData : otcData;
-                
-                if (!currentData) {
-                    // 如果當前市場沒有資料,切換到有資料的市場
-                    if (currentMarket === 'TSE' && otcData) {
-                        switchMarket('OTC');
-                    } else if (currentMarket === 'OTC' && tseData) {
-                        switchMarket('TSE');
-                    } else {
-                        throw new Error('無法載入市場資料');
-                    }
-                } else {
-                    updateDisplay(currentData);
-                    showMessage('✅ 資料載入成功！', 'success');
+
+                if (tseData) {
+                    updateDisplay(tseData);
+                } else if (otcData) {
+                    switchMarket('OTC');
                 }
-                
             } catch (error) {
-                console.error('載入失敗:', error);
-                showMessage('⚠️ 自動載入失敗,請手動上傳 JSON 檔案', 'info');
-                
-                const tbody = document.getElementById('tableBody');
-                tbody.innerHTML = `<tr><td colspan="11" style="padding: 30px; color: #999;">
-                    請點擊上方區域上傳 JSON 檔案<br><br>
-                    或等待資料自動載入...
-                </td></tr>`;
-                document.getElementById('dataTable').style.display = 'table';
-            } finally {
-                loading.style.display = 'none';
+                console.error('載入資料失敗:', error);
             }
         }
 
-        // 頁面載入時的初始化
-        window.addEventListener('DOMContentLoaded', () => {
-            console.log('🔥 台股新聞熱門股票追蹤系統已就緒');
-            document.getElementById('dataTable').style.display = 'table';
-            
-            // 監聽排序欄位變更
-            const sortField = document.getElementById('sortField');
-            if (sortField) {
-                sortField.addEventListener('change', (e) => {
-                    currentSortField = e.target.value;
-                    applySorting();
-                });
-            }
-            
-            // 自動載入資料
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
             autoLoadData();
         });
     </script>
