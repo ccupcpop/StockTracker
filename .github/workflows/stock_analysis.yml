@@ -1,18 +1,40 @@
-name: Taiwan Stock Analysis
+name: Taiwan Stock Analysis - Two Stage
 
 on:
   schedule:
-    # 每天早上 9:00 (UTC+8 = UTC 1:00)
+    # 階段1: 早上 7:00 (UTC+8 = UTC 23:00 前一天)
+    - cron: '0 23 * * 0-4,6'
+    # 階段1: 早上 8:00 (UTC+8 = UTC 0:00)
+    - cron: '0 0 * * 0-5'
+    # 階段2: 早上 9:00 (UTC+8 = UTC 1:00)
     - cron: '0 1 * * 0-5'
-    # 每天早上 10:00 (UTC+8 = UTC 2:00)
+    # 階段2: 早上 10:00 (UTC+8 = UTC 2:00)
     - cron: '0 2 * * 0-5'
-    # 每天早上 11:00 (UTC+8 = UTC 3:00)
+    # 階段2: 早上 11:00 (UTC+8 = UTC 3:00)
     - cron: '0 3 * * 0-5'
-    # 每天早上 12:00 (UTC+8 = UTC 4:00)
+    # 階段2: 早上 12:00 (UTC+8 = UTC 4:00)
     - cron: '0 4 * * 0-5'
   
   # 允許手動觸發
   workflow_dispatch:
+    inputs:
+      stage:
+        description: '執行階段 (1=新聞收集, 2=股價抓取)'
+        required: true
+        default: '2'
+        type: choice
+        options:
+          - '1'
+          - '2'
+      process_mode:
+        description: '處理模式 (TSE=上市, OTC=上櫃, BOTH=兩者)'
+        required: true
+        default: 'BOTH'
+        type: choice
+        options:
+          - 'TSE'
+          - 'OTC'
+          - 'BOTH'
 
 jobs:
   analyze-stocks:
@@ -38,9 +60,33 @@ jobs:
     - name: Create StockInfo directory
       run: mkdir -p StockInfo
     
+    # 判斷執行階段
+    - name: Determine stage
+      id: determine_stage
+      run: |
+        HOUR=$(TZ='Asia/Taipei' date '+%H')
+        echo "Current hour: $HOUR"
+        
+        # 手動觸發時使用指定的階段
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          STAGE="${{ github.event.inputs.stage }}"
+          echo "Manual trigger - Stage: $STAGE"
+        # 7-8點執行階段1
+        elif [ "$HOUR" = "07" ] || [ "$HOUR" = "08" ]; then
+          STAGE="1"
+          echo "Time-based trigger (7-8am) - Stage 1"
+        # 9-12點執行階段2
+        else
+          STAGE="2"
+          echo "Time-based trigger (9-12am) - Stage 2"
+        fi
+        
+        echo "stage=$STAGE" >> $GITHUB_OUTPUT
+    
     - name: Run stock analysis
       env:
-        PROCESS_MODE: 'BOTH'
+        STAGE: ${{ steps.determine_stage.outputs.stage }}
+        PROCESS_MODE: ${{ github.event.inputs.process_mode || 'BOTH' }}  # 手動觸發時可選擇，自動執行時預設 BOTH
       run: python stock_analysis.py
     
     - name: Commit and push changes
@@ -48,4 +94,4 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git add StockInfo/
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock data - $(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')" && git push)
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock data - Stage ${{ steps.determine_stage.outputs.stage }} - $(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')" && git push)

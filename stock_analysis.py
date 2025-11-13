@@ -1,6 +1,7 @@
 """
-台股新聞熱門股票分析系統 - GitHub Actions 改良版
-增加詳細日誌、錯誤處理和超時控制
+台股新聞熱門股票分析系統 - 兩階段執行版本
+階段1: 爬取新聞 + 分析股票 + 生成新聞排行榜
+階段2: 讀取買超排行 + 抓取即時股價
 """
 
 import os
@@ -17,25 +18,26 @@ import time
 import traceback
 
 # ========== 執行設定 ==========
-PROCESS_MODE = os.environ.get('PROCESS_MODE', 'TSE')  # 'TSE', 'OTC', 'BOTH'
+STAGE = os.environ.get('STAGE', '2')  # '1' = 只執行階段1, '2' = 執行階段2 (包含階段1的結果)
+PROCESS_MODE = os.environ.get('PROCESS_MODE', 'BOTH')  # 'TSE', 'OTC', 'BOTH'
 TW_TZ = pytz.timezone('Asia/Taipei')
 
 # 超時設定
-REQUEST_TIMEOUT = 10  # 單次請求超時時間（秒）
-MAX_RETRY = 3  # 最大重試次數
-STOCK_DELAY = 1.5  # 股票查詢間隔（秒）
+REQUEST_TIMEOUT = 10
+MAX_RETRY = 3
+STOCK_DELAY = 1.5
 
 # ========== 路徑設定 ==========
 BASE_PATH = os.path.join(os.path.dirname(__file__), 'StockInfo')
 
-# 確保 StockInfo 資料夾存在
 if not os.path.exists(BASE_PATH):
     os.makedirs(BASE_PATH)
-    print(f"✅ 創建資料夾: {BASE_PATH}")
 
 NEWS_JSON = os.path.join(BASE_PATH, 'twstock_news.json')
-TSE_RANKING = os.path.join(BASE_PATH, 'TSE_buy_ranking.txt')
-OTC_RANKING = os.path.join(BASE_PATH, 'OTC_buy_ranking.txt')
+TSE_NEWS_RANKING = os.path.join(BASE_PATH, 'TSE_news_ranking.txt')
+OTC_NEWS_RANKING = os.path.join(BASE_PATH, 'OTC_news_ranking.txt')
+TSE_BUY_RANKING = os.path.join(BASE_PATH, 'TSE_buy_ranking.txt')
+OTC_BUY_RANKING = os.path.join(BASE_PATH, 'OTC_buy_ranking.txt')
 TSE_OUTPUT_JSON = os.path.join(BASE_PATH, 'TSE_hotstock_data.json')
 OTC_OUTPUT_JSON = os.path.join(BASE_PATH, 'OTC_hotstock_data.json')
 TSE_CSV = os.path.join(BASE_PATH, 'tse_company_list.csv')
@@ -43,67 +45,27 @@ OTC_CSV = os.path.join(BASE_PATH, 'otc_company_list.csv')
 
 # ========== 日誌函數 ==========
 def log_info(message):
-    """輸出資訊日誌"""
     timestamp = datetime.now(TW_TZ).strftime('%H:%M:%S')
     print(f"[{timestamp}] ℹ️  {message}")
     sys.stdout.flush()
 
 def log_success(message):
-    """輸出成功日誌"""
     timestamp = datetime.now(TW_TZ).strftime('%H:%M:%S')
     print(f"[{timestamp}] ✅ {message}")
     sys.stdout.flush()
 
 def log_warning(message):
-    """輸出警告日誌"""
     timestamp = datetime.now(TW_TZ).strftime('%H:%M:%S')
     print(f"[{timestamp}] ⚠️  {message}")
     sys.stdout.flush()
 
 def log_error(message):
-    """輸出錯誤日誌"""
     timestamp = datetime.now(TW_TZ).strftime('%H:%M:%S')
     print(f"[{timestamp}] ❌ {message}")
     sys.stdout.flush()
 
-def log_debug(message):
-    """輸出除錯日誌"""
-    timestamp = datetime.now(TW_TZ).strftime('%H:%M:%S')
-    print(f"[{timestamp}] 🔍 {message}")
-    sys.stdout.flush()
-
-# ========== 檔案檢查函數 ==========
-def check_required_files():
-    """檢查必要檔案是否存在"""
-    log_info("檢查必要檔案...")
-    
-    required_files = {
-        'TSE CSV': TSE_CSV,
-        'OTC CSV': OTC_CSV,
-        'TSE 買超': TSE_RANKING,
-        'OTC 買超': OTC_RANKING
-    }
-    
-    missing_files = []
-    for name, filepath in required_files.items():
-        if os.path.exists(filepath):
-            size = os.path.getsize(filepath)
-            log_success(f"{name}: 存在 ({size} bytes)")
-        else:
-            log_error(f"{name}: 不存在 - {filepath}")
-            missing_files.append(name)
-    
-    if missing_files:
-        log_error(f"缺少必要檔案: {', '.join(missing_files)}")
-        log_info("請參考 SAMPLE_DATA_FORMAT.md 準備資料檔案")
-        return False
-    
-    log_success("所有必要檔案檢查通過!")
-    return True
-
 # ========== 新聞爬蟲函數 ==========
 def clean_title(title_text):
-    """清理新聞標題"""
     if not title_text:
         return ""
     title = title_text.strip()
@@ -119,7 +81,6 @@ def clean_title(title_text):
     return title.strip()
 
 def parse_publish_time(soup_element):
-    """解析新聞發布時間"""
     try:
         time_patterns = [
             soup_element.find('time'),
@@ -134,12 +95,10 @@ def parse_publish_time(soup_element):
                 if time_text:
                     return time_text
         return None
-    except Exception as e:
-        log_debug(f"解析時間失敗: {e}")
+    except:
         return None
 
 def scrape_twstock_news():
-    """爬取台股新聞"""
     url = "https://cmnews.com.tw/twstock/twstock_news"
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
@@ -191,35 +150,25 @@ def scrape_twstock_news():
             log_success(f"成功抓取 {len(news_list)} 則新聞")
             return news_list
             
-        except requests.Timeout:
-            log_warning(f"請求超時 (第 {attempt + 1} 次)")
-            if attempt < MAX_RETRY - 1:
-                time.sleep(2)
         except Exception as e:
             log_error(f"抓取新聞失敗: {e}")
-            log_debug(traceback.format_exc())
             if attempt < MAX_RETRY - 1:
                 time.sleep(2)
     
-    log_warning("達到最大重試次數，使用現有新聞資料")
     return []
 
 def load_existing_news(filepath):
-    """載入現有新聞"""
     if os.path.exists(filepath):
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 log_info(f"載入現有新聞: {len(data)} 則")
                 return data
-        except Exception as e:
-            log_warning(f"載入現有新聞失敗: {e}")
+        except:
             return []
-    log_info("沒有現有新聞資料")
     return []
 
 def filter_news_by_time(news_list, hours=24):
-    """過濾指定時間內的新聞"""
     current_time = datetime.now(TW_TZ)
     time_limit = current_time - timedelta(hours=hours)
     filtered_news = []
@@ -236,7 +185,6 @@ def filter_news_by_time(news_list, hours=24):
     return filtered_news
 
 def merge_news(existing_news, new_news):
-    """合併新舊新聞"""
     news_dict = {}
     for news in existing_news:
         news_dict[news['url']] = news
@@ -244,23 +192,19 @@ def merge_news(existing_news, new_news):
         news_dict[news['url']] = news
     merged = list(news_dict.values())
     merged.sort(key=lambda x: x['scraped_time'], reverse=True)
-    log_info(f"合併後共 {len(merged)} 則新聞")
     return merged
 
 def save_news_to_json(news_list, filepath):
-    """儲存新聞到 JSON"""
     try:
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(news_list, f, ensure_ascii=False, indent=2)
-        log_success(f"儲存新聞成功: {filepath}")
+        log_success(f"儲存新聞: {len(news_list)} 則")
     except Exception as e:
-        log_error(f"儲存新聞失敗: {e}")
+        log_error(f"儲存失敗: {e}")
 
 # ========== 股票清單載入 ==========
 def load_stock_list(filepath, market_type):
-    """載入股票清單"""
     try:
-        log_info(f"載入 {market_type} 股票清單: {filepath}")
         df = pd.read_csv(filepath, encoding='utf-8-sig', header=None)
         stock_dict = {}
         for _, row in df.iterrows():
@@ -278,11 +222,9 @@ def load_stock_list(filepath, market_type):
         return stock_dict
     except Exception as e:
         log_error(f"載入 {market_type} 失敗: {e}")
-        log_debug(traceback.format_exc())
         return {}
 
 def analyze_news_stocks(news_list, tse_stocks, otc_stocks):
-    """分析新聞中提及的股票"""
     log_info("分析新聞中的股票...")
     all_stocks = {}
     all_stocks.update(tse_stocks)
@@ -306,15 +248,90 @@ def analyze_news_stocks(news_list, tse_stocks, otc_stocks):
     log_success(f"找到 {len(stock_mentions)} 檔被提及的股票")
     return stock_mentions
 
+# ========== 新聞排行榜處理 ==========
+def load_existing_news_ranking(filepath):
+    """載入現有的新聞排行榜"""
+    ranking = {}
+    if not os.path.exists(filepath):
+        log_info(f"無現有排行榜: {filepath}")
+        return ranking
+    
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        for line in lines:
+            line = line.strip()
+            if line.startswith('#') or not line:
+                continue
+            parts = line.split(',')
+            if len(parts) >= 4:
+                code = parts[1].strip()
+                name = parts[2].strip()
+                count = parts[3].strip()
+                try:
+                    ranking[code] = {
+                        'name': name,
+                        'count': int(count)
+                    }
+                except:
+                    pass
+        log_info(f"載入現有排行: {len(ranking)} 檔")
+        return ranking
+    except Exception as e:
+        log_error(f"載入排行榜失敗: {e}")
+        return ranking
+
+def save_news_ranking(stock_mentions, filepath, market_type):
+    """儲存新聞排行榜，與當天現有資料合併去重（每天7點會重置）"""
+    # 載入現有排行（當天的）
+    existing_ranking = load_existing_news_ranking(filepath)
+    
+    # 合併新舊資料
+    merged_ranking = {}
+    
+    # 加入現有資料
+    for code, data in existing_ranking.items():
+        merged_ranking[code] = {
+            'name': data['name'],
+            'count': data['count']
+        }
+    
+    # 加入新資料（累加提及次數）
+    for stock_name, data in stock_mentions.items():
+        if data['info']['market'] == market_type:
+            code = data['info']['code']
+            name = data['info']['name']
+            count = data['count']
+            
+            if code in merged_ranking:
+                # 如果已存在，累加次數
+                merged_ranking[code]['count'] += count
+            else:
+                # 新增
+                merged_ranking[code] = {
+                    'name': name,
+                    'count': count
+                }
+    
+    # 排序並儲存
+    sorted_stocks = sorted(merged_ranking.items(), key=lambda x: x[1]['count'], reverse=True)
+    
+    try:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write('#,代碼,名稱,提及次數\n')
+            for rank, (code, data) in enumerate(sorted_stocks, 1):
+                f.write(f"{rank},{code},{data['name']},{data['count']}\n")
+        log_success(f"儲存 {market_type} 新聞排行: {len(sorted_stocks)} 檔")
+    except Exception as e:
+        log_error(f"儲存排行榜失敗: {e}")
+
 # ========== 買超排行榜載入 ==========
 def load_buy_ranking(filepath):
-    """載入買超排行榜"""
     buy_ranking = {}
     if not os.path.exists(filepath):
         log_warning(f"找不到檔案: {filepath}")
         return buy_ranking
     try:
-        log_info(f"載入買超排行: {filepath}")
         with open(filepath, 'r', encoding='utf-8') as f:
             lines = f.readlines()
         for line in lines:
@@ -327,10 +344,9 @@ def load_buy_ranking(filepath):
                 name = parts[2].strip()
                 buy_volume = parts[3].strip()
                 try:
-                    buy_volume_int = int(buy_volume)
                     buy_ranking[code] = {
                         'name': name,
-                        'volume': buy_volume_int
+                        'volume': int(buy_volume)
                     }
                 except:
                     pass
@@ -338,65 +354,10 @@ def load_buy_ranking(filepath):
         return buy_ranking
     except Exception as e:
         log_error(f"載入買超排行榜失敗: {e}")
-        log_debug(traceback.format_exc())
         return buy_ranking
-
-def merge_stocks(news_stocks, buy_ranking, stock_list, market_type):
-    """合併新聞股票和買超股票"""
-    log_info(f"合併 {market_type} 市場股票...")
-    merged = {}
-    
-    # 加入新聞股票
-    for stock_name, data in news_stocks.items():
-        if data['info']['market'] == market_type:
-            code = data['info']['code']
-            buy_info = buy_ranking.get(code, {})
-            buy_volume = buy_info.get('volume', 0)
-            
-            merged[code] = {
-                'code': code,
-                'name': data['info']['name'],
-                'market': market_type,
-                'mention_count': data['count'],
-                'yesterday_buy': buy_volume,
-                'source': 'news'
-            }
-    
-    # 加入買超排行股票
-    for code, buy_info in buy_ranking.items():
-        buy_volume = buy_info['volume']
-        if code not in merged:
-            found = False
-            for stock_name, stock_info in stock_list.items():
-                if stock_info['code'] == code and stock_info['market'] == market_type:
-                    merged[code] = {
-                        'code': code,
-                        'name': stock_info['name'],
-                        'market': market_type,
-                        'mention_count': 0,
-                        'yesterday_buy': buy_volume,
-                        'source': 'buy'
-                    }
-                    found = True
-                    break
-            if not found:
-                merged[code] = {
-                    'code': code,
-                    'name': buy_info['name'],
-                    'market': market_type,
-                    'mention_count': 0,
-                    'yesterday_buy': buy_volume,
-                    'source': 'buy'
-                }
-        else:
-            merged[code]['yesterday_buy'] = buy_volume
-    
-    log_success(f"{market_type} 合併後: {len(merged)} 檔")
-    return merged
 
 # ========== Yahoo 股價爬蟲 ==========
 def get_stock_info(stock_code, market):
-    """抓取股票即時資訊"""
     suffix = '.TW' if market == 'TSE' else '.TWO'
     yahoo_code = f"{stock_code}{suffix}"
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
@@ -458,40 +419,29 @@ def get_stock_info(stock_code, market):
             stock_info['委買小計'] = buy_total
             stock_info['委賣小計'] = sell_total
             return stock_info
-        except requests.Timeout:
+        except:
             if attempt < MAX_RETRY - 1:
                 time.sleep(1)
             continue
-        except Exception as e:
-            if attempt < MAX_RETRY - 1:
-                time.sleep(1)
-            continue
-    
     return None
 
-def fetch_stocks_price(stock_list, delay=1.5):
-    """批次抓取股票資訊"""
+def fetch_stocks_price(stock_codes, market_type, delay=1.5):
+    """批次抓取股票即時資訊"""
     results = []
-    total = len(stock_list)
-    log_info(f"開始抓取 {total} 檔股票資訊...")
+    total = len(stock_codes)
+    log_info(f"開始抓取 {market_type} {total} 檔股票...")
     
-    for i, stock_data in enumerate(stock_list, 1):
-        code = stock_data['code']
-        name = stock_data['name']
-        market = stock_data['market']
-        
-        # 每 10 檔顯示一次進度
+    for i, (code, data) in enumerate(stock_codes, 1):
         if i % 10 == 0 or i == total:
             log_info(f"進度: {i}/{total} ({i*100//total}%)")
         
-        info = get_stock_info(code, market)
+        info = get_stock_info(code, market_type)
         if info:
             result = {
                 'code': code,
-                'name': name,
-                'market': market,
-                'mention_count': stock_data['mention_count'],
-                'yesterday_buy': stock_data['yesterday_buy'],
+                'name': data['name'],
+                'market': market_type,
+                'buy_volume_yesterday': data.get('volume', 0),
                 'current_price': info.get('成交價', '-'),
                 'open_price': info.get('開盤價', '-'),
                 'change': info.get('漲跌', '-'),
@@ -501,123 +451,135 @@ def fetch_stocks_price(stock_list, delay=1.5):
                 'update_time': datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S')
             }
             results.append(result)
-        else:
-            log_warning(f"無法取得 {code} {name} 的資料")
         
         if i < total:
             time.sleep(delay)
     
-    log_success(f"完成 {len(results)}/{total} 檔股票資訊抓取")
+    log_success(f"完成 {len(results)}/{total} 檔")
     return results
 
-# ========== 主程式 ==========
-def main():
-    try:
-        print("\n" + "=" * 80)
-        print("台股新聞熱門股票分析系統 - GitHub Actions 版")
-        print("=" * 80)
-        log_info(f"執行模式: {PROCESS_MODE}")
-        log_info(f"執行時間: {datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S')}")
-        log_info(f"工作目錄: {os.getcwd()}")
-        log_info(f"資料目錄: {BASE_PATH}")
-        print("=" * 80 + "\n")
+# ========== 階段1: 新聞收集與排行 ==========
+def stage1_news_collection():
+    """階段1: 爬取新聞 + 分析股票 + 生成排行榜"""
+    print("\n" + "=" * 80)
+    print("【階段 1: 新聞收集與分析】")
+    print("=" * 80)
+    
+    # 檢查是否為早上 7 點（當天第一次執行）
+    current_hour = datetime.now(TW_TZ).hour
+    if current_hour == 7:
+        log_info("偵測到早上 7 點 - 刪除舊的新聞排行榜...")
         
-        # ===== 檔案檢查 =====
-        if not check_required_files():
-            log_error("必要檔案檢查失敗，程式終止")
-            sys.exit(1)
+        # 刪除 TSE 排行榜
+        if os.path.exists(TSE_NEWS_RANKING):
+            os.remove(TSE_NEWS_RANKING)
+            log_success("已刪除 TSE_news_ranking.txt")
         
-        # ===== 第一階段 =====
-        print("\n" + "=" * 80)
-        print("[第一階段: 爬取新聞]")
-        print("=" * 80)
+        # 刪除 OTC 排行榜
+        if os.path.exists(OTC_NEWS_RANKING):
+            os.remove(OTC_NEWS_RANKING)
+            log_success("已刪除 OTC_news_ranking.txt")
         
-        existing_news = load_existing_news(NEWS_JSON)
-        new_news = scrape_twstock_news()
-        
-        if new_news:
-            merged_news = merge_news(existing_news, new_news)
-            filtered_news = filter_news_by_time(merged_news, hours=24)
-            save_news_to_json(filtered_news, NEWS_JSON)
-            log_success(f"新聞處理完成: 新抓取 {len(new_news)} 則, 保留 {len(filtered_news)} 則")
-        else:
-            filtered_news = existing_news
-            log_warning(f"使用現有新聞資料: {len(filtered_news)} 則")
-        
-        # ===== 第二階段 =====
-        print("\n" + "=" * 80)
-        print("[第二階段: 分析新聞股票]")
-        print("=" * 80)
-        
-        tse_stocks = load_stock_list(TSE_CSV, 'TSE')
-        otc_stocks = load_stock_list(OTC_CSV, 'OTC')
-        
-        all_stocks = {}
-        all_stocks.update(tse_stocks)
-        all_stocks.update(otc_stocks)
-        stock_mentions = analyze_news_stocks(filtered_news, tse_stocks, otc_stocks)
-        
-        # ===== 第三階段 =====
-        print("\n" + "=" * 80)
-        print("[第三階段: 載入買超排行]")
-        print("=" * 80)
-        
-        tse_buy_ranking = load_buy_ranking(TSE_RANKING) if PROCESS_MODE in ['TSE', 'BOTH'] else {}
-        otc_buy_ranking = load_buy_ranking(OTC_RANKING) if PROCESS_MODE in ['OTC', 'BOTH'] else {}
-        
-        # ===== 第四階段 =====
-        print("\n" + "=" * 80)
-        print("[第四階段: 合併股票]")
-        print("=" * 80)
-        
-        tse_merged = merge_stocks(stock_mentions, tse_buy_ranking, all_stocks, 'TSE') if PROCESS_MODE in ['TSE', 'BOTH'] else {}
-        otc_merged = merge_stocks(stock_mentions, otc_buy_ranking, all_stocks, 'OTC') if PROCESS_MODE in ['OTC', 'BOTH'] else {}
-        
-        # ===== 第五階段 =====
-        print("\n" + "=" * 80)
-        print("[第五階段: 抓取股價]")
-        print("=" * 80)
-        
-        tse_stock_data = []
-        if tse_merged and PROCESS_MODE in ['TSE', 'BOTH']:
-            sorted_tse = sorted(tse_merged.values(), key=lambda x: (x['mention_count'], x['yesterday_buy']), reverse=True)
-            log_info(f"準備抓取 TSE {len(sorted_tse)} 檔股票")
-            tse_stock_data = fetch_stocks_price(sorted_tse, delay=STOCK_DELAY)
-        
-        otc_stock_data = []
-        if otc_merged and PROCESS_MODE in ['OTC', 'BOTH']:
-            sorted_otc = sorted(otc_merged.values(), key=lambda x: (x['mention_count'], x['yesterday_buy']), reverse=True)
-            log_info(f"準備抓取 OTC {len(sorted_otc)} 檔股票")
-            otc_stock_data = fetch_stocks_price(sorted_otc, delay=STOCK_DELAY)
-        
-        # ===== 第六階段 =====
-        print("\n" + "=" * 80)
-        print("[第六階段: 儲存結果]")
-        print("=" * 80)
+        log_info("開始新的一天的新聞統計")
+    
+    # 爬取新聞
+    log_info("開始爬取新聞...")
+    existing_news = load_existing_news(NEWS_JSON)
+    new_news = scrape_twstock_news()
+    
+    if new_news:
+        merged_news = merge_news(existing_news, new_news)
+        filtered_news = filter_news_by_time(merged_news, hours=24)
+        save_news_to_json(filtered_news, NEWS_JSON)
+    else:
+        filtered_news = existing_news
+        log_warning(f"使用現有新聞: {len(filtered_news)} 則")
+    
+    # 載入股票清單
+    log_info("載入股票清單...")
+    tse_stocks = load_stock_list(TSE_CSV, 'TSE')
+    otc_stocks = load_stock_list(OTC_CSV, 'OTC')
+    
+    # 分析新聞
+    stock_mentions = analyze_news_stocks(filtered_news, tse_stocks, otc_stocks)
+    
+    # 儲存新聞排行榜（根據 PROCESS_MODE 決定要儲存哪個市場）
+    log_info(f"生成新聞排行榜 (模式: {PROCESS_MODE})...")
+    
+    if PROCESS_MODE in ['TSE', 'BOTH']:
+        save_news_ranking(stock_mentions, TSE_NEWS_RANKING, 'TSE')
+    
+    if PROCESS_MODE in ['OTC', 'BOTH']:
+        save_news_ranking(stock_mentions, OTC_NEWS_RANKING, 'OTC')
+    
+    log_success("階段1完成!")
+
+# ========== 階段2: 即時股價抓取 ==========
+def stage2_price_collection():
+    """階段2: 讀取買超排行 + 抓取即時股價"""
+    print("\n" + "=" * 80)
+    print(f"【階段 2: 即時股價抓取】(模式: {PROCESS_MODE})")
+    print("=" * 80)
+    
+    # 載入買超排行
+    log_info("載入買超排行...")
+    tse_buy_ranking = load_buy_ranking(TSE_BUY_RANKING) if PROCESS_MODE in ['TSE', 'BOTH'] else {}
+    otc_buy_ranking = load_buy_ranking(OTC_BUY_RANKING) if PROCESS_MODE in ['OTC', 'BOTH'] else {}
+    
+    # 抓取 TSE 股價
+    if tse_buy_ranking and PROCESS_MODE in ['TSE', 'BOTH']:
+        log_info("處理 TSE 市場...")
+        tse_stock_data = fetch_stocks_price(list(tse_buy_ranking.items()), 'TSE', STOCK_DELAY)
         
         if tse_stock_data:
             tse_output = {
                 'update_time': datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S'),
                 'market': 'TSE',
-                'total_news': len(filtered_news),
-                'hot_stocks_count': len(tse_stock_data),
+                'stock_count': len(tse_stock_data),
                 'stocks': tse_stock_data
             }
             with open(TSE_OUTPUT_JSON, 'w', encoding='utf-8') as f:
                 json.dump(tse_output, f, ensure_ascii=False, indent=2)
             log_success(f"TSE 資料已儲存: {len(tse_stock_data)} 檔")
+    
+    # 抓取 OTC 股價
+    if otc_buy_ranking and PROCESS_MODE in ['OTC', 'BOTH']:
+        log_info("處理 OTC 市場...")
+        otc_stock_data = fetch_stocks_price(list(otc_buy_ranking.items()), 'OTC', STOCK_DELAY)
         
         if otc_stock_data:
             otc_output = {
                 'update_time': datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S'),
                 'market': 'OTC',
-                'total_news': len(filtered_news),
-                'hot_stocks_count': len(otc_stock_data),
+                'stock_count': len(otc_stock_data),
                 'stocks': otc_stock_data
             }
             with open(OTC_OUTPUT_JSON, 'w', encoding='utf-8') as f:
                 json.dump(otc_output, f, ensure_ascii=False, indent=2)
             log_success(f"OTC 資料已儲存: {len(otc_stock_data)} 檔")
+    
+    log_success("階段2完成!")
+
+# ========== 主程式 ==========
+def main():
+    try:
+        print("\n" + "=" * 80)
+        print("台股新聞熱門股票分析系統 - 兩階段版本")
+        print("=" * 80)
+        log_info(f"執行階段: {STAGE}")
+        log_info(f"處理模式: {PROCESS_MODE}")
+        log_info(f"執行時間: {datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S')}")
+        print("=" * 80)
+        
+        if STAGE == '1':
+            # 只執行階段1
+            stage1_news_collection()
+        elif STAGE == '2':
+            # 執行階段2（階段2會使用階段1的結果）
+            stage2_price_collection()
+        else:
+            log_error(f"未知的階段: {STAGE}")
+            sys.exit(1)
         
         print("\n" + "=" * 80)
         log_success("所有任務完成!")
@@ -625,7 +587,7 @@ def main():
         
     except Exception as e:
         log_error(f"程式執行失敗: {e}")
-        log_debug(traceback.format_exc())
+        print(traceback.format_exc())
         sys.exit(1)
 
 if __name__ == "__main__":
