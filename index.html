@@ -624,7 +624,6 @@
         }
 
         // 處理檔案上傳
-        async function handleFiles(files) {
             const loading = document.getElementById('loading');
             
             loading.style.display = 'block';
@@ -679,35 +678,6 @@
             } finally {
                 loading.style.display = 'none';
             }
-        }
-
-        // 檔案選擇器變更事件
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                handleFiles(e.target.files);
-            }
-        });
-
-        // 拖放功能
-        const dropZone = document.getElementById('dropZone');
-
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('dragover');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('dragover');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('dragover');
-            
-            if (e.dataTransfer.files.length > 0) {
-                handleFiles(e.dataTransfer.files);
-            }
-        });
 
         // 切換市場
         function switchMarket(market) {
