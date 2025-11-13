@@ -441,7 +441,8 @@ def fetch_stocks_price(stock_codes, market_type, delay=1.5):
                 'code': code,
                 'name': data['name'],
                 'market': market_type,
-                'buy_volume_yesterday': data.get('volume', 0),
+                'mention_count': data.get('mention_count', 0),  # 新聞提及次數
+                'yesterday_buy': data.get('volume', 0),  # 昨日買超（改用 yesterday_buy 符合 HTML）
                 'current_price': info.get('成交價', '-'),
                 'open_price': info.get('開盤價', '-'),
                 'change': info.get('漲跌', '-'),
@@ -516,7 +517,7 @@ def stage1_news_collection():
 
 # ========== 階段2: 即時股價抓取 ==========
 def stage2_price_collection():
-    """階段2: 讀取買超排行 + 抓取即時股價"""
+    """階段2: 讀取買超排行 + 讀取新聞排行 + 合併 + 抓取即時股價"""
     print("\n" + "=" * 80)
     print(f"【階段 2: 即時股價抓取】(模式: {PROCESS_MODE})")
     print("=" * 80)
@@ -526,10 +527,33 @@ def stage2_price_collection():
     tse_buy_ranking = load_buy_ranking(TSE_BUY_RANKING) if PROCESS_MODE in ['TSE', 'BOTH'] else {}
     otc_buy_ranking = load_buy_ranking(OTC_BUY_RANKING) if PROCESS_MODE in ['OTC', 'BOTH'] else {}
     
+    # 載入新聞排行榜
+    log_info("載入新聞排行...")
+    tse_news_ranking = load_existing_news_ranking(TSE_NEWS_RANKING) if PROCESS_MODE in ['TSE', 'BOTH'] else {}
+    otc_news_ranking = load_existing_news_ranking(OTC_NEWS_RANKING) if PROCESS_MODE in ['OTC', 'BOTH'] else {}
+    
+    # 合併買超和新聞排行（買超為主，補充新聞提及次數）
+    def merge_rankings(buy_ranking, news_ranking):
+        """合併買超排行和新聞排行"""
+        merged = {}
+        # 先加入買超排行的所有股票
+        for code, data in buy_ranking.items():
+            merged[code] = {
+                'name': data['name'],
+                'volume': data['volume'],
+                'mention_count': news_ranking.get(code, {}).get('count', 0)  # 加入新聞提及次數
+            }
+        return merged
+    
+    tse_merged = merge_rankings(tse_buy_ranking, tse_news_ranking) if tse_buy_ranking else {}
+    otc_merged = merge_rankings(otc_buy_ranking, otc_news_ranking) if otc_buy_ranking else {}
+    
+    log_info(f"TSE 合併後: {len(tse_merged)} 檔, OTC 合併後: {len(otc_merged)} 檔")
+    
     # 抓取 TSE 股價
-    if tse_buy_ranking and PROCESS_MODE in ['TSE', 'BOTH']:
+    if tse_merged and PROCESS_MODE in ['TSE', 'BOTH']:
         log_info("處理 TSE 市場...")
-        tse_stock_data = fetch_stocks_price(list(tse_buy_ranking.items()), 'TSE', STOCK_DELAY)
+        tse_stock_data = fetch_stocks_price(list(tse_merged.items()), 'TSE', STOCK_DELAY)
         
         if tse_stock_data:
             tse_output = {
@@ -543,9 +567,9 @@ def stage2_price_collection():
             log_success(f"TSE 資料已儲存: {len(tse_stock_data)} 檔")
     
     # 抓取 OTC 股價
-    if otc_buy_ranking and PROCESS_MODE in ['OTC', 'BOTH']:
+    if otc_merged and PROCESS_MODE in ['OTC', 'BOTH']:
         log_info("處理 OTC 市場...")
-        otc_stock_data = fetch_stocks_price(list(otc_buy_ranking.items()), 'OTC', STOCK_DELAY)
+        otc_stock_data = fetch_stocks_price(list(otc_merged.items()), 'OTC', STOCK_DELAY)
         
         if otc_stock_data:
             otc_output = {
