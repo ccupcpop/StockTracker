@@ -45,38 +45,6 @@
             margin-bottom: 20px;
         }
 
-        .file-drop-zone {
-            border: 3px dashed #667eea;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 20px;
-            background: #f8f9ff;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .file-drop-zone:hover {
-            background: #eef1ff;
-            border-color: #5566d6;
-        }
-
-        .file-drop-zone.dragover {
-            background: #dde4ff;
-            border-color: #4455c5;
-            transform: scale(1.02);
-        }
-
-        .file-drop-zone h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .file-drop-zone p {
-            color: #666;
-            font-size: 0.9em;
-        }
-
         .control-panel {
             display: flex;
             justify-content: center;
@@ -383,26 +351,6 @@
             background: rgba(255,255,255,0.1);
             border-radius: 10px;
         }
-
-        #fileInput {
-            display: none;
-        }
-
-        .loaded-files {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .loaded-file-badge {
-            background: #27ae60;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-size: 0.9em;
-        }
     </style>
 </head>
 <body>
@@ -410,13 +358,6 @@
         <div class="header">
             <h1>🔥 台股新聞熱門股票追蹤系統</h1>
             <div class="subtitle">新聞熱度 × 買超排行 × 即時股價</div>
-
-            <div class="file-drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-                <h3>📁 載入 JSON 資料檔</h3>
-                <p>點擊這裡選擇檔案,或拖放 TSE_hotstock_data.json 和 OTC_hotstock_data.json</p>
-                <div class="loaded-files" id="loadedFiles"></div>
-            </div>
-            <input type="file" id="fileInput" accept=".json" multiple>
 
             <div class="market-tabs">
                 <button class="market-tab active" onclick="switchMarket('TSE')" id="tabTSE">
@@ -439,11 +380,11 @@
                     <div class="value" id="updateTime">--:--</div>
                 </div>
                 <div class="stat-box">
-                    <div class="label">新聞則數</div>
+                    <div class="label">熱門新聞股票</div>
                     <div class="value" id="newsCount">0</div>
                 </div>
                 <div class="stat-box">
-                    <div class="label">熱門股票</div>
+                    <div class="label">買賣超股票</div>
                     <div class="value" id="stockCount">0</div>
                 </div>
             </div>
@@ -590,30 +531,6 @@
             }, 5000);
         }
 
-        // 更新已載入檔案顯示
-        function updateLoadedFiles() {
-            const container = document.getElementById('loadedFiles');
-            container.innerHTML = '';
-            
-            if (tseData) {
-                const badge = document.createElement('div');
-                badge.className = 'loaded-file-badge';
-                badge.textContent = '✓ TSE 已載入';
-                container.appendChild(badge);
-            }
-            
-            if (otcData) {
-                const badge = document.createElement('div');
-                badge.className = 'loaded-file-badge';
-                badge.textContent = '✓ OTC 已載入';
-                container.appendChild(badge);
-            }
-
-            // 更新市場切換按鈕狀態
-            document.getElementById('tabTSE').disabled = !tseData;
-            document.getElementById('tabOTC').disabled = !otcData;
-        }
-
         // 格式化數字
         function formatNumber(num) {
             if (num === '無資料' || num === '-' || !num) return '-';
@@ -629,92 +546,6 @@
             if (change.includes('-') || parseFloat(change) < 0) return 'price-down';
             return 'price-neutral';
         }
-
-        // 處理檔案上傳
-        async function handleFiles(files) {
-            const loading = document.getElementById('loading');
-            
-            loading.style.display = 'block';
-
-            let loadedCount = 0;
-
-            try {
-                for (let file of files) {
-                    const text = await file.text();
-                    const data = JSON.parse(text);
-                    
-                    // 根據 JSON 內容的 market 欄位判斷市場
-                    const market = data.market || (file.name.includes('OTC') ? 'OTC' : 'TSE');
-                    
-                    if (market === 'TSE') {
-                        tseData = data;
-                        loadedCount++;
-                        console.log('✅ TSE 資料已載入');
-                    } else if (market === 'OTC') {
-                        otcData = data;
-                        loadedCount++;
-                        console.log('✅ OTC 資料已載入');
-                    }
-                }
-
-                updateLoadedFiles();
-
-                // 顯示當前市場的資料
-                const currentData = currentMarket === 'TSE' ? tseData : otcData;
-                
-                if (!currentData) {
-                    // 如果當前市場沒有資料,切換到有資料的市場
-                    if (currentMarket === 'TSE' && otcData) {
-                        switchMarket('OTC');
-                    } else if (currentMarket === 'OTC' && tseData) {
-                        switchMarket('TSE');
-                    } else {
-                        throw new Error('沒有有效的市場資料');
-                    }
-                } else {
-                    updateDisplay(currentData);
-                    showMessage(`✅ 成功載入 ${loadedCount} 個市場資料！`, 'success');
-                }
-
-            } catch (error) {
-                console.error('載入失敗:', error);
-                showMessage(`❌ 檔案載入失敗: ${error.message}`, 'error');
-                
-                const tbody = document.getElementById('tableBody');
-                tbody.innerHTML = '<tr><td colspan="11" style="padding: 30px; color: #999;">載入失敗,請檢查 JSON 格式</td></tr>';
-                document.getElementById('dataTable').style.display = 'table';
-            } finally {
-                loading.style.display = 'none';
-            }
-        }
-
-        // 檔案選擇器變更事件
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                handleFiles(e.target.files);
-            }
-        });
-
-        // 拖放功能
-        const dropZone = document.getElementById('dropZone');
-
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('dragover');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('dragover');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('dragover');
-            
-            if (e.dataTransfer.files.length > 0) {
-                handleFiles(e.dataTransfer.files);
-            }
-        });
 
         // 切換市場
         function switchMarket(market) {
@@ -744,17 +575,19 @@
 
         // 更新顯示
         function updateDisplay(data) {
-            // 更新統計
-            document.getElementById('updateTime').textContent = 
-                data.update_time ? data.update_time.split(' ')[1] : '--:--';
-            document.getElementById('newsCount').textContent = 
-                data.total_news || 0;
-            document.getElementById('stockCount').textContent = 
-                data.hot_stocks_count || 0;
-
             // 儲存當前股票資料
             currentStocks = data.stocks || [];
             
+            // 計算統計數據
+            const newsStocks = currentStocks.filter(stock => stock.mention_count > 0).length;
+            const buySellStocks = currentStocks.filter(stock => stock.mention_count === 0).length;
+            
+            // 更新統計
+            document.getElementById('updateTime').textContent = 
+                data.update_time ? data.update_time.split(' ')[1] : '--:--';
+            document.getElementById('newsCount').textContent = newsStocks;
+            document.getElementById('stockCount').textContent = buySellStocks;
+
             // 重置排序為預設
             currentSortField = 'default';
             currentSortOrder = 'desc';
@@ -864,8 +697,6 @@
                     console.log('✅ OTC 資料已載入');
                 }
                 
-                updateLoadedFiles();
-                
                 // 顯示當前市場的資料
                 const currentData = currentMarket === 'TSE' ? tseData : otcData;
                 
@@ -885,12 +716,11 @@
                 
             } catch (error) {
                 console.error('載入失敗:', error);
-                showMessage('⚠️ 自動載入失敗,請手動上傳 JSON 檔案', 'info');
+                showMessage('⚠️ 資料載入失敗', 'info');
                 
                 const tbody = document.getElementById('tableBody');
                 tbody.innerHTML = `<tr><td colspan="11" style="padding: 30px; color: #999;">
-                    請點擊上方區域上傳 JSON 檔案<br><br>
-                    或等待資料自動載入...
+                    資料載入失敗,請稍後重試
                 </td></tr>`;
                 document.getElementById('dataTable').style.display = 'table';
             } finally {
