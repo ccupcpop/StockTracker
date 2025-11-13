@@ -2,18 +2,12 @@ name: Taiwan Stock Analysis - Two Stage
 
 on:
   schedule:
-    # 階段1: 早上 7:00 (UTC+8 = UTC 23:00 前一天)
-    - cron: '0 23 * * 0-4,6'
-    # 階段1: 早上 8:00 (UTC+8 = UTC 0:00)
-    - cron: '0 0 * * 0-5'
-    # 階段2: 早上 9:00 (UTC+8 = UTC 1:00)
-    - cron: '0 1 * * 0-5'
-    # 階段2: 早上 10:00 (UTC+8 = UTC 2:00)
-    - cron: '0 2 * * 0-5'
-    # 階段2: 早上 11:00 (UTC+8 = UTC 3:00)
-    - cron: '0 3 * * 0-5'
-    # 階段2: 早上 12:00 (UTC+8 = UTC 4:00)
-    - cron: '0 4 * * 0-5'
+    # 階段1: 每小時執行一次 (UTC 時間)
+    - cron: '0 * * * *'
+    # 階段2: 周日到周五 9:00-12:00 (台灣時間 = UTC 1:00-4:00)
+    - cron: '0 1-4 * * 0-5'
+    # 特殊任務: 周日到周五 14:00 刪除新聞檔案 (台灣時間 = UTC 6:00)
+    - cron: '0 6 * * 0-5'
   
   # 允許手動觸發
   workflow_dispatch:
@@ -65,23 +59,41 @@ jobs:
       id: determine_stage
       run: |
         HOUR=$(TZ='Asia/Taipei' date '+%H')
-        echo "Current hour: $HOUR"
+        DAY_OF_WEEK=$(TZ='Asia/Taipei' date '+%u')  # 1=週一, 7=週日
+        echo "Current hour: $HOUR, Day of week: $DAY_OF_WEEK"
         
         # 手動觸發時使用指定的階段
         if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
           STAGE="${{ github.event.inputs.stage }}"
           echo "Manual trigger - Stage: $STAGE"
-        # 7-8點執行階段1
-        elif [ "$HOUR" = "07" ] || [ "$HOUR" = "08" ]; then
-          STAGE="1"
-          echo "Time-based trigger (7-8am) - Stage 1"
-        # 9-12點執行階段2
+        # 周日到周五 (0=週日, 1-5=週一到週五) 9-12點執行階段2
+        elif [ "$DAY_OF_WEEK" = "7" ] || [ "$DAY_OF_WEEK" -le "5" ]; then
+          if [ "$HOUR" -ge "09" ] && [ "$HOUR" -le "12" ]; then
+            STAGE="2"
+            echo "Time-based trigger (Sun-Fri 9-12am) - Stage 2"
+          else
+            STAGE="1"
+            echo "Time-based trigger (other hours) - Stage 1"
+          fi
         else
-          STAGE="2"
-          echo "Time-based trigger (9-12am) - Stage 2"
+          STAGE="1"
+          echo "Time-based trigger (Saturday) - Stage 1"
         fi
         
         echo "stage=$STAGE" >> $GITHUB_OUTPUT
+    
+    # 刪除新聞檔案 (周日到周五下午2點)
+    - name: Delete news file at 2 PM
+      run: |
+        HOUR=$(TZ='Asia/Taipei' date '+%H')
+        DAY_OF_WEEK=$(TZ='Asia/Taipei' date '+%u')
+        
+        if [ "$HOUR" = "14" ] && ([ "$DAY_OF_WEEK" = "7" ] || [ "$DAY_OF_WEEK" -le "5" ]); then
+          echo "Deleting twstock_news.json at 2 PM (Taiwan time)"
+          rm -f StockInfo/twstock_news.json
+        else
+          echo "Not time to delete news file (Current: $HOUR:00, Day: $DAY_OF_WEEK)"
+        fi
     
     - name: Run stock analysis
       env:

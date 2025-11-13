@@ -466,22 +466,17 @@ def stage1_news_collection():
     print("【階段 1: 新聞收集與分析】")
     print("=" * 80)
     
-    # 檢查是否為早上 7 點（當天第一次執行）
+    # 檢查是否為下午 2 點 - 刪除新聞檔案以重新收集
     current_hour = datetime.now(TW_TZ).hour
-    if current_hour == 7:
-        log_info("偵測到早上 7 點 - 刪除舊的新聞排行榜...")
+    if current_hour == 14:
+        log_info("偵測到下午 2 點 - 刪除舊的新聞檔案,準備重新收集...")
         
-        # 刪除 TSE 排行榜
-        if os.path.exists(TSE_NEWS_RANKING):
-            os.remove(TSE_NEWS_RANKING)
-            log_success("已刪除 TSE_news_ranking.txt")
+        # 刪除新聞 JSON 檔案
+        if os.path.exists(NEWS_JSON):
+            os.remove(NEWS_JSON)
+            log_success("已刪除 twstock_news.json")
         
-        # 刪除 OTC 排行榜
-        if os.path.exists(OTC_NEWS_RANKING):
-            os.remove(OTC_NEWS_RANKING)
-            log_success("已刪除 OTC_news_ranking.txt")
-        
-        log_info("開始新的一天的新聞統計")
+        log_info("開始重新收集新聞")
     
     # 爬取新聞
     log_info("開始爬取新聞...")
