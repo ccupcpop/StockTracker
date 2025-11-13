@@ -532,21 +532,32 @@ def stage2_price_collection():
     tse_news_ranking = load_existing_news_ranking(TSE_NEWS_RANKING) if PROCESS_MODE in ['TSE', 'BOTH'] else {}
     otc_news_ranking = load_existing_news_ranking(OTC_NEWS_RANKING) if PROCESS_MODE in ['OTC', 'BOTH'] else {}
     
-    # 合併買超和新聞排行（買超為主，補充新聞提及次數）
+    # 合併買超和新聞排行
     def merge_rankings(buy_ranking, news_ranking):
         """合併買超排行和新聞排行"""
         merged = {}
+        
         # 先加入買超排行的所有股票
         for code, data in buy_ranking.items():
             merged[code] = {
                 'name': data['name'],
                 'volume': data['volume'],
-                'mention_count': news_ranking.get(code, {}).get('count', 0)  # 加入新聞提及次數
+                'mention_count': news_ranking.get(code, {}).get('count', 0)
             }
+        
+        # 再加入只在新聞排行但不在買超排行的股票
+        for code, data in news_ranking.items():
+            if code not in merged:
+                merged[code] = {
+                    'name': data['name'],
+                    'volume': 0,  # 沒有買超數據
+                    'mention_count': data['count']
+                }
+        
         return merged
     
-    tse_merged = merge_rankings(tse_buy_ranking, tse_news_ranking) if tse_buy_ranking else {}
-    otc_merged = merge_rankings(otc_buy_ranking, otc_news_ranking) if otc_buy_ranking else {}
+    tse_merged = merge_rankings(tse_buy_ranking, tse_news_ranking) if (tse_buy_ranking or tse_news_ranking) else {}
+    otc_merged = merge_rankings(otc_buy_ranking, otc_news_ranking) if (otc_buy_ranking or otc_news_ranking) else {}
     
     log_info(f"TSE 合併後: {len(tse_merged)} 檔, OTC 合併後: {len(otc_merged)} 檔")
     
