@@ -86,7 +86,7 @@ jobs:
     - name: Run stock analysis
       env:
         STAGE: ${{ steps.determine_stage.outputs.stage }}
-        PROCESS_MODE: ${{ github.event.inputs.process_mode || 'BOTH' }}  # 手動觸發時可選擇，自動執行時預設 BOTH
+        PROCESS_MODE: ${{ github.event.inputs.process_mode || 'BOTH' }}
       run: python stock_analysis.py
     
     - name: Commit and push changes

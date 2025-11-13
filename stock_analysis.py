@@ -599,7 +599,8 @@ def main():
             # 只執行階段1
             stage1_news_collection()
         elif STAGE == '2':
-            # 執行階段2（階段2會使用階段1的結果）
+            # 執行階段1 + 階段2
+            stage1_news_collection()
             stage2_price_collection()
         else:
             log_error(f"未知的階段: {STAGE}")
