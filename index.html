@@ -411,15 +411,8 @@
             <h1>🔥 台股新聞熱門股票追蹤系統</h1>
             <div class="subtitle">新聞熱度 × 買超排行 × 即時股價</div>
 
-            <div class="file-drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-                <h3>📁 載入 JSON 資料檔</h3>
-                <p>點擊這裡選擇檔案,或拖放 TSE_hotstock_data.json 和 OTC_hotstock_data.json</p>
-                <div class="loaded-files" id="loadedFiles"></div>
-            </div>
-            <input type="file" id="fileInput" accept=".json" multiple>
-
             <div class="market-tabs">
-                <button class="market-tab active" onclick="switchMarket('TSE')" id="tabTSE">
+                <button class="market-tab active" onclick="switchMarket('TSE')\" id="tabTSE">
                     📈 上市 (TSE)
                 </button>
                 <button class="market-tab" onclick="switchMarket('OTC')" id="tabOTC">
@@ -439,12 +432,12 @@
                     <div class="value" id="updateTime">--:--</div>
                 </div>
                 <div class="stat-box">
-                    <div class="label">新聞則數</div>
-                    <div class="value" id="newsCount">0</div>
+                    <div class="label">新聞熱門股票數</div>
+                    <div class="value" id="newsStockCount">0</div>
                 </div>
                 <div class="stat-box">
-                    <div class="label">熱門股票</div>
-                    <div class="value" id="stockCount">0</div>
+                    <div class="label">買賣超熱門股票數</div>
+                    <div class="value" id="buyStockCount">0</div>
                 </div>
             </div>
         </div>
@@ -747,10 +740,14 @@
             // 更新統計
             document.getElementById('updateTime').textContent = 
                 data.update_time ? data.update_time.split(' ')[1] : '--:--';
-            document.getElementById('newsCount').textContent = 
-                data.total_news || 0;
-            document.getElementById('stockCount').textContent = 
-                data.hot_stocks_count || 0;
+            
+            // 計算新聞熱門股票數 (mention_count > 0)
+            const newsStockCount = (data.stocks || []).filter(s => s.mention_count > 0).length;
+            document.getElementById('newsStockCount').textContent = newsStockCount;
+            
+            // 計算買賣超熱門股票數 (yesterday_buy != 0)
+            const buyStockCount = (data.stocks || []).filter(s => s.yesterday_buy != 0).length;
+            document.getElementById('buyStockCount').textContent = buyStockCount;
 
             // 儲存當前股票資料
             currentStocks = data.stocks || [];
