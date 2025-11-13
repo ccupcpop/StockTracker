@@ -1,222 +1,170 @@
-# 📊 股票即時買賣盤監控系統
+# 台股新聞熱門股票追蹤系統
 
-自動化股票買賣盤數據抓取系統，使用 GitHub Actions 每小時自動執行，並透過 GitHub Pages 提供網頁查看介面。
+自動化追蹤台股新聞中提及的熱門股票,結合三大法人買超排行,提供即時股價與分析。
 
-## ✨ 功能特色
+## 功能特色
 
-- 🤖 **自動化抓取**: 使用 GitHub Actions 每小時自動抓取股票即時買賣盤數據
-- 📈 **雙市場支援**: 同時支援台灣證交所 (TSE) 和櫃買中心 (OTC)
-- 🧪 **測試模式**: 內建測試模式，可在非交易時間使用模擬數據測試系統
-- 💾 **數據儲存**: 所有歷史數據自動儲存在 `data/` 目錄
-- 🌐 **網頁查看**: 透過 GitHub Pages 提供美觀的數據查看介面
-- 📜 **歷史記錄**: 保留最近 100 筆歷史數據供查詢
-- 💾 **CSV 匯出**: 支援將數據匯出為 CSV 格式
+- 🔥 **新聞熱度追蹤**: 自動爬取台股新聞,統計股票被提及次數
+- 📊 **買超排行整合**: 結合三大法人買超數據
+- 💹 **即時股價**: 從 Yahoo 股市抓取最新股價資訊
+- 🤖 **自動化執行**: GitHub Actions 每天自動更新 4 次
+- 📱 **網頁介面**: 提供美觀的視覺化展示介面
 
-## 🚀 快速開始
-
-### 1. Fork 或複製此專案
-
-```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
-```
-
-### 2. 準備股票清單文件
-
-確保專案根目錄有以下兩個文件：
-
-- `TSE_buy_ranking.txt` - 上市買超股票清單
-- `OTC_buy_ranking.txt` - 上櫃買超股票清單
-
-文件格式範例：
-```
-# TSE - 2025-11-11
-1,2337,旺宏,80345
-2,6770,力積電,63108
-...
-```
-
-### 3. 啟用 GitHub Actions
-
-1. 進入專案的 **Settings** > **Actions** > **General**
-2. 在 **Workflow permissions** 中選擇 **Read and write permissions**
-3. 儲存設定
-
-### 4. 啟用 GitHub Pages
-
-1. 進入專案的 **Settings** > **Pages**
-2. 在 **Source** 中選擇 **Deploy from a branch**
-3. 選擇 **main** 分支和 **/docs** 目錄
-4. 點擊 **Save**
-
-### 5. 手動觸發第一次執行
-
-1. 進入 **Actions** 標籤
-2. 選擇 **股票數據抓取** workflow
-3. 點擊 **Run workflow** 按鈕
-4. 等待執行完成
-
-### 6. 查看網頁
-
-執行完成後，可透過以下網址查看：
-```
-https://YOUR_USERNAME.github.io/YOUR_REPO/
-```
-
-## 📁 專案結構
+## 系統架構
 
 ```
-.
+├── stock_analysis.py          # 主程式
+├── index.html                 # 網頁介面
+├── requirements.txt           # Python 套件清單
 ├── .github/
 │   └── workflows/
-│       └── fetch_data.yml          # GitHub Actions 配置
-├── data/                            # 數據儲存目錄
-│   ├── latest.json                  # 最新數據
-│   ├── data_list.json               # 數據列表索引
-│   └── stock_data_YYYYMMDD_HHMMSS.json  # 歷史數據
-├── docs/
-│   └── index.html                   # 網頁查看介面
-├── fetch_stock_data.py              # 數據抓取腳本
-├── TSE_buy_ranking.txt              # 上市買超清單
-├── OTC_buy_ranking.txt              # 上櫃買超清單
-└── README.md                        # 說明文件
+│       └── stock_analysis.yml # GitHub Actions 設定
+└── StockInfo/                 # 資料儲存目錄
+    ├── TSE_hotstock_data.json # 上市股票資料
+    ├── OTC_hotstock_data.json # 上櫃股票資料
+    ├── twstock_news.json      # 新聞資料
+    ├── TSE_buy_ranking.txt    # 上市買超排行
+    ├── OTC_buy_ranking.txt    # 上櫃買超排行
+    ├── tse_company_list.csv   # 上市公司清單
+    └── otc_company_list.csv   # 上櫃公司清單
 ```
 
-## ⚙️ 配置說明
+## 快速開始
 
-### 修改執行頻率
+### 1. 準備資料檔案
 
-編輯 `.github/workflows/fetch_data.yml` 文件：
+在 `StockInfo/` 資料夾中放置以下檔案:
 
-```yaml
-on:
-  schedule:
-    - cron: '0 * * * *'  # 每小時執行一次
+- `tse_company_list.csv`: 上市公司清單 (格式: 代碼,名稱,產業)
+- `otc_company_list.csv`: 上櫃公司清單 (格式: 代碼,名稱,產業)
+- `TSE_buy_ranking.txt`: 上市買超排行 (格式: #,代碼,名稱,買超張數)
+- `OTC_buy_ranking.txt`: 上櫃買超排行 (格式: #,代碼,名稱,買超張數)
+
+### 2. 啟用 GitHub Pages
+
+1. 前往 Repository Settings
+2. 找到 Pages 設定
+3. Source 選擇 `Deploy from a branch`
+4. Branch 選擇 `main` / `(root)`
+5. Save
+
+### 3. 設定 GitHub Actions
+
+GitHub Actions 已自動設定,會在以下時間執行:
+- 每天早上 9:00
+- 每天早上 10:00
+- 每天早上 11:00
+- 每天早上 12:00
+- **週六休息**
+
+### 4. 手動執行
+
+也可以手動觸發執行:
+1. 前往 Actions 頁籤
+2. 選擇 "Taiwan Stock Analysis"
+3. 點擊 "Run workflow"
+
+## 本地測試
+
+```bash
+# 安裝相依套件
+pip install -r requirements.txt
+
+# 執行分析
+python stock_analysis.py
+
+# 使用本地伺服器測試網頁
+python -m http.server 8000
+# 然後開啟瀏覽器訪問 http://localhost:8000
 ```
 
-常用 cron 表達式範例：
-- `0 * * * *` - 每小時執行
-- `*/30 * * * *` - 每 30 分鐘執行
-- `0 */2 * * *` - 每 2 小時執行
-- `0 9-17 * * 1-5` - 週一到週五，每天 9:00-17:00 每小時執行
+## 環境變數
 
-### 調整數據保留數量
+可以透過環境變數設定執行模式:
 
-編輯 `fetch_stock_data.py` 中的 `update_data_list` 函數：
+```bash
+# 只處理上市 (TSE)
+export PROCESS_MODE=TSE
 
-```python
-# 只保留最近 100 筆記錄
-data_list = data_list[-100:]
+# 只處理上櫃 (OTC)
+export PROCESS_MODE=OTC
+
+# 同時處理上市與上櫃 (預設)
+export PROCESS_MODE=BOTH
 ```
 
-## 📊 數據格式
+## 資料格式說明
 
-### latest.json 結構
+### 公司清單 CSV 格式
+```csv
+1101,台泥,水泥工業
+2330,台積電,半導體業
+```
 
+### 買超排行 TXT 格式
+```
+#,代碼,名稱,買超張數
+1,2330,台積電,12345
+2,2454,聯發科,6789
+```
+
+### 輸出 JSON 格式
 ```json
 {
-  "timestamp": "20251112_143000",
-  "date": "2025-11-12",
-  "time": "14:30:00",
-  "tse": [
+  "update_time": "2025-01-15 10:30:00",
+  "market": "TSE",
+  "total_news": 150,
+  "hot_stocks_count": 20,
+  "stocks": [
     {
-      "code": "2337",
-      "name": "旺宏",
-      "yesterday_buy": 80345,
-      "currentPrice": "45.5",
-      "buyTotal": 12500,
-      "sellTotal": 8300,
-      "diff": 4200,
-      "time": "14:30:00",
-      "success": true
+      "code": "2330",
+      "name": "台積電",
+      "market": "TSE",
+      "mention_count": 15,
+      "yesterday_buy": 12345,
+      "current_price": "580.00",
+      "open_price": "575.00",
+      "change": "+5.00",
+      "change_percent": "+0.87%",
+      "buy_volume": "8500",
+      "sell_volume": "6200",
+      "update_time": "2025-01-15 10:30:00"
     }
-  ],
-  "otc": [...]
+  ]
 }
 ```
 
-## 🔧 本地測試
+## 注意事項
 
-### 測試模式（推薦用於開發）
+⚠️ **重要提醒**:
 
-腳本內建測試模式，可在非交易時間使用模擬數據：
+1. **資料更新時間**: 台股交易時間為週一至週五 09:00-13:30,系統設定在 9:00-12:00 每小時執行一次
+2. **週六休市**: GitHub Actions 設定週六不執行 (cron 設定 0-5 代表週日到週五)
+3. **爬蟲限制**: Yahoo 股市有反爬蟲機制,請適當設定延遲時間 (目前為 1.5 秒)
+4. **GitHub Actions 限制**: 免費帳號每月有 2000 分鐘的執行時間限制
+5. **檔案大小**: JSON 檔案建議控制在 100KB 以內以確保載入速度
 
-```bash
-# 編輯 fetch_stock_data.py，設定 TEST_MODE = True
-# 第 14-16 行
+## 技術棧
 
-# 安裝依賴
-pip install requests urllib3
+- **後端**: Python 3.10
+- **爬蟲**: requests, BeautifulSoup4
+- **資料處理**: pandas
+- **自動化**: GitHub Actions
+- **前端**: HTML, CSS, JavaScript
+- **部署**: GitHub Pages
 
-# 執行腳本（使用模擬數據）
-python fetch_stock_data.py
-```
-
-**測試模式特點**：
-- ✅ 快速執行，無需網路連線
-- ✅ 生成合理的模擬數據
-- ✅ 適合功能開發和驗證
-- ✅ 可在任何時間執行
-
-詳細說明請參考 [TEST_MODE_GUIDE.md](TEST_MODE_GUIDE.md)
-
-### 正式模式
-
-```bash
-# 編輯 fetch_stock_data.py，設定 TEST_MODE = False
-
-# 安裝依賴
-pip install requests urllib3
-
-# 執行抓取腳本（抓取真實數據）
-python fetch_stock_data.py
-```
-
-### 本地查看網頁
-
-```bash
-cd docs
-python -m http.server 8000
-```
-
-然後開啟瀏覽器訪問 `http://localhost:8000`
-
-## 📝 注意事項
-
-1. **請求頻率**: 台灣證交所 API 有請求頻率限制，腳本已加入隨機延遲機制
-2. **交易時間**: 建議在台股交易時間內執行才能獲取有效數據 (週一至週五 9:00-13:30)
-3. **測試模式**: 開發測試時可啟用 TEST_MODE，部署前記得改為 False
-4. **數據準確性**: 即時數據可能有延遲，僅供參考
-5. **GitHub Actions 限制**: 免費帳號每月有 2000 分鐘的執行時間限制
-
-## 🐛 疑難排解
-
-### Actions 執行失敗
-
-1. 檢查是否已啟用 **Read and write permissions**
-2. 確認 `TSE_buy_ranking.txt` 和 `OTC_buy_ranking.txt` 文件存在
-3. 查看 Actions 日誌中的錯誤訊息
-
-### 網頁無法顯示
-
-1. 確認 GitHub Pages 已正確設定
-2. 等待幾分鐘讓 Pages 部署完成
-3. 清除瀏覽器快取後重新載入
-
-### 數據抓取失敗
-
-1. 可能是證交所 API 暫時無法訪問
-2. 股票代號可能不正確
-3. 可能遇到請求頻率限制
-
-## 📄 授權
+## License
 
 MIT License
 
-## 🤝 貢獻
+## 作者
 
-歡迎提交 Issue 和 Pull Request！
+Frank - 台股分析愛好者
 
-## ⚠️ 免責聲明
+## 更新日誌
 
-本系統僅供學習和研究使用，數據來源為台灣證交所公開資料。投資有風險，請謹慎決策。
+### 2025-01-15
+- ✅ 從 Google Colab 遷移到 GitHub Actions
+- ✅ 新增自動化排程執行
+- ✅ 網頁介面支援自動載入 JSON
+- ✅ 優化資料儲存結構
