@@ -652,7 +652,7 @@
 
     <div class="container">
         <div class="header">
-            <div class="version">v1.0.51114.2</div>
+            <div class="version">v1.0.51114.3</div>
             <h1>📈 台股新聞熱門股票追蹤系統</h1>
             <div class="subtitle">即時追蹤新聞熱度與三大法人買賣超資料</div>
 
@@ -1072,7 +1072,6 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             console.log('📱 台股追蹤系統 - 響應式版本');
-            document.getElementById('dataTable').style.display = 'table';
             
             const sortField = document.getElementById('sortField');
             if (sortField) {
@@ -1082,6 +1081,7 @@
                 });
             }
             
+            // autoLoadData 會根據 localStorage 自動決定顯示什麼
             autoLoadData();
         });
     </script>
@@ -1132,23 +1132,16 @@
             // 更新統計卡片為新聞相關資訊
             document.getElementById('currentMarket').textContent = '新聞';
             
-            // 從所有新聞中找最新的 scraped_time
+            // 從所有新聞中找最新的 scraped_time - 直接排序取最大值
             let updateTimeText = '--:--';
             if (newsData && newsData.length > 0) {
-                // 找出最新的抓取時間 (使用 Date 物件比較)
-                let latestTime = new Date(newsData[0].scraped_time);
-                let latestTimeStr = newsData[0].scraped_time;
-                
-                for (let i = 1; i < newsData.length; i++) {
-                    const currentTime = new Date(newsData[i].scraped_time);
-                    if (currentTime > latestTime) {
-                        latestTime = currentTime;
-                        latestTimeStr = newsData[i].scraped_time;
-                    }
+                const allTimes = newsData.map(news => news.scraped_time).filter(t => t);
+                allTimes.sort();
+                const latestTimeStr = allTimes[allTimes.length - 1];
+                if (latestTimeStr) {
+                    updateTimeText = latestTimeStr.split(' ')[1];
+                    console.log('最新新聞時間:', latestTimeStr, '-> 顯示:', updateTimeText);
                 }
-                
-                updateTimeText = latestTimeStr.split(' ')[1];
-                console.log('最新新聞時間:', latestTimeStr);
             }
             document.getElementById('updateTime').textContent = updateTimeText;
             
