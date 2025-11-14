@@ -1088,14 +1088,7 @@
     </script>
 
     <script>
-        let tseData = null;
-        let otcData = null;
-        let newsData = null;
-        let currentMarket = localStorage.getItem('currentMarket') || 'TSE';
-        let currentStocks = [];
-        let currentSortField = 'default';
-        let currentSortOrder = 'desc';
-        let isShowingNews = false;
+        // 變數已在前面的 script 區塊宣告
 
         async function showNews() {
             const loading = document.getElementById('loading');
