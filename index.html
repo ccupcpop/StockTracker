@@ -652,7 +652,7 @@
 
     <div class="container">
         <div class="header">
-            <div class="version">v1.0.51114.3</div>
+            <div class="version">V1.0.51114.4</div>
             <h1>📈 台股新聞熱門股票追蹤系統</h1>
             <div class="subtitle">即時追蹤新聞熱度與三大法人買賣超資料</div>
 
@@ -669,10 +669,6 @@
             </div>
 
             <div class="stats">
-                <div class="stat-box">
-                    <div class="label">當前市場</div>
-                    <div class="value" id="currentMarket">TSE</div>
-                </div>
                 <div class="stat-box">
                     <div class="label">更新時間</div>
                     <div class="value" id="updateTime">--:--</div>
@@ -923,8 +919,6 @@
             document.getElementById('tabTSE').classList.toggle('active', market === 'TSE');
             document.getElementById('tabOTC').classList.toggle('active', market === 'OTC');
             
-            document.getElementById('currentMarket').textContent = market;
-            
             const data = market === 'TSE' ? tseData : otcData;
             if (data) {
                 updateDisplay(data);
@@ -938,7 +932,7 @@
             const buySellStocks = currentStocks.filter(stock => stock.mention_count === 0).length;
             
             document.getElementById('updateTime').textContent = 
-                data.update_time ? data.update_time.split(' ')[1] : '--:--';
+                data.update_time ? (data.update_time.includes(' ') ? data.update_time.split(' ')[1] : data.update_time) : '--:--:--';
             document.getElementById('newsCount').textContent = newsStocks;
             document.getElementById('stockCount').textContent = buySellStocks;
 
@@ -1129,11 +1123,8 @@
             const sortControls = document.querySelector('.sort-controls');
             if (sortControls) sortControls.style.display = 'none';
             
-            // 更新統計卡片為新聞相關資訊
-            document.getElementById('currentMarket').textContent = '新聞';
-            
             // 從所有新聞中找最新的 scraped_time - 直接排序取最大值
-            let updateTimeText = '--:--';
+            let updateTimeText = '--:--:--';
             if (newsData && newsData.length > 0) {
                 const allTimes = newsData.map(news => news.scraped_time).filter(t => t);
                 allTimes.sort();
@@ -1191,12 +1182,11 @@
             document.getElementById('sectionTitle').textContent = '熱門股票排行';
             
             // 恢復統計卡片為當前市場資料
-            document.getElementById('currentMarket').textContent = currentMarket;
             const data = currentMarket === 'TSE' ? tseData : otcData;
             if (data) {
                 const newsStocks = data.stocks.filter(stock => stock.mention_count > 0).length;
                 const buySellStocks = data.stocks.filter(stock => stock.mention_count === 0).length;
-                document.getElementById('updateTime').textContent = data.update_time ? data.update_time.split(' ')[1] : '--:--';
+                document.getElementById('updateTime').textContent = data.update_time ? (data.update_time.includes(' ') ? data.update_time.split(' ')[1] : data.update_time) : '--:--:--';
                 document.getElementById('newsCount').textContent = newsStocks;
                 document.getElementById('stockCount').textContent = buySellStocks;
             }
@@ -1309,8 +1299,6 @@
                 document.getElementById('tabOTC').classList.add('active');
             }
             
-            document.getElementById('currentMarket').textContent = market;
-            
             const data = market === 'TSE' ? tseData : otcData;
             if (data) {
                 updateDisplay(data);
@@ -1324,7 +1312,7 @@
             const buySellStocks = currentStocks.filter(stock => stock.mention_count === 0).length;
             
             document.getElementById('updateTime').textContent = 
-                data.update_time ? data.update_time.split(' ')[1] : '--:--';
+                data.update_time ? (data.update_time.includes(' ') ? data.update_time.split(' ')[1] : data.update_time) : '--:--:--';
             document.getElementById('newsCount').textContent = newsStocks;
             document.getElementById('stockCount').textContent = buySellStocks;
 
