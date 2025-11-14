@@ -106,4 +106,4 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git add StockInfo/
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock data - Stage ${{ steps.determine_stage.outputs.stage }} - $(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')" && git push)
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock data - Stage ${{ steps.determine_stage.outputs.stage }} - $(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')" && git pull --rebase origin main && git push)
