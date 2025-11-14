@@ -117,8 +117,8 @@
         }
 
         .news-btn {
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-            color: white;
+            background: #f0f0f0;
+            color: #666;
             border: none;
             padding: 12px 35px;
             border-radius: 25px;
@@ -126,16 +126,16 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
         }
 
-        .news-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.6);
+        .news-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .news-btn:active {
-            transform: translateY(0);
+        .news-btn:hover:not(.active) {
+            background: #e0e0e0;
         }
 
         .stats {
@@ -184,21 +184,22 @@
 
         .sort-controls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
-            font-size: 0.6em;
+            font-size: 0.55em;
         }
 
         .sort-label {
             color: #666;
             font-weight: normal;
+            font-size: 0.95em;
         }
 
         .sort-select {
-            padding: 8px 12px;
+            padding: 6px 10px;
             border: 2px solid #667eea;
-            border-radius: 8px;
-            font-size: 1em;
+            border-radius: 6px;
+            font-size: 0.95em;
             color: #667eea;
             background: white;
             cursor: pointer;
@@ -214,15 +215,15 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 1em;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.95em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .sort-btn:hover {
@@ -419,7 +420,7 @@
                     <button class="market-tab" id="tabOTC" onclick="switchMarket('OTC')">
                         📊 上櫃 (OTC)
                     </button>
-                    <button class="news-btn" onclick="showNews()">
+                    <button class="news-btn" id="newsBtn" onclick="showNews()">
                         📰 熱門新聞
                     </button>
                 </div>
@@ -535,12 +536,21 @@
             
             isShowingNews = true;
             
+            // 更新按鈕樣式 - 三選一效果
+            document.getElementById('tabTSE').classList.remove('active');
+            document.getElementById('tabOTC').classList.remove('active');
+            document.getElementById('newsBtn').classList.add('active');
+            
             // 隱藏股票表格,顯示新聞列表
             document.getElementById('dataTable').style.display = 'none';
             document.getElementById('newsList').classList.add('active');
             
-            // 更新標題
-            document.getElementById('sectionTitle').textContent = '📰 熱門新聞';
+            // 隱藏排序控制項
+            const sortControls = document.querySelector('.sort-controls');
+            if (sortControls) sortControls.style.display = 'none';
+            
+            // 更新標題,顯示新聞數量
+            document.getElementById('sectionTitle').innerHTML = `📰 熱門新聞 <span style="font-size: 0.7em; color: #27ae60; margin-left: 15px;">✅ 已載入 ${newsData.length} 則新聞</span>`;
             
             // 產生新聞內容
             const newsContent = document.getElementById('newsContent');
@@ -567,17 +577,22 @@
                 
                 newsContent.appendChild(newsItem);
             });
-            
-            showMessage(`✅ 已載入 ${newsData.length} 則新聞`, 'success');
         }
 
         // 切換回股票列表
         function showStocks() {
             isShowingNews = false;
             
+            // 移除新聞按鈕的 active 樣式
+            document.getElementById('newsBtn').classList.remove('active');
+            
             // 顯示股票表格,隱藏新聞列表
             document.getElementById('dataTable').style.display = 'table';
             document.getElementById('newsList').classList.remove('active');
+            
+            // 顯示排序控制項
+            const sortControls = document.querySelector('.sort-controls');
+            if (sortControls) sortControls.style.display = 'flex';
             
             // 更新標題
             document.getElementById('sectionTitle').textContent = '🔥 熱門股票排行';
