@@ -1133,18 +1133,22 @@
             const sortControls = document.querySelector('.sort-controls');
             if (sortControls) sortControls.style.display = 'none';
             
-            // 從所有新聞中找最新的 scraped_time
+            // 從所有新聞中找最新的 scraped_time - 使用排序方式
             let updateTimeText = '--:--:--';
             if (newsData && newsData.length > 0) {
-                const latestNews = newsData.reduce((latest, current) => {
-                    if (!current.scraped_time) return latest;
-                    if (!latest.scraped_time) return current;
-                    return current.scraped_time > latest.scraped_time ? current : latest;
-                }, newsData[0]);
+                // 取得所有有效的時間並排序
+                const allTimes = newsData
+                    .map(news => news.scraped_time)
+                    .filter(time => time && time.length > 0)
+                    .sort()
+                    .reverse(); // 降序排列，最新的在前面
                 
-                if (latestNews.scraped_time) {
-                    updateTimeText = latestNews.scraped_time.split(' ')[1];
-                    console.log('所有新聞最新時間:', latestNews.scraped_time, '-> 顯示:', updateTimeText);
+                console.log('📊 所有新聞時間（前5筆）:', allTimes.slice(0, 5));
+                
+                if (allTimes.length > 0) {
+                    const latestTimeStr = allTimes[0]; // 取第一個（最新的）
+                    updateTimeText = latestTimeStr.split(' ')[1];
+                    console.log('✅ 最新時間:', latestTimeStr, '-> 顯示:', updateTimeText);
                 }
             }
             document.getElementById('updateTime').textContent = updateTimeText;
