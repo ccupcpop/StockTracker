@@ -652,7 +652,7 @@
 
     <div class="container">
         <div class="header">
-            <div class="version">v1.0.51114.1</div>
+            <div class="version">v1.0.51114.2</div>
             <h1>📈 台股新聞熱門股票追蹤系統</h1>
             <div class="subtitle">即時追蹤新聞熱度與三大法人買賣超資料</div>
 
@@ -1098,24 +1098,22 @@
 
         async function showNews() {
             const loading = document.getElementById('loading');
+            loading.style.display = 'block';
             
-            if (!newsData) {
-                loading.style.display = 'block';
-                
-                try {
-                    const response = await fetch('./StockInfo/twstock_news.json');
-                    if (!response.ok) {
-                        throw new Error('新聞資料載入失敗');
-                    }
-                    newsData = await response.json();
-                    console.log('✅ 新聞資料已載入');
-                } catch (error) {
-                    console.error('載入新聞失敗:', error);
-                    loading.style.display = 'none';
-                    return;
-                } finally {
-                    loading.style.display = 'none';
+            // 強制重新載入新聞資料以獲取最新更新
+            try {
+                const response = await fetch('./StockInfo/twstock_news.json?t=' + Date.now());
+                if (!response.ok) {
+                    throw new Error('新聞資料載入失敗');
                 }
+                newsData = await response.json();
+                console.log('✅ 新聞資料已載入');
+            } catch (error) {
+                console.error('載入新聞失敗:', error);
+                loading.style.display = 'none';
+                return;
+            } finally {
+                loading.style.display = 'none';
             }
             
             isShowingNews = true;
@@ -1137,11 +1135,20 @@
             // 從所有新聞中找最新的 scraped_time
             let updateTimeText = '--:--';
             if (newsData && newsData.length > 0) {
-                // 找出最新的抓取時間
-                const latestScrapedTime = newsData.reduce((latest, news) => {
-                    return news.scraped_time > latest ? news.scraped_time : latest;
-                }, newsData[0].scraped_time);
-                updateTimeText = latestScrapedTime.split(' ')[1];
+                // 找出最新的抓取時間 (使用 Date 物件比較)
+                let latestTime = new Date(newsData[0].scraped_time);
+                let latestTimeStr = newsData[0].scraped_time;
+                
+                for (let i = 1; i < newsData.length; i++) {
+                    const currentTime = new Date(newsData[i].scraped_time);
+                    if (currentTime > latestTime) {
+                        latestTime = currentTime;
+                        latestTimeStr = newsData[i].scraped_time;
+                    }
+                }
+                
+                updateTimeText = latestTimeStr.split(' ')[1];
+                console.log('最新新聞時間:', latestTimeStr);
             }
             document.getElementById('updateTime').textContent = updateTimeText;
             
@@ -1430,7 +1437,7 @@
                 // 檢查上次的視圖狀態
                 const savedView = localStorage.getItem('currentView');
                 if (savedView === 'news') {
-                    // 恢復到新聞頁面
+                    // 恢復到新聞頁面 - 這會自動載入 newsData
                     await showNews();
                 } else {
                     // 恢復到股票頁面
@@ -1455,6 +1462,9 @@
                         } else {
                             document.getElementById('tabOTC').classList.add('active');
                         }
+                        
+                        document.getElementById('dataTable').style.display = 'table';
+                        document.getElementById('newsList').classList.remove('active');
                         
                         updateDisplay(currentData);
                     }
