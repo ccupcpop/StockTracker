@@ -1146,8 +1146,8 @@
             
             document.getElementById('updateTime').textContent = updateTimeText;
             
-            // 只顯示熱門新聞（有 stocks 欄位的）
-            const hotNews = newsData.filter(news => news.stocks && news.stocks.length > 0);
+            // 顯示所有新聞（不篩選 stocks）
+            const hotNews = newsData;
             
             document.getElementById('newsCount').textContent = hotNews.length;
             document.getElementById('stockCount').textContent = '-';
