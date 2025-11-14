@@ -652,7 +652,7 @@
 
     <div class="container">
         <div class="header">
-            <div class="version">v1.0.51114</div>
+            <div class="version">v1.0.51114.1</div>
             <h1>📈 台股新聞熱門股票追蹤系統</h1>
             <div class="subtitle">即時追蹤新聞熱度與三大法人買賣超資料</div>
 
@@ -1108,22 +1108,6 @@
                         throw new Error('新聞資料載入失敗');
                     }
                     newsData = await response.json();
-                    
-                    // 取得檔案最後修改時間
-                    const lastModified = response.headers.get('Last-Modified');
-                    if (lastModified) {
-                        const modDate = new Date(lastModified);
-                        newsData._fileLastModified = modDate.toLocaleString('zh-TW', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit',
-                            hour12: false
-                        });
-                    }
-                    
                     console.log('✅ 新聞資料已載入');
                 } catch (error) {
                     console.error('載入新聞失敗:', error);
@@ -1150,13 +1134,14 @@
             // 更新統計卡片為新聞相關資訊
             document.getElementById('currentMarket').textContent = '新聞';
             
-            // 顯示檔案修改時間或最新新聞抓取時間
+            // 從所有新聞中找最新的 scraped_time
             let updateTimeText = '--:--';
-            if (newsData._fileLastModified) {
-                updateTimeText = newsData._fileLastModified.split(' ')[1];
-            } else if (newsData && newsData.length > 0) {
-                const latestNews = newsData[0];
-                updateTimeText = latestNews.scraped_time.split(' ')[1];
+            if (newsData && newsData.length > 0) {
+                // 找出最新的抓取時間
+                const latestScrapedTime = newsData.reduce((latest, news) => {
+                    return news.scraped_time > latest ? news.scraped_time : latest;
+                }, newsData[0].scraped_time);
+                updateTimeText = latestScrapedTime.split(' ')[1];
             }
             document.getElementById('updateTime').textContent = updateTimeText;
             
@@ -1312,9 +1297,17 @@
             
             currentMarket = market;
             localStorage.setItem('currentMarket', market);
+            localStorage.removeItem('currentView'); // 切換市場時清除新聞狀態
             
-            document.getElementById('tabTSE').classList.toggle('active', market === 'TSE');
-            document.getElementById('tabOTC').classList.toggle('active', market === 'OTC');
+            document.getElementById('tabTSE').classList.remove('active');
+            document.getElementById('tabOTC').classList.remove('active');
+            document.getElementById('newsBtn').classList.remove('active');
+            
+            if (market === 'TSE') {
+                document.getElementById('tabTSE').classList.add('active');
+            } else {
+                document.getElementById('tabOTC').classList.add('active');
+            }
             
             document.getElementById('currentMarket').textContent = market;
             
@@ -1437,8 +1430,10 @@
                 // 檢查上次的視圖狀態
                 const savedView = localStorage.getItem('currentView');
                 if (savedView === 'news') {
+                    // 恢復到新聞頁面
                     await showNews();
                 } else {
+                    // 恢復到股票頁面
                     const currentData = currentMarket === 'TSE' ? tseData : otcData;
                     
                     if (!currentData) {
@@ -1450,9 +1445,17 @@
                             throw new Error('無法載入市場資料');
                         }
                     } else {
-                        // 恢復上次選擇的市場
-                        document.getElementById('tabTSE').classList.toggle('active', currentMarket === 'TSE');
-                        document.getElementById('tabOTC').classList.toggle('active', currentMarket === 'OTC');
+                        // 恢復上次選擇的市場,確保按鈕狀態正確
+                        document.getElementById('tabTSE').classList.remove('active');
+                        document.getElementById('tabOTC').classList.remove('active');
+                        document.getElementById('newsBtn').classList.remove('active');
+                        
+                        if (currentMarket === 'TSE') {
+                            document.getElementById('tabTSE').classList.add('active');
+                        } else {
+                            document.getElementById('tabOTC').classList.add('active');
+                        }
+                        
                         updateDisplay(currentData);
                     }
                 }
