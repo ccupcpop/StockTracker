@@ -1108,7 +1108,10 @@
                     throw new Error('新聞資料載入失敗');
                 }
                 newsData = await response.json();
-                console.log('✅ 新聞資料已載入');
+                console.log('✅ 新聞資料已載入，共', newsData.length, '則');
+                
+                // Debug: 顯示所有新聞的 scraped_time
+                console.log('所有新聞時間:', newsData.map(n => n.scraped_time).filter(t => t).sort());
             } catch (error) {
                 console.error('載入新聞失敗:', error);
                 loading.style.display = 'none';
