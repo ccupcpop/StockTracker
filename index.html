@@ -652,7 +652,7 @@
 
     <div class="container">
         <div class="header">
-            <div class="version">V1.0.51114.6</div>
+            <div class="version">V1.0.51114.7</div>
             <h1>📈 台股新聞熱門股票追蹤系統</h1>
             <div class="subtitle">即時追蹤新聞熱度與三大法人買賣超資料</div>
 
@@ -1130,33 +1130,39 @@
             const sortControls = document.querySelector('.sort-controls');
             if (sortControls) sortControls.style.display = 'none';
             
-            // 從所有新聞中找最新的 scraped_time - 直接排序取最大值
+            // 從所有新聞中找最新的 scraped_time
             let updateTimeText = '--:--:--';
             if (newsData && newsData.length > 0) {
-                const allTimes = newsData.map(news => news.scraped_time).filter(t => t);
-                allTimes.sort();
-                const latestTimeStr = allTimes[allTimes.length - 1];
-                if (latestTimeStr) {
-                    updateTimeText = latestTimeStr.split(' ')[1];
-                    console.log('最新新聞時間:', latestTimeStr, '-> 顯示:', updateTimeText);
+                const latestNews = newsData.reduce((latest, current) => {
+                    if (!current.scraped_time) return latest;
+                    if (!latest.scraped_time) return current;
+                    return current.scraped_time > latest.scraped_time ? current : latest;
+                }, newsData[0]);
+                
+                if (latestNews.scraped_time) {
+                    updateTimeText = latestNews.scraped_time.split(' ')[1];
+                    console.log('所有新聞最新時間:', latestNews.scraped_time, '-> 顯示:', updateTimeText);
                 }
             }
             document.getElementById('updateTime').textContent = updateTimeText;
             
-            document.getElementById('newsCount').textContent = newsData.length;
+            // 只顯示熱門新聞（有 stocks 欄位的）
+            const hotNews = newsData.filter(news => news.stocks && news.stocks.length > 0);
+            
+            document.getElementById('newsCount').textContent = hotNews.length;
             document.getElementById('stockCount').textContent = '-';
             
-            document.getElementById('sectionTitle').innerHTML = `熱門新聞 <span style="font-size: 0.65em; color: #27ae60; margin-left: 10px; font-weight: 500;">✓ ${newsData.length} 則</span>`;
+            document.getElementById('sectionTitle').innerHTML = `熱門新聞 <span style="font-size: 0.65em; color: #27ae60; margin-left: 10px; font-weight: 500;">✓ ${hotNews.length} 則</span>`;
             
             const newsContent = document.getElementById('newsContent');
             newsContent.innerHTML = '';
             
-            if (!newsData || newsData.length === 0) {
-                newsContent.innerHTML = '<div style="padding: 40px; text-align: center; color: #95a5a6;">目前沒有新聞資料</div>';
+            if (hotNews.length === 0) {
+                newsContent.innerHTML = '<div style="padding: 40px; text-align: center; color: #95a5a6;">目前沒有熱門新聞資料</div>';
                 return;
             }
             
-            newsData.forEach((news, index) => {
+            hotNews.forEach((news, index) => {
                 const newsItem = document.createElement('div');
                 newsItem.className = 'news-item';
                 
