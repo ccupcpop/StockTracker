@@ -116,6 +116,28 @@
             box-shadow: none;
         }
 
+        .news-btn {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .news-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.6);
+        }
+
+        .news-btn:active {
+            transform: translateY(0);
+        }
+
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -237,46 +259,16 @@
 
         tbody tr:hover {
             background-color: #f8f9fa;
-            transform: scale(1.01);
-            transition: all 0.2s;
-            cursor: pointer;
         }
-
-        .rank {
-            font-weight: bold;
-            color: #667eea;
-            font-size: 1.1em;
-        }
-
-        .rank-1 { color: #FFD700; font-size: 1.3em; }
-        .rank-2 { color: #C0C0C0; font-size: 1.2em; }
-        .rank-3 { color: #CD7F32; font-size: 1.15em; }
 
         .stock-code {
             font-weight: 600;
-            color: #2c3e50;
+            color: #667eea;
         }
 
         .stock-name {
-            color: #34495e;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.8em;
-            margin-left: 5px;
-        }
-
-        .badge-hot {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .badge-warm {
-            background: #f39c12;
-            color: white;
+            font-weight: 500;
+            color: #333;
         }
 
         .price-up {
@@ -291,84 +283,147 @@
 
         .price-neutral {
             color: #95a5a6;
+        }
+
+        .rank {
             font-weight: 600;
+            color: #95a5a6;
         }
 
-        .loading {
-            text-align: center;
-            padding: 50px;
+        .rank-1 {
+            font-weight: 700;
+            color: #f39c12;
             font-size: 1.2em;
-            color: #666;
         }
 
-        .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
+        .rank-2 {
+            font-weight: 700;
+            color: #95a5a6;
+            font-size: 1.15em;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .rank-3 {
+            font-weight: 700;
+            color: #cd7f32;
+            font-size: 1.1em;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-left: 5px;
+        }
+
+        .badge-hot {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+        }
+
+        .badge-warm {
+            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+            color: white;
         }
 
         .message {
-            padding: 12px 20px;
-            margin: 10px 0;
+            padding: 15px;
             border-radius: 8px;
-            font-weight: 500;
+            margin-bottom: 15px;
             text-align: center;
+            font-weight: 600;
         }
 
         .message.success {
             background: #d4edda;
             color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
         }
 
         .message.info {
             background: #d1ecf1;
             color: #0c5460;
-            border: 1px solid #bee5eb;
         }
 
-        .footer {
+        .loading {
             text-align: center;
-            margin-top: 30px;
-            padding: 20px;
-            color: white;
-            font-size: 0.9em;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        /* 新聞列表樣式 */
+        .news-list {
+            display: none;
+        }
+
+        .news-list.active {
+            display: block;
+        }
+
+        .news-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s;
+        }
+
+        .news-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-title {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .news-title a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .news-title a:hover {
+            color: #5566d6;
+            text-decoration: underline;
+        }
+
+        .news-meta {
+            font-size: 0.85em;
+            color: #999;
+            display: flex;
+            gap: 15px;
+        }
+
+        .news-time {
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔥 台股新聞熱門股票追蹤系統</h1>
-            <div class="subtitle">新聞熱度 × 買超排行 × 即時股價</div>
+            <h1>📈 台股新聞熱門股票追蹤系統</h1>
+            <div class="subtitle">即時追蹤新聞熱度與三大法人買賣超資料</div>
 
-            <div class="market-tabs">
-                <button class="market-tab active" onclick="switchMarket('TSE')" id="tabTSE">
-                    📈 上市 (TSE)
-                </button>
-                <button class="market-tab" onclick="switchMarket('OTC')" id="tabOTC">
-                    📊 上櫃 (OTC)
-                </button>
+            <div class="control-panel">
+                <div class="market-tabs">
+                    <button class="market-tab active" id="tabTSE" onclick="switchMarket('TSE')">
+                        🏛️ 上市 (TSE)
+                    </button>
+                    <button class="market-tab" id="tabOTC" onclick="switchMarket('OTC')">
+                        📊 上櫃 (OTC)
+                    </button>
+                    <button class="news-btn" onclick="showNews()">
+                        📰 熱門新聞
+                    </button>
+                </div>
             </div>
-
-            <div id="messageBox"></div>
 
             <div class="stats">
                 <div class="stat-box">
@@ -376,90 +431,161 @@
                     <div class="value" id="currentMarket">TSE</div>
                 </div>
                 <div class="stat-box">
-                    <div class="label">最後更新</div>
+                    <div class="label">更新時間</div>
                     <div class="value" id="updateTime">--:--</div>
                 </div>
                 <div class="stat-box">
-                    <div class="label">熱門新聞股票</div>
-                    <div class="value" id="newsCount">0</div>
+                    <div class="label">新聞熱門股</div>
+                    <div class="value" id="newsCount">-</div>
                 </div>
                 <div class="stat-box">
                     <div class="label">買賣超股票</div>
-                    <div class="value" id="stockCount">0</div>
+                    <div class="value" id="stockCount">-</div>
                 </div>
             </div>
         </div>
 
+        <div id="messageBox"></div>
+        <div class="loading" id="loading" style="display: none;">⏳ 資料載入中...</div>
+
         <div class="main-content">
-            <h2 class="section-title">
-                <span>📊 熱門股票排行榜 (新聞熱度 + 買超)</span>
+            <div class="section-title">
+                <span id="sectionTitle">🔥 熱門股票排行</span>
                 <div class="sort-controls">
-                    <span class="sort-label">排序:</span>
-                    <select id="sortField" class="sort-select">
-                        <option value="default">預設排序</option>
+                    <span class="sort-label">排序：</span>
+                    <select class="sort-select" id="sortField">
+                        <option value="default">新聞+買超綜合</option>
+                        <option value="mention">新聞提及次數</option>
+                        <option value="buy">三大法人買超</option>
+                        <option value="price">股價</option>
                         <option value="change">漲跌</option>
                         <option value="change_percent">漲跌幅</option>
-                        <option value="buy_volume">委買量</option>
-                        <option value="sell_volume">委賣量</option>
-                        <option value="buy_sell_ratio">買賣比</option>
+                        <option value="ratio">買賣比</option>
                     </select>
-                    <button class="sort-btn" id="sortBtn" onclick="toggleSortOrder()">
+                    <button class="sort-btn" onclick="toggleSortOrder()">
                         <span id="sortIcon">🔽</span>
                         <span id="sortText">高到低</span>
                     </button>
                 </div>
-            </h2>
-            
-            <div id="loading" class="loading" style="display: none;">
-                <div class="loading-spinner"></div>
-                <div>載入中...</div>
             </div>
 
+            <!-- 股票表格 -->
             <table id="dataTable" style="display: none;">
                 <thead>
                     <tr>
-                        <th style="width: 50px;">排名</th>
-                        <th style="width: 90px;">代號</th>
-                        <th style="width: 120px;">名稱</th>
-                        <th style="width: 80px;">新聞<br>提及</th>
-                        <th style="width: 100px;">昨日<br>買超張數</th>
-                        <th style="width: 90px;">成交價</th>
-                        <th style="width: 90px;">開盤價</th>
-                        <th style="width: 80px;">漲跌</th>
-                        <th style="width: 80px;">漲跌幅</th>
-                        <th style="width: 100px;">委買量</th>
-                        <th style="width: 100px;">委賣量</th>
-                        <th style="width: 90px;">買賣比</th>
+                        <th>排名</th>
+                        <th>股票代碼</th>
+                        <th>股票名稱</th>
+                        <th>新聞提及</th>
+                        <th>昨日買超(張)</th>
+                        <th>現價</th>
+                        <th>開盤</th>
+                        <th>漲跌</th>
+                        <th>漲跌幅</th>
+                        <th>買進量(張)</th>
+                        <th>賣出量(張)</th>
+                        <th>買賣比</th>
                     </tr>
                 </thead>
-                <tbody id="tableBody">
-                    <tr>
-                        <td colspan="11" style="padding: 30px; color: #999;">
-                            請點擊上方區域載入 JSON 資料檔
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody id="tableBody"></tbody>
             </table>
-        </div>
 
-        <div class="footer">
-            資料來源: Yahoo 股市 | 新聞來源: 財經新聞網 | 僅供參考,不構成投資建議
+            <!-- 新聞列表 -->
+            <div class="news-list" id="newsList">
+                <div id="newsContent"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        let currentMarket = 'TSE';
+        // 全域變數
         let tseData = null;
         let otcData = null;
+        let newsData = null;
+        let currentMarket = 'TSE';
+        let currentStocks = [];
         let currentSortField = 'default';
-        let currentSortOrder = 'desc'; // 'desc' = 高到低, 'asc' = 低到高
-        let currentStocks = []; // 儲存當前顯示的股票資料
+        let currentSortOrder = 'desc';
+        let isShowingNews = false;
+
+        // 顯示新聞列表
+        async function showNews() {
+            const loading = document.getElementById('loading');
+            
+            // 如果還沒載入新聞資料,先載入
+            if (!newsData) {
+                loading.style.display = 'block';
+                
+                try {
+                    const response = await fetch('./StockInfo/twstock_news.json');
+                    if (!response.ok) {
+                        throw new Error('新聞資料載入失敗');
+                    }
+                    newsData = await response.json();
+                    console.log('✅ 新聞資料已載入');
+                } catch (error) {
+                    console.error('載入新聞失敗:', error);
+                    showMessage('⚠️ 新聞資料載入失敗', 'info');
+                    loading.style.display = 'none';
+                    return;
+                } finally {
+                    loading.style.display = 'none';
+                }
+            }
+            
+            isShowingNews = true;
+            
+            // 隱藏股票表格,顯示新聞列表
+            document.getElementById('dataTable').style.display = 'none';
+            document.getElementById('newsList').classList.add('active');
+            
+            // 更新標題
+            document.getElementById('sectionTitle').textContent = '📰 熱門新聞';
+            
+            // 產生新聞內容
+            const newsContent = document.getElementById('newsContent');
+            newsContent.innerHTML = '';
+            
+            if (!newsData || newsData.length === 0) {
+                newsContent.innerHTML = '<div style="padding: 30px; text-align: center; color: #999;">目前沒有新聞資料</div>';
+                return;
+            }
+            
+            newsData.forEach((news, index) => {
+                const newsItem = document.createElement('div');
+                newsItem.className = 'news-item';
+                
+                newsItem.innerHTML = `
+                    <div class="news-title">
+                        ${index + 1}. <a href="${news.url}" target="_blank">${news.title}</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-time">📅 ${news.publish_time}</span>
+                        <span>⏰ 抓取時間: ${news.scraped_time}</span>
+                    </div>
+                `;
+                
+                newsContent.appendChild(newsItem);
+            });
+            
+            showMessage(`✅ 已載入 ${newsData.length} 則新聞`, 'success');
+        }
+
+        // 切換回股票列表
+        function showStocks() {
+            isShowingNews = false;
+            
+            // 顯示股票表格,隱藏新聞列表
+            document.getElementById('dataTable').style.display = 'table';
+            document.getElementById('newsList').classList.remove('active');
+            
+            // 更新標題
+            document.getElementById('sectionTitle').textContent = '🔥 熱門股票排行';
+        }
 
         // 切換排序順序
         function toggleSortOrder() {
             currentSortOrder = currentSortOrder === 'desc' ? 'asc' : 'desc';
-            
-            // 更新按鈕顯示
             const sortIcon = document.getElementById('sortIcon');
             const sortText = document.getElementById('sortText');
             
@@ -471,13 +597,12 @@
                 sortText.textContent = '低到高';
             }
             
-            // 重新排序
             applySorting();
         }
 
-        // 套用排序
+        // 應用排序
         function applySorting() {
-            if (!currentStocks || currentStocks.length === 0) return;
+            if (currentStocks.length === 0) return;
             
             let sortedStocks = [...currentStocks];
             
@@ -486,6 +611,18 @@
                     let aVal, bVal;
                     
                     switch(currentSortField) {
+                        case 'mention':
+                            aVal = parseInt(a.mention_count) || 0;
+                            bVal = parseInt(b.mention_count) || 0;
+                            break;
+                        case 'buy':
+                            aVal = parseInt(a.yesterday_buy) || 0;
+                            bVal = parseInt(b.yesterday_buy) || 0;
+                            break;
+                        case 'price':
+                            aVal = parseFloat(a.current_price) || 0;
+                            bVal = parseFloat(b.current_price) || 0;
+                            break;
                         case 'change':
                             aVal = parseFloat(a.change) || 0;
                             bVal = parseFloat(b.change) || 0;
@@ -494,21 +631,13 @@
                             aVal = parseFloat(a.change_percent) || 0;
                             bVal = parseFloat(b.change_percent) || 0;
                             break;
-                        case 'buy_volume':
-                            aVal = parseInt(a.buy_volume) || 0;
-                            bVal = parseInt(b.buy_volume) || 0;
-                            break;
-                        case 'sell_volume':
-                            aVal = parseInt(a.sell_volume) || 0;
-                            bVal = parseInt(b.sell_volume) || 0;
-                            break;
-                        case 'buy_sell_ratio':
+                        case 'ratio':
                             const aBuy = parseInt(a.buy_volume) || 0;
-                            const aSell = parseInt(a.sell_volume) || 1;
+                            const aSell = parseInt(a.sell_volume) || 0;
                             const bBuy = parseInt(b.buy_volume) || 0;
-                            const bSell = parseInt(b.sell_volume) || 1;
-                            aVal = aBuy / aSell;
-                            bVal = bBuy / bSell;
+                            const bSell = parseInt(b.sell_volume) || 0;
+                            aVal = aSell > 0 ? aBuy / aSell : (aBuy > 0 ? 999 : 0);
+                            bVal = bSell > 0 ? bBuy / bSell : (bBuy > 0 ? 999 : 0);
                             break;
                         default:
                             return 0;
@@ -549,6 +678,11 @@
 
         // 切換市場
         function switchMarket(market) {
+            // 如果正在顯示新聞,切換回股票列表
+            if (isShowingNews) {
+                showStocks();
+            }
+            
             currentMarket = market;
             
             // 更新按鈕樣式
@@ -565,7 +699,7 @@
             } else {
                 showMessage(`⚠️ 尚未載入 ${market} 市場資料`, 'info');
                 const tbody = document.getElementById('tableBody');
-                tbody.innerHTML = `<tr><td colspan="11" style="padding: 30px; color: #999;">
+                tbody.innerHTML = `<tr><td colspan="12" style="padding: 30px; color: #999;">
                     ${market} 市場資料尚未載入<br><br>
                     請點擊上方區域載入 ${market}_hotstock_data.json
                 </td></tr>`;
@@ -719,7 +853,7 @@
                 showMessage('⚠️ 資料載入失敗', 'info');
                 
                 const tbody = document.getElementById('tableBody');
-                tbody.innerHTML = `<tr><td colspan="11" style="padding: 30px; color: #999;">
+                tbody.innerHTML = `<tr><td colspan="12" style="padding: 30px; color: #999;">
                     資料載入失敗,請稍後重試
                 </td></tr>`;
                 document.getElementById('dataTable').style.display = 'table';
