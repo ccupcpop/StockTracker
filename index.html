@@ -652,7 +652,7 @@
 
     <div class="container">
         <div class="header">
-            <div class="version">V1.0.51114.4</div>
+            <div class="version">V1.0.51114.5</div>
             <h1>📈 台股新聞熱門股票追蹤系統</h1>
             <div class="subtitle">即時追蹤新聞熱度與三大法人買賣超資料</div>
 
@@ -694,11 +694,10 @@
                     <span class="sort-label">排序</span>
                     <select class="sort-select" id="sortField">
                         <option value="default">綜合</option>
-                        <option value="mention">新聞</option>
-                        <option value="buy">買超</option>
-                        <option value="price">股價</option>
                         <option value="change">漲跌</option>
                         <option value="change_percent">漲跌%</option>
+                        <option value="buy_volume">買量</option>
+                        <option value="sell_volume">賣量</option>
                         <option value="ratio">買賣比</option>
                     </select>
                     <button class="sort-btn" onclick="toggleSortOrder()">
@@ -866,6 +865,14 @@
                         case 'change_percent':
                             aVal = parseFloat(a.change_percent) || 0;
                             bVal = parseFloat(b.change_percent) || 0;
+                            break;
+                        case 'buy_volume':
+                            aVal = parseInt(a.buy_volume) || 0;
+                            bVal = parseInt(b.buy_volume) || 0;
+                            break;
+                        case 'sell_volume':
+                            aVal = parseInt(a.sell_volume) || 0;
+                            bVal = parseInt(b.sell_volume) || 0;
                             break;
                         case 'ratio':
                             const aBuy = parseInt(a.buy_volume) || 0;
@@ -1237,6 +1244,14 @@
                         case 'change_percent':
                             aVal = parseFloat(a.change_percent) || 0;
                             bVal = parseFloat(b.change_percent) || 0;
+                            break;
+                        case 'buy_volume':
+                            aVal = parseInt(a.buy_volume) || 0;
+                            bVal = parseInt(b.buy_volume) || 0;
+                            break;
+                        case 'sell_volume':
+                            aVal = parseInt(a.sell_volume) || 0;
+                            bVal = parseInt(b.sell_volume) || 0;
                             break;
                         case 'ratio':
                             const aBuy = parseInt(a.buy_volume) || 0;
