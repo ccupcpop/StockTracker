@@ -1089,10 +1089,25 @@
                         throw new Error('新聞資料載入失敗');
                     }
                     newsData = await response.json();
+                    
+                    // 取得檔案最後修改時間
+                    const lastModified = response.headers.get('Last-Modified');
+                    if (lastModified) {
+                        const modDate = new Date(lastModified);
+                        newsData._fileLastModified = modDate.toLocaleString('zh-TW', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: false
+                        });
+                    }
+                    
                     console.log('✅ 新聞資料已載入');
                 } catch (error) {
                     console.error('載入新聞失敗:', error);
-                    // 移除浮窗訊息,只在控制台顯示錯誤
                     loading.style.display = 'none';
                     return;
                 } finally {
@@ -1112,6 +1127,22 @@
             
             const sortControls = document.querySelector('.sort-controls');
             if (sortControls) sortControls.style.display = 'none';
+            
+            // 更新統計卡片為新聞相關資訊
+            document.getElementById('currentMarket').textContent = '新聞';
+            
+            // 顯示檔案修改時間或最新新聞抓取時間
+            let updateTimeText = '--:--';
+            if (newsData._fileLastModified) {
+                updateTimeText = newsData._fileLastModified.split(' ')[1];
+            } else if (newsData && newsData.length > 0) {
+                const latestNews = newsData[0];
+                updateTimeText = latestNews.scraped_time.split(' ')[1];
+            }
+            document.getElementById('updateTime').textContent = updateTimeText;
+            
+            document.getElementById('newsCount').textContent = newsData.length;
+            document.getElementById('stockCount').textContent = '-';
             
             document.getElementById('sectionTitle').innerHTML = `熱門新聞 <span style="font-size: 0.65em; color: #27ae60; margin-left: 10px; font-weight: 500;">✓ ${newsData.length} 則</span>`;
             
@@ -1154,6 +1185,17 @@
             if (sortControls) sortControls.style.display = 'flex';
             
             document.getElementById('sectionTitle').textContent = '熱門股票排行';
+            
+            // 恢復統計卡片為當前市場資料
+            document.getElementById('currentMarket').textContent = currentMarket;
+            const data = currentMarket === 'TSE' ? tseData : otcData;
+            if (data) {
+                const newsStocks = data.stocks.filter(stock => stock.mention_count > 0).length;
+                const buySellStocks = data.stocks.filter(stock => stock.mention_count === 0).length;
+                document.getElementById('updateTime').textContent = data.update_time ? data.update_time.split(' ')[1] : '--:--';
+                document.getElementById('newsCount').textContent = newsStocks;
+                document.getElementById('stockCount').textContent = buySellStocks;
+            }
         }
 
         function toggleSortOrder() {
