@@ -194,11 +194,90 @@ def merge_news(existing_news, new_news):
     merged.sort(key=lambda x: x['scraped_time'], reverse=True)
     return merged
 
+def parse_relative_time(publish_time_str):
+    """
+    解析相對時間字串並轉換為排序用的數值
+    返回: (優先級, 數值)
+    - 優先級: 0=minutes, 1=hours, 2=days/dates
+    - 數值: 用於同優先級內排序
+    """
+    if not publish_time_str or publish_time_str == "未知":
+        return (999, 999999)  # 未知時間排到最後
+    
+    time_str = publish_time_str.strip().lower()
+    
+    # 處理 "minutes ago"
+    if 'minutes ago' in time_str or 'minute ago' in time_str:
+        time_str = time_str.replace('minutes ago', '').replace('minute ago', '').strip()
+        if time_str == 'a' or time_str == 'an':
+            return (0, 1)  # "a minute ago" = 1分鐘
+        try:
+            minutes = int(time_str)
+            return (0, minutes)
+        except:
+            return (0, 1)
+    
+    # 處理 "hours ago" 或 "hour ago"
+    if 'hours ago' in time_str or 'hour ago' in time_str:
+        time_str = time_str.replace('hours ago', '').replace('hour ago', '').strip()
+        if time_str == 'a' or time_str == 'an':
+            return (1, 1)  # "an hour ago" = 1小時
+        try:
+            hours = int(time_str)
+            return (1, hours)
+        except:
+            return (1, 1)
+    
+    # 處理日期格式 (例如: "2024-11-17 10:30", "2024-11-17", "11/17/2024")
+    # 嘗試解析為日期時間
+    date_formats = [
+        '%Y-%m-%d %H:%M:%S',
+        '%Y-%m-%d %H:%M',
+        '%Y-%m-%d',
+        '%Y/%m/%d %H:%M:%S',
+        '%Y/%m/%d %H:%M',
+        '%Y/%m/%d',
+        '%m/%d/%Y %H:%M:%S',
+        '%m/%d/%Y %H:%M',
+        '%m/%d/%Y',
+    ]
+    
+    for fmt in date_formats:
+        try:
+            dt = datetime.strptime(time_str, fmt)
+            # 轉換為 timestamp 用於排序 (越大越新)
+            timestamp = dt.timestamp()
+            # 使用負數讓越新的排在前面
+            return (2, -timestamp)
+        except:
+            continue
+    
+    # 如果都無法解析,排到最後
+    return (999, 999999)
+
+def sort_news_by_time(news_list):
+    """
+    根據 publish_time 排序新聞
+    排序規則:
+    1. minutes ago (數字小的在前)
+    2. hours ago (數字小的在前)
+    3. 日期時間 (時間近的在前)
+    """
+    def sort_key(news):
+        publish_time = news.get('publish_time', '未知')
+        return parse_relative_time(publish_time)
+    
+    sorted_news = sorted(news_list, key=sort_key)
+    return sorted_news
+
 def save_news_to_json(news_list, filepath):
     try:
+        # 先排序再儲存
+        sorted_news = sort_news_by_time(news_list)
+        
         with open(filepath, 'w', encoding='utf-8') as f:
-            json.dump(news_list, f, ensure_ascii=False, indent=2)
-        log_success(f"儲存新聞: {len(news_list)} 則")
+            json.dump(sorted_news, f, ensure_ascii=False, indent=2)
+        log_success(f"儲存新聞: {len(sorted_news)} 則 (已按時間排序)")
     except Exception as e:
         log_error(f"儲存失敗: {e}")
 
