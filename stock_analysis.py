@@ -211,14 +211,15 @@ def parse_relative_time(publish_time_str):
     has_minutes = False
     
     # 檢查是否同時包含 hours 和 minutes
-    if ('hours ago' in time_str or 'hour ago' in time_str) and ('minutes ago' in time_str or 'minute ago' in time_str):
-        # 例如: "2 hours 30 minutes ago" 或 "an hour 15 minutes ago"
+    if (('hours' in time_str or 'hour' in time_str) and 
+        ('minutes' in time_str or 'minute' in time_str) and 
+        'ago' in time_str):
         
-        # 提取小時數
-        hour_match = re.search(r'(\d+)\s*hours?\s+ago', time_str)
+        # 提取小時數 (處理有空格和無空格的情況)
+        hour_match = re.search(r'(\d+)\s*hours?\s*ago', time_str)
         if not hour_match:
-            # 檢查 "an hour" 或 "a hour"
-            if re.search(r'(an|a)\s+hours?\s+', time_str):
+            # 檢查 "anhour" 或 "an hour" 或 "a hour"
+            if re.search(r'(an|a)\s*hours?', time_str):
                 total_minutes += 60
                 has_hours = True
         else:
@@ -226,11 +227,11 @@ def parse_relative_time(publish_time_str):
             total_minutes += hours * 60
             has_hours = True
         
-        # 提取分鐘數
-        minute_match = re.search(r'(\d+)\s*minutes?\s+ago', time_str)
+        # 提取分鐘數 (處理有空格和無空格的情況)
+        minute_match = re.search(r'(\d+)\s*minutes?\s*ago', time_str)
         if not minute_match:
-            # 檢查 "a minute" 或 "an minute"
-            if re.search(r'(an|a)\s+minutes?', time_str):
+            # 檢查 "aminute" 或 "a minute" 或 "an minute"
+            if re.search(r'(an|a)\s*minutes?', time_str):
                 total_minutes += 1
                 has_minutes = True
         else:
@@ -243,27 +244,37 @@ def parse_relative_time(publish_time_str):
             priority = 1 if total_minutes >= 60 else 0
             return (priority, total_minutes)
     
-    # 單獨處理 "hours ago" (沒有 minutes)
-    if 'hours ago' in time_str or 'hour ago' in time_str:
-        time_str_clean = re.sub(r'(hours|hour)\s+ago', '', time_str).strip()
-        if time_str_clean == 'a' or time_str_clean == 'an':
-            return (1, 60)  # "an hour ago" = 60分鐘
-        try:
-            hours = int(time_str_clean)
+    # 單獨處理 "hours ago" (沒有 minutes) - 處理有空格和無空格的情況
+    if re.search(r'hours?\s*ago', time_str) and 'minute' not in time_str:
+        # 移除 "hours ago" 或 "hour ago" (有空格或無空格)
+        time_str_clean = re.sub(r'\s*hours?\s*ago', '', time_str).strip()
+        
+        if time_str_clean in ['a', 'an', 'ah', 'anh', 'anho', 'anhou']:
+            return (1, 60)  # "an hour ago" 或 "anhour ago" = 60分鐘
+        
+        # 嘗試提取數字
+        number_match = re.search(r'(\d+)', time_str_clean)
+        if number_match:
+            hours = int(number_match.group(1))
             return (1, hours * 60)  # 轉換為分鐘
-        except:
-            return (1, 60)
+        
+        return (1, 60)
     
-    # 單獨處理 "minutes ago" (沒有 hours)
-    if 'minutes ago' in time_str or 'minute ago' in time_str:
-        time_str_clean = re.sub(r'(minutes|minute)\s+ago', '', time_str).strip()
-        if time_str_clean == 'a' or time_str_clean == 'an':
+    # 單獨處理 "minutes ago" (沒有 hours) - 處理有空格和無空格的情況
+    if re.search(r'minutes?\s*ago', time_str) and 'hour' not in time_str:
+        # 移除 "minutes ago" 或 "minute ago" (有空格或無空格)
+        time_str_clean = re.sub(r'\s*minutes?\s*ago', '', time_str).strip()
+        
+        if time_str_clean in ['a', 'an']:
             return (0, 1)  # "a minute ago" = 1分鐘
-        try:
-            minutes = int(time_str_clean)
+        
+        # 嘗試提取數字
+        number_match = re.search(r'(\d+)', time_str_clean)
+        if number_match:
+            minutes = int(number_match.group(1))
             return (0, minutes)
-        except:
-            return (0, 1)
+        
+        return (0, 1)
     
     # 處理日期格式 (例如: "2024-11-17 10:30", "2024-11-17", "11/17/2024")
     date_formats = [
