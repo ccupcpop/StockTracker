@@ -199,37 +199,73 @@ def parse_relative_time(publish_time_str):
     解析相對時間字串並轉換為排序用的數值
     返回: (優先級, 數值)
     - 優先級: 0=minutes, 1=hours, 2=days/dates
-    - 數值: 用於同優先級內排序
+    - 數值: 用於同優先級內排序 (分鐘為單位)
     """
     if not publish_time_str or publish_time_str == "未知":
         return (999, 999999)  # 未知時間排到最後
     
     time_str = publish_time_str.strip().lower()
     
-    # 處理 "minutes ago"
+    total_minutes = 0
+    has_hours = False
+    has_minutes = False
+    
+    # 檢查是否同時包含 hours 和 minutes
+    if ('hours ago' in time_str or 'hour ago' in time_str) and ('minutes ago' in time_str or 'minute ago' in time_str):
+        # 例如: "2 hours 30 minutes ago" 或 "an hour 15 minutes ago"
+        
+        # 提取小時數
+        hour_match = re.search(r'(\d+)\s*hours?\s+ago', time_str)
+        if not hour_match:
+            # 檢查 "an hour" 或 "a hour"
+            if re.search(r'(an|a)\s+hours?\s+', time_str):
+                total_minutes += 60
+                has_hours = True
+        else:
+            hours = int(hour_match.group(1))
+            total_minutes += hours * 60
+            has_hours = True
+        
+        # 提取分鐘數
+        minute_match = re.search(r'(\d+)\s*minutes?\s+ago', time_str)
+        if not minute_match:
+            # 檢查 "a minute" 或 "an minute"
+            if re.search(r'(an|a)\s+minutes?', time_str):
+                total_minutes += 1
+                has_minutes = True
+        else:
+            minutes = int(minute_match.group(1))
+            total_minutes += minutes
+            has_minutes = True
+        
+        if has_hours or has_minutes:
+            # 如果有小時,使用優先級 1,否則使用優先級 0
+            priority = 1 if total_minutes >= 60 else 0
+            return (priority, total_minutes)
+    
+    # 單獨處理 "hours ago" (沒有 minutes)
+    if 'hours ago' in time_str or 'hour ago' in time_str:
+        time_str_clean = re.sub(r'(hours|hour)\s+ago', '', time_str).strip()
+        if time_str_clean == 'a' or time_str_clean == 'an':
+            return (1, 60)  # "an hour ago" = 60分鐘
+        try:
+            hours = int(time_str_clean)
+            return (1, hours * 60)  # 轉換為分鐘
+        except:
+            return (1, 60)
+    
+    # 單獨處理 "minutes ago" (沒有 hours)
     if 'minutes ago' in time_str or 'minute ago' in time_str:
-        time_str = time_str.replace('minutes ago', '').replace('minute ago', '').strip()
-        if time_str == 'a' or time_str == 'an':
+        time_str_clean = re.sub(r'(minutes|minute)\s+ago', '', time_str).strip()
+        if time_str_clean == 'a' or time_str_clean == 'an':
             return (0, 1)  # "a minute ago" = 1分鐘
         try:
-            minutes = int(time_str)
+            minutes = int(time_str_clean)
             return (0, minutes)
         except:
             return (0, 1)
     
-    # 處理 "hours ago" 或 "hour ago"
-    if 'hours ago' in time_str or 'hour ago' in time_str:
-        time_str = time_str.replace('hours ago', '').replace('hour ago', '').strip()
-        if time_str == 'a' or time_str == 'an':
-            return (1, 1)  # "an hour ago" = 1小時
-        try:
-            hours = int(time_str)
-            return (1, hours)
-        except:
-            return (1, 1)
-    
     # 處理日期格式 (例如: "2024-11-17 10:30", "2024-11-17", "11/17/2024")
-    # 嘗試解析為日期時間
     date_formats = [
         '%Y-%m-%d %H:%M:%S',
         '%Y-%m-%d %H:%M',
