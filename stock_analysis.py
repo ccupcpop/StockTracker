@@ -304,18 +304,30 @@ def parse_relative_time(publish_time_str):
 
 def sort_news_by_time(news_list):
     """
-    根據 publish_time 排序新聞
-    排序規則:
-    1. minutes ago (數字小的在前)
-    2. hours ago (數字小的在前)
-    3. 日期時間 (時間近的在前)
+    兩階段排序新聞:
+    1. 先按 scraped_time 分群（同一批抓取的新聞）
+    2. 再在每群內按 publish_time 排序（同批內越新的在前）
     """
-    def sort_key(news):
-        publish_time = news.get('publish_time', '未知')
-        return parse_relative_time(publish_time)
+    from datetime import datetime
     
-    sorted_news = sorted(news_list, key=sort_key)
-    return sorted_news
+    # 第一階段：按 scraped_time 分組
+    groups = {}
+    for news in news_list:
+        scraped_time = news.get('scraped_time', '未知')
+        if scraped_time not in groups:
+            groups[scraped_time] = []
+        groups[scraped_time].append(news)
+    
+    # 第二階段：對每組按 scraped_time 降序排序，再對組內按 publish_time 排序
+    sorted_groups = sorted(groups.items(), key=lambda x: x[0], reverse=True)
+    
+    final_sorted = []
+    for scraped_time, group_news in sorted_groups:
+        # 組內按 publish_time 排序（越新的在前）
+        sorted_group = sorted(group_news, key=lambda x: parse_relative_time(x.get('publish_time', '未知')))
+        final_sorted.extend(sorted_group)
+    
+    return final_sorted
 
 def save_news_to_json(news_list, filepath):
     try:
@@ -324,7 +336,7 @@ def save_news_to_json(news_list, filepath):
         
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(sorted_news, f, ensure_ascii=False, indent=2)
-        log_success(f"儲存新聞: {len(sorted_news)} 則 (已按時間排序)")
+        log_success(f"儲存新聞: {len(sorted_news)} 則 (已按時間兩階段排序)")
     except Exception as e:
         log_error(f"儲存失敗: {e}")
 
