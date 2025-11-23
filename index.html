@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>台股新聞熱門股票追蹤系統</title>
+    <title>台股機構投資人買賣分析系統</title>
     <style>
         * {
             margin: 0;
@@ -63,6 +63,54 @@
             }
         }
 
+        /* 左上角市場選擇 */
+        .market-selector {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        @media (min-width: 768px) {
+            .market-selector {
+                top: 20px;
+                left: 25px;
+                gap: 10px;
+            }
+        }
+
+        .market-btn {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #495057;
+            border: 2px solid transparent;
+            padding: 8px 16px;
+            border-radius: 980px;
+            font-size: 0.85em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (min-width: 768px) {
+            .market-btn {
+                padding: 10px 24px;
+                font-size: 0.95em;
+            }
+        }
+
+        .market-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.35);
+        }
+
+        .market-btn:hover:not(.active) {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            transform: translateY(-2px);
+            border: 2px solid #667eea;
+        }
+
         h1 {
             color: #2c3e50;
             font-size: 1.4em;
@@ -94,7 +142,8 @@
             }
         }
 
-        .market-tabs {
+        /* 中間三個分類按鈕 */
+        .category-tabs {
             display: flex;
             gap: 8px;
             justify-content: center;
@@ -103,13 +152,13 @@
         }
 
         @media (min-width: 768px) {
-            .market-tabs {
+            .category-tabs {
                 gap: 12px;
                 margin-bottom: 32px;
             }
         }
 
-        .market-tab {
+        .category-tab {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             color: #495057;
             border: none;
@@ -123,51 +172,19 @@
         }
 
         @media (min-width: 768px) {
-            .market-tab {
+            .category-tab {
                 padding: 12px 32px;
                 font-size: 1em;
             }
         }
 
-        .market-tab.active {
+        .category-tab.active {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
         }
 
-        .market-tab:hover:not(.active) {
-            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
-            transform: translateY(-2px);
-            border: 2px solid #667eea;
-        }
-
-        .news-btn {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            color: #495057;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 980px;
-            font-size: 0.9em;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid transparent;
-        }
-
-        @media (min-width: 768px) {
-            .news-btn {
-                padding: 12px 32px;
-                font-size: 1em;
-            }
-        }
-
-        .news-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
-        }
-
-        .news-btn:hover:not(.active) {
+        .category-tab:hover:not(.active) {
             background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
             transform: translateY(-2px);
             border: 2px solid #667eea;
@@ -224,104 +241,85 @@
         }
 
         .stat-box .value {
-            font-size: 1.5em;
-            font-weight: 600;
-            letter-spacing: -1px;
+            font-size: 1.6em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         @media (min-width: 768px) {
             .stat-box .value {
-                font-size: 2em;
+                font-size: 2.2em;
             }
         }
 
-        .main-content {
+        .controls {
             background: white;
             padding: 15px;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);
-            overflow-x: auto;
-        }
-
-        @media (min-width: 768px) {
-            .main-content {
-                padding: 32px;
-                border-radius: 20px;
-            }
-        }
-
-        .section-title {
-            font-size: 1.2em;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #e9ecef;
-            color: #2c3e50;
+            margin-bottom: 10px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
+            align-items: center;
+            justify-content: space-between;
         }
 
         @media (min-width: 768px) {
-            .section-title {
-                font-size: 1.6em;
-                margin-bottom: 28px;
-                padding-bottom: 20px;
+            .controls {
+                padding: 24px;
+                border-radius: 20px;
+                margin-bottom: 20px;
+                gap: 16px;
             }
         }
 
-        .sort-controls {
+        .sort-group {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             align-items: center;
-            font-size: 0.5em;
+            flex: 1;
+            min-width: 200px;
         }
 
         @media (min-width: 768px) {
-            .sort-controls {
-                gap: 10px;
-                font-size: 0.55em;
+            .sort-group {
+                gap: 12px;
             }
         }
 
         .sort-label {
             color: #7f8c8d;
-            font-weight: 400;
-            font-size: 0.9em;
-            display: none;
+            font-size: 0.85em;
+            font-weight: 500;
+            white-space: nowrap;
         }
 
         @media (min-width: 768px) {
             .sort-label {
-                display: inline;
-                font-size: 1em;
-            }
-        }
-
-        .sort-select {
-            padding: 6px 10px;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            font-size: 0.85em;
-            color: #495057;
-            background: white;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        @media (min-width: 768px) {
-            .sort-select {
-                padding: 8px 14px;
-                border-radius: 10px;
                 font-size: 0.95em;
             }
         }
 
-        .sort-select:hover {
-            border-color: #667eea;
+        .sort-select {
+            flex: 1;
+            padding: 10px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 0.9em;
+            background: white;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        @media (min-width: 768px) {
+            .sort-select {
+                padding: 12px 16px;
+                border-radius: 14px;
+                font-size: 1em;
+            }
         }
 
         .sort-select:focus {
@@ -330,105 +328,170 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .sort-btn {
+        .sort-toggle {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.85em;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.9em;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
             display: flex;
             align-items: center;
-            gap: 3px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            gap: 6px;
+            white-space: nowrap;
         }
 
         @media (min-width: 768px) {
-            .sort-btn {
-                padding: 8px 16px;
-                border-radius: 10px;
-                font-size: 0.95em;
-                gap: 4px;
+            .sort-toggle {
+                padding: 12px 20px;
+                border-radius: 14px;
+                font-size: 1em;
+                gap: 8px;
             }
+        }
 
-            .sort-btn:hover {
-                background: linear-gradient(135deg, #5568d3 0%, #6d3f91 100%);
-                transform: translateY(-2px);
-                box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        .sort-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .sort-toggle:active {
+            transform: translateY(0);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .table-container {
+                border-radius: 20px;
+                margin-bottom: 40px;
             }
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.75em;
-            min-width: 800px;
-        }
-
-        @media (min-width: 768px) {
-            table {
-                font-size: 0.92em;
-                min-width: auto;
-            }
+            display: table;
         }
 
         thead {
-            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         th {
-            padding: 10px 6px;
+            padding: 14px 8px;
             text-align: center;
             font-weight: 600;
-            color: #2c3e50;
-            font-size: 0.85em;
+            font-size: 0.8em;
+            letter-spacing: 0.3px;
             white-space: nowrap;
         }
 
         @media (min-width: 768px) {
             th {
-                padding: 16px 10px;
-                font-size: 0.9em;
+                padding: 18px 12px;
+                font-size: 0.95em;
             }
         }
 
         td {
-            padding: 10px 6px;
+            padding: 14px 8px;
             text-align: center;
-            border-bottom: 1px solid #f1f3f5;
-            white-space: nowrap;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.85em;
+            transition: background 0.2s;
         }
 
         @media (min-width: 768px) {
             td {
-                padding: 16px 10px;
+                padding: 16px 12px;
+                font-size: 0.95em;
             }
+        }
 
-            tbody tr:hover {
-                background: linear-gradient(to right, #f8f9fa, #ffffff);
-                transform: scale(1.002);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            }
+        tbody tr:hover {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .rank {
+            font-weight: 600;
+            color: #95a5a6;
+            font-size: 0.9em;
+        }
+
+        .rank-1 {
+            font-weight: 700;
+            color: #f39c12;
+            font-size: 1.1em;
+        }
+
+        .rank-2 {
+            font-weight: 700;
+            color: #95a5a6;
+            font-size: 1.05em;
+        }
+
+        .rank-3 {
+            font-weight: 700;
+            color: #cd7f32;
+            font-size: 1em;
         }
 
         .stock-code {
             font-weight: 600;
             color: #667eea;
-            font-size: 0.9em;
-        }
-
-        @media (min-width: 768px) {
-            .stock-code {
-                font-size: 0.95em;
-            }
+            font-family: 'Courier New', monospace;
         }
 
         .stock-name {
-            font-weight: 500;
+            font-weight: 600;
             color: #2c3e50;
+            text-align: left;
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: 600;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+
+        .badge-hot {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .badge-warm {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
         }
 
         .price-up {
@@ -445,457 +508,283 @@
             color: #95a5a6;
         }
 
-        .rank {
-            font-weight: 600;
-            color: #95a5a6;
-        }
-
-        .rank-1 {
-            font-weight: 700;
-            color: #f39c12;
-            font-size: 1.15em;
-        }
-
-        @media (min-width: 768px) {
-            .rank-1 {
-                font-size: 1.2em;
-                text-shadow: 0 2px 4px rgba(243, 156, 18, 0.2);
-            }
-        }
-
-        .rank-2 {
-            font-weight: 700;
-            color: #95a5a6;
-            font-size: 1.1em;
-        }
-
-        .rank-3 {
-            font-weight: 700;
-            color: #cd7f32;
-            font-size: 1.05em;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 3px 6px;
-            border-radius: 8px;
-            font-size: 0.65em;
-            margin-left: 4px;
-            font-weight: 600;
-        }
-
-        @media (min-width: 768px) {
-            .badge {
-                padding: 4px 10px;
-                border-radius: 12px;
-                font-size: 0.72em;
-                margin-left: 6px;
-            }
-        }
-
-        .badge-hot {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            color: white;
-        }
-
-        .badge-warm {
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-            color: white;
-        }
-
-        .message {
-            padding: 12px 16px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            text-align: center;
-            font-weight: 500;
-            font-size: 0.85em;
-        }
-
-        @media (min-width: 768px) {
-            .message {
-                padding: 16px 20px;
-                border-radius: 14px;
-                margin-bottom: 16px;
-                font-size: 0.95em;
-            }
-        }
-
-        .message.success {
-            background: linear-gradient(135deg, #d5f4e6 0%, #c8f2dd 100%);
-            color: #27ae60;
-            border: 1px solid #a8e6cf;
-        }
-
-        .message.info {
-            background: linear-gradient(135deg, #e3f2fd 0%, #d1e7f7 100%);
-            color: #667eea;
-            border: 1px solid #b3d9f2;
-        }
-
         .loading {
-            text-align: center;
-            padding: 30px;
-            color: #667eea;
-            font-size: 1em;
-            font-weight: 500;
-        }
-
-        @media (min-width: 768px) {
-            .loading {
-                padding: 50px;
-                font-size: 1.1em;
-            }
-        }
-
-        .news-list {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
             display: none;
         }
 
-        .news-list.active {
-            display: block;
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
         }
 
-        .news-item {
-            padding: 15px;
-            border-bottom: 1px solid #f1f3f5;
-            transition: all 0.2s;
-            border-radius: 8px;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        @media (min-width: 768px) {
-            .news-item {
-                padding: 20px;
-            }
-
-            .news-item:hover {
-                background: linear-gradient(to right, #f8f9fa, #ffffff);
-                transform: translateX(8px);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            }
-        }
-
-        .news-item:last-child {
-            border-bottom: none;
-        }
-
-        .news-title {
-            font-size: 0.95em;
-            font-weight: 500;
-            color: #2c3e50;
-            margin-bottom: 8px;
-            line-height: 1.5;
-        }
-
-        @media (min-width: 768px) {
-            .news-title {
-                font-size: 1.05em;
-                margin-bottom: 10px;
-                line-height: 1.6;
-            }
-        }
-
-        .news-title a {
+        .loading-text {
+            text-align: center;
             color: #667eea;
-            text-decoration: none;
-            transition: all 0.2s;
-            border-bottom: 2px solid transparent;
+            font-weight: 600;
+            font-size: 1.1em;
         }
 
-        .news-title a:hover {
-            color: #5568d3;
-            border-bottom: 2px solid #667eea;
-        }
-
-        .news-meta {
-            font-size: 0.8em;
-            color: #95a5a6;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        @media (min-width: 768px) {
-            .news-meta {
-                font-size: 0.88em;
-                gap: 16px;
+        @media (max-width: 767px) {
+            table {
+                font-size: 0.85em;
+            }
+            
+            th, td {
+                padding: 10px 4px;
+            }
+            
+            .stock-name {
+                max-width: 80px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
         }
 
-        /* 滾動條美化 */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        @media (min-width: 768px) {
-            ::-webkit-scrollbar {
-                width: 10px;
-                height: 10px;
-            }
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
+        .message-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            font-weight: 500;
+            animation: slideIn 0.3s ease-out;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #5568d3 0%, #6d3f91 100%);
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .message-box {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                padding: 12px 16px;
+                font-size: 0.9em;
+            }
         }
     </style>
 </head>
-
+<body>
     <div class="container">
         <div class="header">
-            <div class="version">V1.0.51114.7</div>
-            <h1>📈 台股新聞熱門股票追蹤系統</h1>
-            <div class="subtitle">即時追蹤新聞熱度與三大法人買賣超資料</div>
-
-            <div class="market-tabs">
-                <button class="market-tab active" id="tabTSE" onclick="switchMarket('TSE')">
-                    上市 (TSE)
-                </button>
-                <button class="market-tab" id="tabOTC" onclick="switchMarket('OTC')">
-                    上櫃 (OTC)
-                </button>
-                <button class="news-btn" id="newsBtn" onclick="showNews()">
-                    熱門新聞
-                </button>
+            <!-- 左上角市場選擇 -->
+            <div class="market-selector">
+                <button class="market-btn active" id="btnTSE" onclick="switchMarket('TSE')">上市</button>
+                <button class="market-btn" id="btnOTC" onclick="switchMarket('OTC')">上櫃</button>
             </div>
 
+            <div class="version">v2.0</div>
+            <h1>台股機構投資人買賣分析</h1>
+            <div class="subtitle">即時追蹤三大法人買賣超數據</div>
+            
+            <!-- 中間三個分類 -->
+            <div class="category-tabs">
+                <button class="category-tab active" id="tabLatest" onclick="switchCategory('latest')">
+                    最新買賣比
+                </button>
+                <button class="category-tab" id="tabFiveDay" onclick="switchCategory('fiveday')">
+                    過去五日買賣超
+                </button>
+                <button class="category-tab" id="tabSixtyDay" onclick="switchCategory('sixtyDay')">
+                    歷史60天買賣
+                </button>
+            </div>
+            
             <div class="stats">
                 <div class="stat-box">
                     <div class="label">更新時間</div>
-                    <div class="value" id="updateTime">--:--</div>
+                    <div class="value" id="updateTime">--:--:--</div>
                 </div>
                 <div class="stat-box">
-                    <div class="label">新聞熱門股</div>
-                    <div class="value" id="newsCount">-</div>
+                    <div class="label">追蹤股票數</div>
+                    <div class="value" id="stockCount">0</div>
                 </div>
                 <div class="stat-box">
-                    <div class="label">買賣超股票</div>
-                    <div class="value" id="stockCount">-</div>
+                    <div class="label">買超家數</div>
+                    <div class="value" id="buyCount">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">賣超家數</div>
+                    <div class="value" id="sellCount">0</div>
                 </div>
             </div>
         </div>
 
-        <div id="messageBox"></div>
-        <div class="loading" id="loading" style="display: none;">載入中...</div>
-
-        <div class="main-content">
-            <div class="section-title">
-                <span id="sectionTitle">熱門股票排行</span>
-                <div class="sort-controls">
-                    <span class="sort-label">排序</span>
-                    <select class="sort-select" id="sortField">
-                        <option value="default">綜合</option>
-                        <option value="change">漲跌</option>
-                        <option value="change_percent">漲跌%</option>
-                        <option value="buy_volume">買量</option>
-                        <option value="sell_volume">賣量</option>
-                        <option value="ratio">買賣比</option>
-                    </select>
-                    <button class="sort-btn" onclick="toggleSortOrder()">
-                        <span id="sortIcon">↓</span>
-                        <span id="sortText">高到低</span>
-                    </button>
-                </div>
+        <div class="controls" id="controls">
+            <div class="sort-group">
+                <span class="sort-label">排序依據：</span>
+                <select class="sort-select" id="sortField">
+                    <option value="default">預設排序</option>
+                    <option value="code">股票代號</option>
+                    <option value="name">股票名稱</option>
+                    <option value="price">收盤價</option>
+                    <option value="change">漲跌幅</option>
+                    <option value="buy_volume">買進張數</option>
+                    <option value="sell_volume">賣出張數</option>
+                    <option value="ratio">買賣比</option>
+                </select>
             </div>
+            <button class="sort-toggle" onclick="toggleSort()">
+                <span id="sortIcon">↓</span>
+                <span id="sortText">高到低</span>
+            </button>
+        </div>
 
-            <table id="dataTable" style="display: none;">
+        <div class="table-container" id="tableContainer">
+            <table id="dataTable">
                 <thead>
                     <tr>
                         <th>排名</th>
-                        <th>代碼</th>
-                        <th>名稱</th>
-                        <th>新聞</th>
-                        <th>昨買超</th>
-                        <th>現價</th>
-                        <th>開盤</th>
+                        <th>代號</th>
+                        <th>股票名稱</th>
+                        <th>收盤價</th>
+                        <th>開盤價</th>
                         <th>漲跌</th>
-                        <th>漲跌%</th>
-                        <th>買量</th>
-                        <th>賣量</th>
+                        <th>漲跌幅</th>
+                        <th>買進(張)</th>
+                        <th>賣出(張)</th>
                         <th>買賣比</th>
                     </tr>
                 </thead>
-                <tbody id="tableBody"></tbody>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="10" style="padding: 60px 20px; color: #95a5a6; font-size: 1.1em;">
+                            載入資料中...
+                        </td>
+                    </tr>
+                </tbody>
             </table>
+        </div>
 
-            <div class="news-list" id="newsList">
-                <div id="newsContent"></div>
-            </div>
+        <!-- iframe 容器用於顯示外部頁面 -->
+        <div class="iframe-container" id="iframeContainer" style="display: none;">
+            <iframe id="externalFrame" style="width: 100%; height: 100vh; border: none; border-radius: 20px; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);"></iframe>
         </div>
     </div>
 
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">資料載入中...</div>
+    </div>
+
     <script>
-        let tseData = null;
-        let otcData = null;
-        let newsData = null;
-        let currentMarket = 'TSE';
+        let currentMarket = localStorage.getItem('currentMarket') || 'TSE';
+        let currentCategory = localStorage.getItem('currentCategory') || 'latest';
         let currentStocks = [];
         let currentSortField = 'default';
         let currentSortOrder = 'desc';
-        let isShowingNews = false;
+        let tseData = null;
+        let otcData = null;
 
-        async function showNews() {
-            const loading = document.getElementById('loading');
-            
-            if (!newsData) {
-                loading.style.display = 'block';
-                
-                try {
-                    const response = await fetch('./StockInfo/twstock_news.json');
-                    if (!response.ok) {
-                        throw new Error('新聞資料載入失敗');
-                    }
-                    newsData = await response.json();
-                    console.log('✅ 新聞資料已載入');
-                } catch (error) {
-                    console.error('載入新聞失敗:', error);
-                    showMessage('⚠️ 新聞資料載入失敗', 'info');
-                    loading.style.display = 'none';
-                    return;
-                } finally {
-                    loading.style.display = 'none';
-                }
-            }
-            
-            isShowingNews = true;
-            
-            document.getElementById('tabTSE').classList.remove('active');
-            document.getElementById('tabOTC').classList.remove('active');
-            document.getElementById('newsBtn').classList.add('active');
-            
-            document.getElementById('dataTable').style.display = 'none';
-            document.getElementById('newsList').classList.add('active');
-            
-            const sortControls = document.querySelector('.sort-controls');
-            if (sortControls) sortControls.style.display = 'none';
-            
-            document.getElementById('sectionTitle').innerHTML = `熱門新聞 <span style="font-size: 0.65em; color: #27ae60; margin-left: 10px; font-weight: 500;">✓ ${newsData.length} 則</span>`;
-            
-            const newsContent = document.getElementById('newsContent');
-            newsContent.innerHTML = '';
-            
-            if (!newsData || newsData.length === 0) {
-                newsContent.innerHTML = '<div style="padding: 40px; text-align: center; color: #95a5a6;">目前沒有新聞資料</div>';
-                return;
-            }
-            
-            newsData.forEach((news, index) => {
-                const newsItem = document.createElement('div');
-                newsItem.className = 'news-item';
-                
-                newsItem.innerHTML = `
-                    <div class="news-title">
-                        ${index + 1}. <a href="${news.url}" target="_blank">${news.title}</a>
-                    </div>
-                    <div class="news-meta">
-                        <span class="news-time">${news.publish_time}</span>
-                        <span>抓取: ${news.scraped_time}</span>
-                    </div>
-                `;
-                
-                newsContent.appendChild(newsItem);
-            });
-        }
-
-        function showStocks() {
-            isShowingNews = false;
-            
-            document.getElementById('newsBtn').classList.remove('active');
-            
-            document.getElementById('dataTable').style.display = 'table';
-            document.getElementById('newsList').classList.remove('active');
-            
-            const sortControls = document.querySelector('.sort-controls');
-            if (sortControls) sortControls.style.display = 'flex';
-            
-            document.getElementById('sectionTitle').textContent = '熱門股票排行';
-        }
-
-        function toggleSortOrder() {
+        function toggleSort() {
             currentSortOrder = currentSortOrder === 'desc' ? 'asc' : 'desc';
-            const sortIcon = document.getElementById('sortIcon');
-            const sortText = document.getElementById('sortText');
-            
-            if (currentSortOrder === 'desc') {
-                sortIcon.textContent = '↓';
-                sortText.textContent = '高到低';
-            } else {
-                sortIcon.textContent = '↑';
-                sortText.textContent = '低到高';
-            }
-            
+            document.getElementById('sortIcon').textContent = currentSortOrder === 'desc' ? '↓' : '↑';
+            document.getElementById('sortText').textContent = currentSortOrder === 'desc' ? '高到低' : '低到高';
             applySorting();
         }
 
         function applySorting() {
-            if (currentStocks.length === 0) return;
+            if (!currentStocks || currentStocks.length === 0) return;
             
             let sortedStocks = [...currentStocks];
             
-            if (currentSortField !== 'default') {
-                sortedStocks.sort((a, b) => {
-                    let aVal, bVal;
-                    
-                    switch(currentSortField) {
-                        case 'mention':
-                            aVal = parseInt(a.mention_count) || 0;
-                            bVal = parseInt(b.mention_count) || 0;
-                            break;
-                        case 'buy':
-                            aVal = parseInt(a.yesterday_buy) || 0;
-                            bVal = parseInt(b.yesterday_buy) || 0;
-                            break;
-                        case 'price':
-                            aVal = parseFloat(a.current_price) || 0;
-                            bVal = parseFloat(b.current_price) || 0;
-                            break;
-                        case 'change':
-                            aVal = parseFloat(a.change) || 0;
-                            bVal = parseFloat(b.change) || 0;
-                            break;
-                        case 'change_percent':
-                            aVal = parseFloat(a.change_percent) || 0;
-                            bVal = parseFloat(b.change_percent) || 0;
-                            break;
-                        case 'buy_volume':
-                            aVal = parseInt(a.buy_volume) || 0;
-                            bVal = parseInt(b.buy_volume) || 0;
-                            break;
-                        case 'sell_volume':
-                            aVal = parseInt(a.sell_volume) || 0;
-                            bVal = parseInt(b.sell_volume) || 0;
-                            break;
-                        case 'ratio':
-                            const aBuy = parseInt(a.buy_volume) || 0;
-                            const aSell = parseInt(a.sell_volume) || 0;
-                            const bBuy = parseInt(b.buy_volume) || 0;
-                            const bSell = parseInt(b.sell_volume) || 0;
-                            aVal = aSell > 0 ? aBuy / aSell : (aBuy > 0 ? 999 : 0);
-                            bVal = bSell > 0 ? bBuy / bSell : (bBuy > 0 ? 999 : 0);
-                            break;
-                        default:
-                            return 0;
-                    }
-                    
-                    return currentSortOrder === 'desc' ? bVal - aVal : aVal - bVal;
-                });
+            if (currentSortField === 'default') {
+                updateTable(sortedStocks);
+                return;
             }
+
+            sortedStocks.sort((a, b) => {
+                let aVal, bVal;
+                
+                switch (currentSortField) {
+                    case 'code':
+                        aVal = a.code || '';
+                        bVal = b.code || '';
+                        return currentSortOrder === 'desc' ? 
+                            bVal.localeCompare(aVal) : aVal.localeCompare(bVal);
+                    
+                    case 'name':
+                        aVal = a.name || '';
+                        bVal = b.name || '';
+                        return currentSortOrder === 'desc' ? 
+                            bVal.localeCompare(aVal, 'zh-TW') : aVal.localeCompare(bVal, 'zh-TW');
+                    
+                    case 'price':
+                        aVal = parseFloat(a.current_price) || 0;
+                        bVal = parseFloat(b.current_price) || 0;
+                        break;
+                    
+                    case 'change':
+                        aVal = parseFloat(a.change_percent) || 0;
+                        bVal = parseFloat(b.change_percent) || 0;
+                        break;
+                    
+                    case 'buy_volume':
+                        aVal = parseInt(a.buy_volume) || 0;
+                        bVal = parseInt(b.buy_volume) || 0;
+                        break;
+                    
+                    case 'sell_volume':
+                        aVal = parseInt(a.sell_volume) || 0;
+                        bVal = parseInt(b.sell_volume) || 0;
+                        break;
+                    
+                    case 'ratio':
+                        const buyA = parseInt(a.buy_volume) || 0;
+                        const sellA = parseInt(a.sell_volume) || 1;
+                        const buyB = parseInt(b.buy_volume) || 0;
+                        const sellB = parseInt(b.sell_volume) || 1;
+                        aVal = buyA / sellA;
+                        bVal = buyB / sellB;
+                        break;
+                    
+                    default:
+                        return 0;
+                }
+                
+                return currentSortOrder === 'desc' ? bVal - aVal : aVal - bVal;
+            });
             
             updateTable(sortedStocks);
         }
 
-        function showMessage(message, type = 'info') {
-            const messageBox = document.getElementById('messageBox');
-            messageBox.innerHTML = `<div class="message ${type}">${message}</div>`;
+        function showMessage(text, type = 'info') {
+            const messageBox = document.createElement('div');
+            messageBox.className = 'message-box';
+            messageBox.textContent = text;
+            document.body.appendChild(messageBox);
             
             setTimeout(() => {
                 messageBox.innerHTML = '';
@@ -917,16 +806,75 @@
         }
 
         function switchMarket(market) {
-            if (isShowingNews) {
-                showStocks();
+            currentMarket = market;
+            localStorage.setItem('currentMarket', market);
+            
+            document.getElementById('btnTSE').classList.remove('active');
+            document.getElementById('btnOTC').classList.remove('active');
+            
+            if (market === 'TSE') {
+                document.getElementById('btnTSE').classList.add('active');
+            } else {
+                document.getElementById('btnOTC').classList.add('active');
             }
             
-            currentMarket = market;
+            // 根據當前的分類決定要載入什麼
+            if (currentCategory === 'latest') {
+                const data = market === 'TSE' ? tseData : otcData;
+                if (data) {
+                    updateDisplay(data);
+                }
+            } else if (currentCategory === 'fiveday') {
+                loadExternalPage(market === 'TSE' ? 'tse_analysis_complete.html' : 'otc_analysis_complete.html');
+            } else if (currentCategory === 'sixtyDay') {
+                loadExternalPage(market === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
+            }
+        }
+
+        function switchCategory(category) {
+            currentCategory = category;
+            localStorage.setItem('currentCategory', category);
             
-            document.getElementById('tabTSE').classList.toggle('active', market === 'TSE');
-            document.getElementById('tabOTC').classList.toggle('active', market === 'OTC');
+            document.getElementById('tabLatest').classList.remove('active');
+            document.getElementById('tabFiveDay').classList.remove('active');
+            document.getElementById('tabSixtyDay').classList.remove('active');
             
-            const data = market === 'TSE' ? tseData : otcData;
+            if (category === 'latest') {
+                document.getElementById('tabLatest').classList.add('active');
+                showTableView();
+                loadCategoryData();
+            } else if (category === 'fiveday') {
+                document.getElementById('tabFiveDay').classList.add('active');
+                showIframeView();
+                loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_complete.html' : 'otc_analysis_complete.html');
+            } else if (category === 'sixtyDay') {
+                document.getElementById('tabSixtyDay').classList.add('active');
+                showIframeView();
+                loadExternalPage(currentMarket === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
+            }
+        }
+
+        function showTableView() {
+            document.getElementById('controls').style.display = 'flex';
+            document.getElementById('tableContainer').style.display = 'block';
+            document.getElementById('iframeContainer').style.display = 'none';
+        }
+
+        function showIframeView() {
+            document.getElementById('controls').style.display = 'none';
+            document.getElementById('tableContainer').style.display = 'none';
+            document.getElementById('iframeContainer').style.display = 'block';
+        }
+
+        function loadExternalPage(filename) {
+            const iframe = document.getElementById('externalFrame');
+            iframe.src = './' + filename;
+        }
+
+        function loadCategoryData() {
+            // 這裡可以根據不同的 category 載入不同的 JSON 檔案
+            // 目前先使用同一份資料
+            const data = currentMarket === 'TSE' ? tseData : otcData;
             if (data) {
                 updateDisplay(data);
             }
@@ -935,13 +883,23 @@
         function updateDisplay(data) {
             currentStocks = data.stocks || [];
             
-            const newsStocks = currentStocks.filter(stock => stock.mention_count > 0).length;
-            const buySellStocks = currentStocks.filter(stock => stock.mention_count === 0).length;
+            const buyStocks = currentStocks.filter(stock => {
+                const buyVol = parseInt(stock.buy_volume) || 0;
+                const sellVol = parseInt(stock.sell_volume) || 0;
+                return buyVol > sellVol;
+            }).length;
+            
+            const sellStocks = currentStocks.filter(stock => {
+                const buyVol = parseInt(stock.buy_volume) || 0;
+                const sellVol = parseInt(stock.sell_volume) || 0;
+                return sellVol > buyVol;
+            }).length;
             
             document.getElementById('updateTime').textContent = 
                 data.update_time ? (data.update_time.includes(' ') ? data.update_time.split(' ')[1] : data.update_time) : '--:--:--';
-            document.getElementById('newsCount').textContent = newsStocks;
-            document.getElementById('stockCount').textContent = buySellStocks;
+            document.getElementById('stockCount').textContent = currentStocks.length;
+            document.getElementById('buyCount').textContent = buyStocks;
+            document.getElementById('sellCount').textContent = sellStocks;
 
             currentSortField = 'default';
             currentSortOrder = 'desc';
@@ -963,7 +921,7 @@
 
             if (stocks.length === 0) {
                 const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="12" style="padding: 40px; color: #95a5a6;">目前沒有資料</td>';
+                row.innerHTML = '<td colspan="10" style="padding: 40px; color: #95a5a6;">資料載入失敗,請稍後重試</td>';
                 tbody.appendChild(row);
                 table.style.display = 'table';
                 return;
@@ -974,11 +932,6 @@
                 const rankClass = index === 0 ? 'rank-1' : 
                                  index === 1 ? 'rank-2' : 
                                  index === 2 ? 'rank-3' : 'rank';
-
-                const hotBadge = stock.mention_count >= 5 ? 
-                    '<span class="badge badge-hot">熱</span>' : 
-                    stock.mention_count >= 3 ? 
-                    '<span class="badge badge-warm">注</span>' : '';
 
                 const changeClass = getPriceClass(stock.change);
                 const changePercentClass = getPriceClass(stock.change_percent);
@@ -1007,9 +960,7 @@
                 row.innerHTML = `
                     <td class="${rankClass}">${index + 1}</td>
                     <td class="stock-code">${stock.code}</td>
-                    <td class="stock-name">${stock.name}${hotBadge}</td>
-                    <td style="font-weight: 600; color: #667eea;">${stock.mention_count}</td>
-                    <td style="font-weight: 600; color: #e74c3c;">${formatNumber(stock.yesterday_buy)}</td>
+                    <td class="stock-name">${stock.name}</td>
                     <td style="font-weight: 600; color: #2c3e50;">${stock.current_price}</td>
                     <td style="color: #95a5a6;">${stock.open_price}</td>
                     <td class="${changeClass}">${stock.change}</td>
@@ -1042,6 +993,7 @@
                     console.log('✅ OTC 資料已載入');
                 }
                 
+                // 恢復上次的市場和分類選擇
                 const currentData = currentMarket === 'TSE' ? tseData : otcData;
                 
                 if (!currentData) {
@@ -1053,16 +1005,43 @@
                         throw new Error('無法載入市場資料');
                     }
                 } else {
-                    updateDisplay(currentData);
-                    showMessage('✅ 資料載入成功', 'success');
+                    // 恢復按鈕狀態
+                    document.getElementById('btnTSE').classList.remove('active');
+                    document.getElementById('btnOTC').classList.remove('active');
+                    
+                    if (currentMarket === 'TSE') {
+                        document.getElementById('btnTSE').classList.add('active');
+                    } else {
+                        document.getElementById('btnOTC').classList.add('active');
+                    }
+                    
+                    // 恢復分類按鈕狀態
+                    document.getElementById('tabLatest').classList.remove('active');
+                    document.getElementById('tabFiveDay').classList.remove('active');
+                    document.getElementById('tabSixtyDay').classList.remove('active');
+                    
+                    if (currentCategory === 'latest') {
+                        document.getElementById('tabLatest').classList.add('active');
+                        showTableView();
+                        updateDisplay(currentData);
+                    } else if (currentCategory === 'fiveday') {
+                        document.getElementById('tabFiveDay').classList.add('active');
+                        showIframeView();
+                        loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_complete.html' : 'otc_analysis_complete.html');
+                    } else if (currentCategory === 'sixtyDay') {
+                        document.getElementById('tabSixtyDay').classList.add('active');
+                        showIframeView();
+                        loadExternalPage(currentMarket === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
+                    }
+                    
+                    document.getElementById('dataTable').style.display = 'table';
                 }
                 
             } catch (error) {
                 console.error('載入失敗:', error);
-                showMessage('⚠️ 資料載入失敗', 'info');
                 
                 const tbody = document.getElementById('tableBody');
-                tbody.innerHTML = `<tr><td colspan="12" style="padding: 40px; color: #95a5a6;">
+                tbody.innerHTML = `<tr><td colspan="10" style="padding: 40px; color: #95a5a6;">
                     資料載入失敗,請稍後重試
                 </td></tr>`;
                 document.getElementById('dataTable').style.display = 'table';
@@ -1072,7 +1051,8 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            console.log('📱 台股追蹤系統 - 響應式版本');
+            console.log('📱 台股機構投資人買賣分析系統');
+            document.getElementById('dataTable').style.display = 'table';
             
             const sortField = document.getElementById('sortField');
             if (sortField) {
@@ -1082,424 +1062,8 @@
                 });
             }
             
-            // autoLoadData 會根據 localStorage 自動決定顯示什麼
             autoLoadData();
         });
     </script>
-
-    <script>
-        // 變數已在前面的 script 區塊宣告
-
-        async function showNews() {
-            const loading = document.getElementById('loading');
-            loading.style.display = 'block';
-            
-            // 強制重新載入新聞資料以獲取最新更新
-            try {
-                const response = await fetch('./StockInfo/twstock_news.json?t=' + Date.now());
-                if (!response.ok) {
-                    throw new Error('新聞資料載入失敗');
-                }
-                newsData = await response.json();
-                console.log('✅ 新聞資料已載入，共', newsData.length, '則');
-                
-                // Debug: 顯示所有新聞的 scraped_time
-                console.log('所有新聞時間:', newsData.map(n => n.scraped_time).filter(t => t).sort());
-            } catch (error) {
-                console.error('載入新聞失敗:', error);
-                loading.style.display = 'none';
-                return;
-            } finally {
-                loading.style.display = 'none';
-            }
-            
-            isShowingNews = true;
-            localStorage.setItem('currentView', 'news');
-            
-            document.getElementById('tabTSE').classList.remove('active');
-            document.getElementById('tabOTC').classList.remove('active');
-            document.getElementById('newsBtn').classList.add('active');
-            
-            document.getElementById('dataTable').style.display = 'none';
-            document.getElementById('newsList').classList.add('active');
-            
-            const sortControls = document.querySelector('.sort-controls');
-            if (sortControls) sortControls.style.display = 'none';
-            
-            // 從所有新聞中找最新的 scraped_time
-            let updateTimeText = '--:--:--';
-            if (newsData && newsData.length > 0) {
-                const allTimes = newsData
-                    .map(news => news.scraped_time)
-                    .filter(time => time && time.length > 0)
-                    .sort()
-                    .reverse();
-                
-                console.log('📊 所有新聞時間（前5筆）:', allTimes.slice(0, 5));
-                
-                if (allTimes.length > 0) {
-                    const latestTimeStr = allTimes[0];
-                    updateTimeText = latestTimeStr.split(' ')[1];
-                    console.log('✅ 最新時間:', latestTimeStr, '-> 顯示:', updateTimeText);
-                }
-            }
-            
-            document.getElementById('updateTime').textContent = updateTimeText;
-            
-            // 顯示所有新聞（不篩選 stocks）
-            const hotNews = newsData;
-            
-            document.getElementById('newsCount').textContent = hotNews.length;
-            document.getElementById('stockCount').textContent = '-';
-            
-            document.getElementById('sectionTitle').innerHTML = `熱門新聞 <span style="font-size: 0.65em; color: #27ae60; margin-left: 10px; font-weight: 500;">✓ ${hotNews.length} 則</span>`;
-            
-            const newsContent = document.getElementById('newsContent');
-            newsContent.innerHTML = '';
-            
-            if (hotNews.length === 0) {
-                newsContent.innerHTML = '<div style="padding: 40px; text-align: center; color: #95a5a6;">目前沒有熱門新聞資料</div>';
-                return;
-            }
-            
-            hotNews.forEach((news, index) => {
-                const newsItem = document.createElement('div');
-                newsItem.className = 'news-item';
-                
-                newsItem.innerHTML = `
-                    <div class="news-title">
-                        ${index + 1}. <a href="${news.url}" target="_blank">${news.title}</a>
-                    </div>
-                    <div class="news-meta">
-                        <span class="news-time">${news.publish_time}</span>
-                        <span>抓取: ${news.scraped_time}</span>
-                    </div>
-                `;
-                
-                newsContent.appendChild(newsItem);
-            });
-        }
-
-        function showStocks() {
-            isShowingNews = false;
-            localStorage.removeItem('currentView');
-            
-            document.getElementById('newsBtn').classList.remove('active');
-            
-            document.getElementById('dataTable').style.display = 'table';
-            document.getElementById('newsList').classList.remove('active');
-            
-            const sortControls = document.querySelector('.sort-controls');
-            if (sortControls) sortControls.style.display = 'flex';
-            
-            document.getElementById('sectionTitle').textContent = '熱門股票排行';
-            
-            // 恢復統計卡片為當前市場資料
-            const data = currentMarket === 'TSE' ? tseData : otcData;
-            if (data) {
-                const newsStocks = data.stocks.filter(stock => stock.mention_count > 0).length;
-                const buySellStocks = data.stocks.filter(stock => stock.mention_count === 0).length;
-                document.getElementById('updateTime').textContent = data.update_time ? (data.update_time.includes(' ') ? data.update_time.split(' ')[1] : data.update_time) : '--:--:--';
-                document.getElementById('newsCount').textContent = newsStocks;
-                document.getElementById('stockCount').textContent = buySellStocks;
-            }
-        }
-
-        function toggleSortOrder() {
-            currentSortOrder = currentSortOrder === 'desc' ? 'asc' : 'desc';
-            const sortIcon = document.getElementById('sortIcon');
-            const sortText = document.getElementById('sortText');
-            
-            if (currentSortOrder === 'desc') {
-                sortIcon.textContent = '↓';
-                sortText.textContent = '高到低';
-            } else {
-                sortIcon.textContent = '↑';
-                sortText.textContent = '低到高';
-            }
-            
-            applySorting();
-        }
-
-        function applySorting() {
-            if (currentStocks.length === 0) return;
-            
-            let sortedStocks = [...currentStocks];
-            
-            if (currentSortField !== 'default') {
-                sortedStocks.sort((a, b) => {
-                    let aVal, bVal;
-                    
-                    switch(currentSortField) {
-                        case 'mention':
-                            aVal = parseInt(a.mention_count) || 0;
-                            bVal = parseInt(b.mention_count) || 0;
-                            break;
-                        case 'buy':
-                            aVal = parseInt(a.yesterday_buy) || 0;
-                            bVal = parseInt(b.yesterday_buy) || 0;
-                            break;
-                        case 'price':
-                            aVal = parseFloat(a.current_price) || 0;
-                            bVal = parseFloat(b.current_price) || 0;
-                            break;
-                        case 'change':
-                            aVal = parseFloat(a.change) || 0;
-                            bVal = parseFloat(b.change) || 0;
-                            break;
-                        case 'change_percent':
-                            aVal = parseFloat(a.change_percent) || 0;
-                            bVal = parseFloat(b.change_percent) || 0;
-                            break;
-                        case 'buy_volume':
-                            aVal = parseInt(a.buy_volume) || 0;
-                            bVal = parseInt(b.buy_volume) || 0;
-                            break;
-                        case 'sell_volume':
-                            aVal = parseInt(a.sell_volume) || 0;
-                            bVal = parseInt(b.sell_volume) || 0;
-                            break;
-                        case 'ratio':
-                            const aBuy = parseInt(a.buy_volume) || 0;
-                            const aSell = parseInt(a.sell_volume) || 0;
-                            const bBuy = parseInt(b.buy_volume) || 0;
-                            const bSell = parseInt(b.sell_volume) || 0;
-                            aVal = aSell > 0 ? aBuy / aSell : (aBuy > 0 ? 999 : 0);
-                            bVal = bSell > 0 ? bBuy / bSell : (bBuy > 0 ? 999 : 0);
-                            break;
-                        default:
-                            return 0;
-                    }
-                    
-                    return currentSortOrder === 'desc' ? bVal - aVal : aVal - bVal;
-                });
-            }
-            
-            updateTable(sortedStocks);
-        }
-
-        function showMessage(message, type = 'info') {
-            const messageBox = document.getElementById('messageBox');
-            messageBox.innerHTML = `<div class="message ${type}">${message}</div>`;
-            
-            setTimeout(() => {
-                messageBox.innerHTML = '';
-            }, 4000);
-        }
-
-        function formatNumber(num) {
-            if (num === '無資料' || num === '-' || !num) return '-';
-            const n = parseInt(num);
-            if (isNaN(n)) return num;
-            return n.toLocaleString();
-        }
-
-        function getPriceClass(change) {
-            if (!change || change === '-' || change === '無資料') return 'price-neutral';
-            if (change.includes('+') || parseFloat(change) > 0) return 'price-up';
-            if (change.includes('-') || parseFloat(change) < 0) return 'price-down';
-            return 'price-neutral';
-        }
-
-        function switchMarket(market) {
-            if (isShowingNews) {
-                showStocks();
-            }
-            
-            currentMarket = market;
-            localStorage.setItem('currentMarket', market);
-            localStorage.removeItem('currentView'); // 切換市場時清除新聞狀態
-            
-            document.getElementById('tabTSE').classList.remove('active');
-            document.getElementById('tabOTC').classList.remove('active');
-            document.getElementById('newsBtn').classList.remove('active');
-            
-            if (market === 'TSE') {
-                document.getElementById('tabTSE').classList.add('active');
-            } else {
-                document.getElementById('tabOTC').classList.add('active');
-            }
-            
-            const data = market === 'TSE' ? tseData : otcData;
-            if (data) {
-                updateDisplay(data);
-            }
-        }
-
-        function updateDisplay(data) {
-            currentStocks = data.stocks || [];
-            
-            const newsStocks = currentStocks.filter(stock => stock.mention_count > 0).length;
-            const buySellStocks = currentStocks.filter(stock => stock.mention_count === 0).length;
-            
-            document.getElementById('updateTime').textContent = 
-                data.update_time ? (data.update_time.includes(' ') ? data.update_time.split(' ')[1] : data.update_time) : '--:--:--';
-            document.getElementById('newsCount').textContent = newsStocks;
-            document.getElementById('stockCount').textContent = buySellStocks;
-
-            currentSortField = 'default';
-            currentSortOrder = 'desc';
-            const sortField = document.getElementById('sortField');
-            if (sortField) sortField.value = 'default';
-            const sortIcon = document.getElementById('sortIcon');
-            const sortText = document.getElementById('sortText');
-            if (sortIcon) sortIcon.textContent = '↓';
-            if (sortText) sortText.textContent = '高到低';
-
-            updateTable(currentStocks);
-        }
-
-        function updateTable(stocks) {
-            const table = document.getElementById('dataTable');
-            const tbody = document.getElementById('tableBody');
-            
-            tbody.innerHTML = '';
-
-            if (stocks.length === 0) {
-                const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="12" style="padding: 40px; color: #95a5a6;">資料載入失敗,請稍後重試</td>';
-                tbody.appendChild(row);
-                table.style.display = 'table';
-                return;
-            }
-
-            stocks.forEach((stock, index) => {
-                const row = document.createElement('tr');
-                const rankClass = index === 0 ? 'rank-1' : 
-                                 index === 1 ? 'rank-2' : 
-                                 index === 2 ? 'rank-3' : 'rank';
-
-                const hotBadge = stock.mention_count >= 5 ? 
-                    '<span class="badge badge-hot">熱</span>' : 
-                    stock.mention_count >= 3 ? 
-                    '<span class="badge badge-warm">注</span>' : '';
-
-                const changeClass = getPriceClass(stock.change);
-                const changePercentClass = getPriceClass(stock.change_percent);
-
-                const buyVol = parseInt(stock.buy_volume) || 0;
-                const sellVol = parseInt(stock.sell_volume) || 0;
-                let buySellRatio = '-';
-                let ratioClass = 'price-neutral';
-                
-                if (sellVol > 0) {
-                    const ratio = buyVol / sellVol;
-                    buySellRatio = ratio.toFixed(2);
-                    
-                    if (ratio > 1) {
-                        ratioClass = 'price-up';
-                    } else if (ratio < 1) {
-                        ratioClass = 'price-down';
-                    } else {
-                        ratioClass = 'price-neutral';
-                    }
-                } else if (buyVol > 0) {
-                    buySellRatio = '∞';
-                    ratioClass = 'price-up';
-                }
-
-                row.innerHTML = `
-                    <td class="${rankClass}">${index + 1}</td>
-                    <td class="stock-code">${stock.code}</td>
-                    <td class="stock-name">${stock.name}${hotBadge}</td>
-                    <td style="font-weight: 600; color: #667eea;">${stock.mention_count}</td>
-                    <td style="font-weight: 600; color: #e74c3c;">${formatNumber(stock.yesterday_buy)}</td>
-                    <td style="font-weight: 600; color: #2c3e50;">${stock.current_price}</td>
-                    <td style="color: #95a5a6;">${stock.open_price}</td>
-                    <td class="${changeClass}">${stock.change}</td>
-                    <td class="${changePercentClass}">${stock.change_percent}</td>
-                    <td style="color: #e74c3c; font-weight: 500;">${formatNumber(stock.buy_volume)}</td>
-                    <td style="color: #27ae60; font-weight: 500;">${formatNumber(stock.sell_volume)}</td>
-                    <td class="${ratioClass}" style="font-weight: 600;">${buySellRatio}</td>
-                `;
-
-                tbody.appendChild(row);
-            });
-
-            table.style.display = 'table';
-        }
-
-        async function autoLoadData() {
-            const loading = document.getElementById('loading');
-            loading.style.display = 'block';
-            
-            try {
-                const tseResponse = await fetch('./StockInfo/TSE_hotstock_data.json');
-                if (tseResponse.ok) {
-                    tseData = await tseResponse.json();
-                    console.log('✅ TSE 資料已載入');
-                }
-                
-                const otcResponse = await fetch('./StockInfo/OTC_hotstock_data.json');
-                if (otcResponse.ok) {
-                    otcData = await otcResponse.json();
-                    console.log('✅ OTC 資料已載入');
-                }
-                
-                // 檢查上次的視圖狀態
-                const savedView = localStorage.getItem('currentView');
-                if (savedView === 'news') {
-                    // 恢復到新聞頁面 - 這會自動載入 newsData
-                    await showNews();
-                } else {
-                    // 恢復到股票頁面
-                    const currentData = currentMarket === 'TSE' ? tseData : otcData;
-                    
-                    if (!currentData) {
-                        if (currentMarket === 'TSE' && otcData) {
-                            switchMarket('OTC');
-                        } else if (currentMarket === 'OTC' && tseData) {
-                            switchMarket('TSE');
-                        } else {
-                            throw new Error('無法載入市場資料');
-                        }
-                    } else {
-                        // 恢復上次選擇的市場,確保按鈕狀態正確
-                        document.getElementById('tabTSE').classList.remove('active');
-                        document.getElementById('tabOTC').classList.remove('active');
-                        document.getElementById('newsBtn').classList.remove('active');
-                        
-                        if (currentMarket === 'TSE') {
-                            document.getElementById('tabTSE').classList.add('active');
-                        } else {
-                            document.getElementById('tabOTC').classList.add('active');
-                        }
-                        
-                        document.getElementById('dataTable').style.display = 'table';
-                        document.getElementById('newsList').classList.remove('active');
-                        
-                        updateDisplay(currentData);
-                    }
-                }
-                
-            } catch (error) {
-                console.error('載入失敗:', error);
-                // 移除浮窗訊息
-                
-                const tbody = document.getElementById('tableBody');
-                tbody.innerHTML = `<tr><td colspan="12" style="padding: 40px; color: #95a5a6;">
-                    資料載入失敗,請稍後重試
-                </td></tr>`;
-                document.getElementById('dataTable').style.display = 'table';
-            } finally {
-                loading.style.display = 'none';
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            console.log('📱 台股追蹤系統');
-            document.getElementById('dataTable').style.display = 'table';
-            
-            const sortField = document.getElementById('sortField');
-            if (sortField) {
-                sortField.addEventListener('change', (e) => {
-                    currentSortField = e.target.value;
-                    applySorting();
-                });
-            }
-            
-            autoLoadData();
-        });
-</script>
 </body>
 </html>
