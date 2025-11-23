@@ -1,25 +1,13 @@
-name: Taiwan Stock Analysis - Two Stage
+name: Taiwan Stock Price Update
 
 on:
   schedule:
-    # 階段1: 每小時執行一次 (UTC 時間)
-    - cron: '0 * * * *'
-    # 階段2: 周日到周五 9:00-12:00 (台灣時間 = UTC 1:00-4:00)
-    - cron: '0 1-4 * * 0-5'
-    # 特殊任務: 周日到周五 14:00 刪除新聞檔案 (台灣時間 = UTC 6:00)
-    - cron: '0 6 * * 0-5'
+    # 每天台灣時間晚上 7:00 執行 (UTC 時間 11:00，因為台灣時間 = UTC+8)
+    - cron: '0 11 * * *'
   
   # 允許手動觸發
   workflow_dispatch:
     inputs:
-      stage:
-        description: '執行階段 (1=新聞收集, 2=股價抓取)'
-        required: true
-        default: '2'
-        type: choice
-        options:
-          - '1'
-          - '2'
       process_mode:
         description: '處理模式 (TSE=上市, OTC=上櫃, BOTH=兩者)'
         required: true
@@ -31,7 +19,7 @@ on:
           - 'BOTH'
 
 jobs:
-  analyze-stocks:
+  update-stock-prices:
     runs-on: ubuntu-latest
     
     steps:
@@ -49,123 +37,32 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests beautifulsoup4 lxml pytz pandas
+        pip install requests beautifulsoup4 lxml pytz
     
-    - name: Create StockInfo directory
-      run: mkdir -p StockInfo
-    
-    # 判斷執行階段
-    - name: Determine stage
-      id: determine_stage
+    - name: Verify StockInfo directory and HTML files
       run: |
-        HOUR=$(TZ='Asia/Taipei' date '+%H')
-        DAY_OF_WEEK=$(TZ='Asia/Taipei' date '+%u')  # 1=週一, 7=週日
-        echo "Current hour: $HOUR, Day of week: $DAY_OF_WEEK"
-        
-        # 手動觸發時使用指定的階段
-        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          STAGE="${{ github.event.inputs.stage }}"
-          echo "Manual trigger - Stage: $STAGE"
-        # 周日到周五 (0=週日, 1-5=週一到週五) 9-12點執行階段2
-        elif [ "$DAY_OF_WEEK" = "7" ] || [ "$DAY_OF_WEEK" -le "5" ]; then
-          if [ "$HOUR" -ge "09" ] && [ "$HOUR" -le "12" ]; then
-            STAGE="2"
-            echo "Time-based trigger (Sun-Fri 9-12am) - Stage 2"
-          else
-            STAGE="1"
-            echo "Time-based trigger (other hours) - Stage 1"
-          fi
+        echo "📁 Checking StockInfo directory..."
+        if [ -d "StockInfo" ]; then
+          echo "✅ StockInfo directory exists"
+          echo "📄 Listing HTML files:"
+          ls -lh StockInfo/*.html 2>/dev/null || echo "⚠️  No HTML files found"
         else
-          STAGE="1"
-          echo "Time-based trigger (Saturday) - Stage 1"
-        fi
-        
-        echo "stage=$STAGE" >> $GITHUB_OUTPUT
-    
-    # 備份並刪除新聞檔案 (周日到周五下午2點)
-    - name: Backup and delete news file at 2 PM
-      id: backup_at_2pm
-      run: |
-        HOUR=$(TZ='Asia/Taipei' date '+%H')
-        DAY_OF_WEEK=$(TZ='Asia/Taipei' date '+%u')
-        DATE=$(TZ='Asia/Taipei' date '+%Y%m%d')
-        
-        # 設定一個 flag 來記錄是否有執行備份
-        echo "backup_executed=false" >> $GITHUB_OUTPUT
-        
-        if [ "$HOUR" = "14" ] && ([ "$DAY_OF_WEEK" = "7" ] || [ "$DAY_OF_WEEK" -le "5" ]); then
-          echo "📅 Current Taiwan time: $(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')"
-          
-          # 檢查新聞檔案是否存在
-          if [ -f "StockInfo/twstock_news.json" ]; then
-            # 備份新聞檔案 (加上日期)
-            echo "📦 Backing up twstock_news.json to twstock_news_${DATE}.json before deletion"
-            cp -f StockInfo/twstock_news.json StockInfo/twstock_news_${DATE}.json
-            echo "✅ Backup created: StockInfo/twstock_news_${DATE}.json"
-            
-            # 顯示檔案資訊
-            echo "📄 Backup file info:"
-            ls -lh StockInfo/twstock_news_${DATE}.json
-            
-            # 設定 flag 為 true
-            echo "backup_executed=true" >> $GITHUB_OUTPUT
-            
-            # 刪除原始新聞檔案
-            echo "🗑️  Deleting twstock_news.json at 2 PM (Taiwan time)"
-            rm -f StockInfo/twstock_news.json
-            echo "✅ Original file deleted: StockInfo/twstock_news.json"
-          else
-            echo "⚠️  twstock_news.json not found, nothing to backup"
-          fi
-        else
-          echo "⏰ Not time to backup/delete news file (Current: $HOUR:00, Day: $DAY_OF_WEEK)"
+          echo "❌ StockInfo directory not found"
+          exit 1
         fi
     
-    # 如果在下午2點有執行備份,先 commit 備份檔案
-    - name: Commit backup file at 2 PM
-      if: steps.backup_at_2pm.outputs.backup_executed == 'true'
-      run: |
-        DATE=$(TZ='Asia/Taipei' date '+%Y%m%d')
-        TAIWAN_TIME=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
-        
-        echo "📤 Committing backup file to repository..."
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git add StockInfo/twstock_news_${DATE}.json
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Backup news file before deletion - ${TAIWAN_TIME}" && git pull --rebase origin main && git push)
-        echo "✅ Backup file committed and pushed to repository"
-    
-    - name: Run stock analysis
+    - name: Run stock price update
       env:
-        STAGE: ${{ steps.determine_stage.outputs.stage }}
         PROCESS_MODE: ${{ github.event.inputs.process_mode || 'BOTH' }}
-      run: python stock_analysis.py
-    
-    # 階段1執行完畢後立即備份新聞檔案
-    - name: Backup news file after Stage 1
-      if: steps.determine_stage.outputs.stage == '1'
       run: |
-        DATE=$(TZ='Asia/Taipei' date '+%Y%m%d')
         TAIWAN_TIME=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
-        
-        echo "📅 Current Taiwan time: $TAIWAN_TIME"
-        echo "🔍 Checking if twstock_news.json exists..."
-        
-        if [ -f "StockInfo/twstock_news.json" ]; then
-          echo "📦 Backing up twstock_news.json to twstock_news_${DATE}.json"
-          cp -f StockInfo/twstock_news.json StockInfo/twstock_news_${DATE}.json
-          echo "✅ Backup created: StockInfo/twstock_news_${DATE}.json"
-          
-          # 顯示檔案資訊
-          echo "📄 File info:"
-          ls -lh StockInfo/twstock_news*.json
-        else
-          echo "⚠️  twstock_news.json not found after Stage 1 execution"
-        fi
+        echo "🕐 Current Taiwan time: $TAIWAN_TIME"
+        python stock_analysis.py
     
     - name: Commit and push changes
       run: |
+        TAIWAN_TIME=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add StockInfo/
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock data - Stage ${{ steps.determine_stage.outputs.stage }} - $(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')" && git pull --rebase origin main && git push)
+        git add StockInfo/*.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock prices - ${TAIWAN_TIME}" && git pull --rebase origin main && git push)
