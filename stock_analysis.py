@@ -30,8 +30,8 @@ if not os.path.exists(BASE_PATH):
     os.makedirs(BASE_PATH)
 
 # HTML 檔案路徑
-TSE_ANALYSIS_HTML = os.path.join(BASE_PATH, 'tse_analysis_complete.html')
-OTC_ANALYSIS_HTML = os.path.join(BASE_PATH, 'otc_analysis_complete.html')
+TSE_ANALYSIS_HTML = os.path.join(BASE_PATH, 'tse_analysis_result_complete.html')
+OTC_ANALYSIS_HTML = os.path.join(BASE_PATH, 'otc_analysis_result_complete.html')
 ALL_TSE_HTML = os.path.join(BASE_PATH, 'ALL_TSE.html')
 ALL_OTC_HTML = os.path.join(BASE_PATH, 'ALL_OTC.html')
 
