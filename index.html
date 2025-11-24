@@ -365,10 +365,10 @@
             background: white;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);
-            overflow-x: auto;  /* 支援左右滑動 */
+            overflow-x: auto;
             overflow-y: hidden;
             margin-bottom: 30px;
-            -webkit-overflow-scrolling: touch;  /* iOS 滑動順暢 */
+            -webkit-overflow-scrolling: touch;
         }
 
         @media (min-width: 768px) {
@@ -380,7 +380,7 @@
 
         table {
             width: 100%;
-            min-width: 900px;  /* 確保表格有最小寬度，手機時可滑動 */
+            min-width: 800px;
             border-collapse: collapse;
             display: table;
         }
@@ -393,59 +393,77 @@
             z-index: 10;
         }
 
-        /* 凍結前兩欄（排名和股票） */
-        th:nth-child(1),
-        td:nth-child(1) {
-            position: sticky;
-            left: 0;
-            z-index: 2;
-            background: inherit;
+        /* 排名欄 - 手機凍結 */
+        .col-rank {
+            width: 55px;
+            min-width: 55px;
+            text-align: center;
+            line-height: 1.2;
         }
 
-        th:nth-child(2),
-        td:nth-child(2) {
-            position: sticky;
-            left: 50px;  /* 排名欄寬度 */
-            z-index: 2;
-            background: inherit;
+        /* 手機版凍結排名欄 */
+        @media (max-width: 767px) {
+            th.col-rank,
+            td.col-rank {
+                position: sticky;
+                left: 0;
+                z-index: 3;
+            }
+            
+            thead th.col-rank {
+                z-index: 12;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+            
+            tbody td.col-rank {
+                background: white;
+            }
+            
+            tbody tr:hover td.col-rank {
+                background: #f8f9ff;
+            }
+            
+            /* 凍結欄右邊陰影 */
+            td.col-rank::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 3px;
+                background: linear-gradient(90deg, rgba(0,0,0,0.06), transparent);
+                pointer-events: none;
+            }
         }
 
-        /* 表頭凍結欄需要更高的 z-index */
-        thead th:nth-child(1),
-        thead th:nth-child(2) {
-            z-index: 12;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /* 排名數字 */
+        .rank-num {
+            font-weight: 700;
+            font-size: 1em;
+            color: #2c3e50;
         }
 
-        /* tbody 凍結欄背景色 */
-        tbody td:nth-child(1),
-        tbody td:nth-child(2) {
-            background: white;
+        .rank-1 .rank-num { color: #e74c3c; }
+        .rank-2 .rank-num { color: #e67e22; }
+        .rank-3 .rank-num { color: #f1c40f; }
+
+        /* 代號（排名下方） */
+        .rank-code {
+            font-size: 0.7em;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            margin-top: 2px;
         }
 
-        tbody tr:hover td:nth-child(1),
-        tbody tr:hover td:nth-child(2) {
-            background: #f8f9ff;
-        }
-
-        /* 凍結欄右邊加陰影分隔線 */
-        th:nth-child(2)::after,
-        td:nth-child(2)::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: linear-gradient(90deg, rgba(0,0,0,0.08), transparent);
-        }
-
-        th:nth-child(2),
-        td:nth-child(2) {
-            position: sticky;
-            left: 50px;
-            z-index: 2;
-            background: inherit;
+        /* 股票名稱欄 */
+        .col-stock {
+            width: 80px;
+            min-width: 80px;
+            text-align: left;
+            padding-left: 8px !important;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.9em;
         }
 
         th {
@@ -509,26 +527,6 @@
             font-weight: 700;
             color: #cd7f32;
             font-size: 1em;
-        }
-
-        .stock-info {
-            text-align: left;
-            padding-left: 12px !important;
-            line-height: 1.3;
-        }
-
-        .stock-name {
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 0.95em;
-            margin-bottom: 2px;
-        }
-
-        .stock-code {
-            font-weight: 500;
-            color: #667eea;
-            font-family: 'Courier New', monospace;
-            font-size: 0.8em;
         }
 
         .badge {
@@ -780,15 +778,15 @@
             <table id="dataTable">
                 <thead>
                     <tr>
-                        <th style="width: 50px;">排名</th>
-                        <th style="width: 120px; text-align: left; padding-left: 12px;">股票</th>
-                        <th style="width: 70px;">昨收</th>
-                        <th style="width: 100px;">買進(張)</th>
-                        <th style="width: 70px;">成交價</th>
-                        <th style="width: 100px;">賣出(張)</th>
-                        <th style="width: 70px;">漲跌</th>
-                        <th style="width: 80px;">漲跌幅</th>
-                        <th style="width: 70px;">買賣比</th>
+                        <th class="col-rank">排名</th>
+                        <th class="col-stock">股票</th>
+                        <th style="width: 65px;">昨收</th>
+                        <th style="width: 95px;">買進(張)</th>
+                        <th style="width: 65px;">成交價</th>
+                        <th style="width: 95px;">賣出(張)</th>
+                        <th style="width: 60px;">漲跌</th>
+                        <th style="width: 70px;">漲跌幅</th>
+                        <th style="width: 60px;">買賣比</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -1116,11 +1114,11 @@
                 const askBars = generateVolumeBars(stock.ask_volumes, 'ask');
 
                 row.innerHTML = `
-                    <td class="${rankClass}">${index + 1}</td>
-                    <td class="stock-info">
-                        <div class="stock-name">${stock.name}</div>
-                        <div class="stock-code">${stock.code}</div>
+                    <td class="col-rank ${rankClass}">
+                        <div class="rank-num">${index + 1}</div>
+                        <div class="rank-code">${stock.code}</div>
                     </td>
+                    <td class="col-stock">${stock.name}</td>
                     <td style="font-weight: 600; color: #2c3e50;">${stock.close_price}</td>
                     <td class="volume-cell">
                         <div class="volume-wrapper">
