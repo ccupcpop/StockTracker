@@ -187,24 +187,33 @@ def get_stock_info(stock_code, market='TSE'):
                 return None
             
             soup = BeautifulSoup(response.text, 'html.parser')
-            stock_info = {'股票代碼': stock_code}
+            stock_info = {}
             
-            # 提取各項資訊
-            field_mappings = {
-                '成交價': ['成交', '成交價'],
-                '開盤價': ['開盤'],
-                '漲跌': ['漲跌'],
-                '漲跌幅': ['漲跌幅', '漲跌(%)'],
-            }
+            # 提取成交價
+            price_elem = soup.find('span', class_=re.compile('Fw\\(b\\).*Fz\\(32px\\)|Fz\\(40px\\)'))
+            if price_elem:
+                stock_info['成交價'] = price_elem.get_text(strip=True)
             
-            for field_name, search_terms in field_mappings.items():
-                for term in search_terms:
-                    span = soup.find('span', string=re.compile(term))
-                    if span and span.parent:
-                        value = span.parent.get_text().replace(term, '').strip()
-                        if value:
-                            stock_info[field_name] = value
-                            break
+            # 提取漲跌和漲跌幅
+            change_elem = soup.find('span', class_=re.compile('Jc\\(fe\\).*Fz\\(20px\\)|Fz\\(16px\\)'))
+            if change_elem:
+                change_text = change_elem.get_text(strip=True)
+                # 格式: ▲1.50+1.08% 或 ▼1.50-1.08%
+                match = re.search(r'([▲▼])?([\d,.]+)([+-])([\d.]+)%', change_text)
+                if match:
+                    direction = match.group(1)
+                    change_val = match.group(2)
+                    sign = match.group(3)
+                    percent = match.group(4)
+                    stock_info['漲跌'] = f"{sign}{change_val}"
+                    stock_info['漲跌幅'] = f"{sign}{percent}%"
+            
+            # 提取開盤價
+            open_span = soup.find('span', string='開盤')
+            if open_span:
+                open_elem = open_span.find_next('span', class_=re.compile('Fz\\(16px\\)|Fz\\(14px\\)'))
+                if open_elem:
+                    stock_info['開盤價'] = open_elem.get_text(strip=True)
             
             # 提取委買委賣小計
             buy_total = sell_total = '無資料'
@@ -261,14 +270,13 @@ def fetch_stocks_price(stocks_dict, market_type, delay=1.5):
                 'code': code,
                 'name': name,
                 'market': market_type,
-                'yesterday_buy': yesterday_buy,  # 昨日買超量
+                'yesterday_buy': yesterday_buy,
                 'current_price': info.get('成交價', '-'),
                 'open_price': info.get('開盤價', '-'),
                 'change': info.get('漲跌', '-'),
                 'change_percent': info.get('漲跌幅', '-'),
                 'buy_volume': info.get('委買小計', '-'),
-                'sell_volume': info.get('委賣小計', '-'),
-                'update_time': datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S')
+                'sell_volume': info.get('委賣小計', '-')
             }
             results.append(result)
         
