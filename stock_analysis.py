@@ -197,64 +197,39 @@ def get_stock_info(stock_code, market='TSE'):
                 '委賣小計': '-'
             }
             
-            # 方法1: 提取成交價 (大字體的當前價格)
-            price_elem = soup.find('span', class_=re.compile('Fw\\(b\\).*Fz\\(32px\\)|Fz\\(40px\\)'))
-            if price_elem:
-                stock_info['成交'] = price_elem.get_text(strip=True)
-            
-            # 方法2: 提取漲跌和漲跌幅 (從大字體下方的變動資訊)
-            change_elem = soup.find('span', class_=re.compile('Jc\\(fe\\).*Fz\\(20px\\)|Fz\\(16px\\)'))
-            if change_elem:
-                change_text = change_elem.get_text(strip=True)
-                # 格式可能是: ▲1.50+1.08% 或 ▼1.50-1.08% 或 1.50+1.08%
-                match = re.search(r'([▲▼])?([\d,.]+)([+-])([\d.]+)%', change_text)
-                if match:
-                    change_val = match.group(2)
-                    sign = match.group(3)
-                    percent = match.group(4)
-                    stock_info['漲跌'] = f"{sign}{change_val}"
-                    stock_info['漲跌幅'] = f"{sign}{percent}%"
-            
-            # 方法3: 從詳細資訊區域提取所有資料 (包含昨收、開盤等)
-            # 尋找所有包含標籤的 li 元素
+            # 方法1: 從 price-detail-item 的 li 元素中提取資料
+            # 這是最可靠的方法，因為結構清楚
             all_list_items = soup.find_all('li', class_=re.compile('price-detail-item'))
             
-            for item in all_list_items:
-                text = item.get_text()
+            for li in all_list_items:
+                # 找到標籤 span (包含 "成交"、"昨收" 等文字)
+                label_span = li.find('span', class_=re.compile('C\\(#232a31\\)'))
+                if not label_span:
+                    continue
                 
-                # 提取昨收
-                if '昨收' in text or 'Previous Close' in text:
-                    match = re.search(r'([\d,.]+)', text.replace('昨收', '').replace('Previous Close', ''))
-                    if match:
-                        stock_info['昨收'] = match.group(1)
+                label = label_span.get_text(strip=True)
                 
-                # 提取開盤
-                if '開盤' in text or 'Open' in text:
-                    match = re.search(r'([\d,.]+)', text.replace('開盤', '').replace('Open', ''))
-                    if match:
-                        stock_info['開盤'] = match.group(1)
+                # 找到數值 span (包含實際數字)
+                value_span = li.find('span', class_=re.compile('Fw\\(600\\)'))
+                if not value_span:
+                    continue
+                
+                value = value_span.get_text(strip=True)
+                
+                # 根據標籤分配到對應的欄位
+                if label == '成交':
+                    stock_info['成交'] = value
+                elif label == '昨收':
+                    stock_info['昨收'] = value
+                elif label == '開盤':
+                    stock_info['開盤'] = value
+                elif label == '漲跌':
+                    stock_info['漲跌'] = value
+                elif label == '漲跌幅':
+                    # 移除可能的符號，只保留數字和正負號
+                    stock_info['漲跌幅'] = value
             
-            # 方法4: 使用更通用的方式尋找昨收和開盤
-            if stock_info['昨收'] == '-':
-                prev_close_span = soup.find('span', string=re.compile('昨收|Previous Close'))
-                if prev_close_span:
-                    # 找相鄰的數字
-                    parent = prev_close_span.parent
-                    if parent:
-                        numbers = re.findall(r'[\d,.]+', parent.get_text())
-                        if numbers:
-                            stock_info['昨收'] = numbers[0]
-            
-            if stock_info['開盤'] == '-':
-                open_span = soup.find('span', string=re.compile('開盤|Open'))
-                if open_span:
-                    parent = open_span.parent
-                    if parent:
-                        numbers = re.findall(r'[\d,.]+', parent.get_text())
-                        if numbers:
-                            stock_info['開盤'] = numbers[0]
-            
-            # 方法5: 提取委買委賣小計
+            # 方法2: 提取委買委賣小計（從不同的結構）
             all_divs = soup.find_all('div', class_=True)
             for div in all_divs:
                 div_text = div.get_text()
