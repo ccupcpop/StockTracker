@@ -283,25 +283,27 @@ def get_stock_info(stock_code, market='TSE'):
                     else:
                         stock_info['漲跌幅'] = value
             
-            # 方法2: 提取委買委賣小計（從 div 中的兩個 span 結構）
+            # 方法2: 提取委買委賣小計（從 div 的所有文字內容）
             all_divs = soup.find_all('div', class_=True)
             for div in all_divs:
-                spans = div.find_all('span')
-                if len(spans) == 2:
-                    text1 = spans[0].get_text(strip=True)
-                    text2 = spans[1].get_text(strip=True)
-                    
-                    # 委買小計: 數字在前，"小計"在後
-                    if text2 == '小計' and re.match(r'^[\d,]+$', text1) and stock_info['委買小計'] == '-':
-                        value = text1.replace(',', '')
-                        if len(value) <= 10:  # 合理長度
-                            stock_info['委買小計'] = value
-                    
-                    # 委賣小計: "小計"在前，數字在後
-                    elif text1 == '小計' and re.match(r'^[\d,]+$', text2) and stock_info['委賣小計'] == '-':
-                        value = text2.replace(',', '')
-                        if len(value) <= 10:  # 合理長度
-                            stock_info['委賣小計'] = value
+                # 取得 div 內所有文字（包括直接文字節點）
+                all_text = [s.strip().strip('"') for s in div.stripped_strings]
+                
+                # 必須包含「小計」且至少有2個元素
+                if len(all_text) < 2 or '小計' not in all_text:
+                    continue
+                
+                # 委買小計: 數字在前，"小計"在後
+                if all_text[-1] == '小計' and re.match(r'^[\d,]+$', all_text[0]) and stock_info['委買小計'] == '-':
+                    value = all_text[0].replace(',', '')
+                    if len(value) <= 10:
+                        stock_info['委買小計'] = value
+                
+                # 委賣小計: "小計"在前，數字在後
+                elif all_text[0] == '小計' and re.match(r'^[\d,]+$', all_text[-1]) and stock_info['委賣小計'] == '-':
+                    value = all_text[-1].replace(',', '')
+                    if len(value) <= 10:
+                        stock_info['委賣小計'] = value
             
             return stock_info
             
