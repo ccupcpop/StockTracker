@@ -365,8 +365,10 @@
             background: white;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);
-            overflow: hidden;
+            overflow-x: auto;  /* 支援左右滑動 */
+            overflow-y: hidden;
             margin-bottom: 30px;
+            -webkit-overflow-scrolling: touch;  /* iOS 滑動順暢 */
         }
 
         @media (min-width: 768px) {
@@ -378,6 +380,7 @@
 
         table {
             width: 100%;
+            min-width: 900px;  /* 確保表格有最小寬度，手機時可滑動 */
             border-collapse: collapse;
             display: table;
         }
@@ -1063,14 +1066,14 @@
                     <td class="volume-cell">
                         <div class="volume-wrapper">
                             ${bidBars}
-                            <span class="volume-text" style="color: #e74c3c; font-weight: 500;">${formatNumber(stock.buy_volume)}</span>
+                            <span class="volume-text" style="color: #2c3e50; font-weight: 500;">${formatNumber(stock.buy_volume)}</span>
                         </div>
                     </td>
                     <td style="font-weight: 600; color: #2c3e50;">${stock.current_price}</td>
                     <td class="volume-cell">
                         <div class="volume-wrapper">
                             ${askBars}
-                            <span class="volume-text" style="color: #27ae60; font-weight: 500;">${formatNumber(stock.sell_volume)}</span>
+                            <span class="volume-text" style="color: #2c3e50; font-weight: 500;">${formatNumber(stock.sell_volume)}</span>
                         </div>
                     </td>
                     <td class="${changeClass}">${stock.change}</td>
