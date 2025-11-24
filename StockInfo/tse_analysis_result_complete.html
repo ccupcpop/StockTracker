@@ -1,0 +1,3866 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上市三大法人分析報告</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Microsoft JhengHei", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .tabs {
+            background: white;
+            border-radius: 15px;
+            padding: 20px 20px 0 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        
+        .tab-button {
+            padding: 12px 24px;
+            border: none;
+            background: #f7fafc;
+            color: #4a5568;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: "Microsoft JhengHei", sans-serif;
+        }
+        
+        .tab-button:hover {
+            background: #edf2f7;
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            color: #2d3748;
+        }
+        
+        .section-title.buy {
+            border-bottom-color: #48bb78;
+        }
+        
+        .section-title.sell {
+            border-bottom-color: #f56565;
+        }
+        
+        .section-title.etf {
+            border-bottom-color: #ed8936;
+        }
+        
+        .section-title.attention {
+            border-bottom-color: #ecc94b;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        thead.buy {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+        
+        thead.sell {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+        }
+        
+        thead.etf {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+        }
+        
+        thead.attention {
+            background: linear-gradient(135deg, #ecc94b 0%, #d69e2e 100%);
+        }
+        
+        th {
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9em;
+        }
+        
+        tr:hover {
+            background-color: #f7fafc;
+        }
+        
+        .rank {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+        
+        .stock-code {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .stock-name {
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .volume-positive {
+            color: #e53e3e;
+            font-weight: 600;
+        }
+        
+        .volume-negative {
+            color: #38a169;
+            font-weight: 600;
+        }
+        
+        .price-up {
+            color: #e53e3e;
+            font-weight: 600;
+        }
+        
+        .price-down {
+            color: #38a169;
+            font-weight: 600;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+        
+        .badge-new {
+            background-color: #fed7d7;
+            color: #c53030;
+        }
+        
+        .badge-watch {
+            background-color: #fef5e7;
+            color: #d69e2e;
+        }
+        
+        .badge-alert {
+            background-color: #feebc8;
+            color: #c05621;
+        }
+        
+        .footer {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            color: #718096;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+            
+            table {
+                font-size: 0.85em;
+            }
+            
+            th, td {
+                padding: 8px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="switchTab(0)">彙整分析</button>
+                <button class="tab-button" onclick="switchTab(1)">2025-11-21</button>
+                <button class="tab-button" onclick="switchTab(2)">2025-11-20</button>
+                <button class="tab-button" onclick="switchTab(3)">2025-11-19</button>
+                <button class="tab-button" onclick="switchTab(4)">2025-11-18</button>
+                <button class="tab-button" onclick="switchTab(5)">2025-11-17</button>
+            </div>
+
+            <div id="tab-0" class="tab-content active">
+                <div class="section">
+                    <h2 class="section-title buy">📈 彙整買超分析</h2>
+                    <p style="color: #718096; margin-bottom: 15px;">最近5天買賣超淨值 >= 10000張 (淨值 = 5天買賣超總和)</p>
+                    <table>
+                        <thead class="buy">
+                            <tr>
+                                <th>證券代號</th>
+                                <th>證券領域</th>
+                                <th>證券名稱</th>
+                                <th>買超總和</th>
+                                <th>注意事項</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="stock-code">1303</td>
+                                <td>塑膠工業</td>
+                                <td class="stock-name">南亞            </td>
+                                <td class="volume-positive">48,201</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00881</td>
+                                <td>ETF</td>
+                                <td class="stock-name">國泰台灣科技龍頭</td>
+                                <td class="volume-positive">42,679</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00953B</td>
+                                <td>ETF</td>
+                                <td class="stock-name">群益優選非投等債</td>
+                                <td class="volume-positive">42,640</td>
+                                <td><span class="badge badge-alert">⚠️同時出現在賣超</span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00632R</td>
+                                <td>ETF</td>
+                                <td class="stock-name">元大台灣50反1   </td>
+                                <td class="volume-positive">38,236</td>
+                                <td><span class="badge badge-alert">⚠️同時出現在賣超</span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00882</td>
+                                <td>ETF</td>
+                                <td class="stock-name">中信中國高股息  </td>
+                                <td class="volume-positive">38,204</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2867</td>
+                                <td>金融保險業</td>
+                                <td class="stock-name">三商壽          </td>
+                                <td class="volume-positive">38,023</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2885</td>
+                                <td>金融保險業</td>
+                                <td class="stock-name">元大金          </td>
+                                <td class="volume-positive">32,346</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2890</td>
+                                <td>金融保險業</td>
+                                <td class="stock-name">永豐金          </td>
+                                <td class="volume-positive">31,215</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00712</td>
+                                <td>ETF</td>
+                                <td class="stock-name">復華富時不動產  </td>
+                                <td class="volume-positive">31,103</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2884</td>
+                                <td>金融保險業</td>
+                                <td class="stock-name">玉山金          </td>
+                                <td class="volume-positive">24,928</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">3711</td>
+                                <td>半導體業</td>
+                                <td class="stock-name">日月光投控      </td>
+                                <td class="volume-positive">18,672</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">8112</td>
+                                <td>電子通路業</td>
+                                <td class="stock-name">至上            </td>
+                                <td class="volume-positive">16,238</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2303</td>
+                                <td>半導體業</td>
+                                <td class="stock-name">聯電            </td>
+                                <td class="volume-positive">13,958</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2891</td>
+                                <td>金融保險業</td>
+                                <td class="stock-name">中信金          </td>
+                                <td class="volume-positive">12,973</td>
+                                <td><span class="badge badge-alert">⚠️同時出現在賣超</span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">3189</td>
+                                <td>半導體業</td>
+                                <td class="stock-name">景碩            </td>
+                                <td class="volume-positive">11,531</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">1314</td>
+                                <td>塑膠工業</td>
+                                <td class="stock-name">中石化          </td>
+                                <td class="volume-positive">11,330</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2481</td>
+                                <td>半導體業</td>
+                                <td class="stock-name">強茂            </td>
+                                <td class="volume-positive">10,963</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">1301</td>
+                                <td>塑膠工業</td>
+                                <td class="stock-name">台塑            </td>
+                                <td class="volume-positive">10,187</td>
+                                <td></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title sell">📉 彙整賣超分析</h2>
+                    <p style="color: #718096; margin-bottom: 15px;">最近5天買賣超淨值 <= -10000張 (淨值 = 5天買賣超總和)</p>
+                    <table>
+                        <thead class="sell">
+                            <tr>
+                                <th>證券代號</th>
+                                <th>證券領域</th>
+                                <th>證券名稱</th>
+                                <th>賣超總和</th>
+                                <th>注意事項</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="stock-code">0050</td>
+                                <td>ETF</td>
+                                <td class="stock-name">元大台灣50      </td>
+                                <td class="volume-negative">-563,488</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">0056</td>
+                                <td>ETF</td>
+                                <td class="stock-name">元大高股息      </td>
+                                <td class="volume-negative">-375,119</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00878</td>
+                                <td>ETF</td>
+                                <td class="stock-name">國泰永續高股息  </td>
+                                <td class="volume-negative">-325,067</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00919</td>
+                                <td>ETF</td>
+                                <td class="stock-name">群益台灣精選高息</td>
+                                <td class="volume-negative">-190,086</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00900</td>
+                                <td>ETF</td>
+                                <td class="stock-name">富邦特選高股息30</td>
+                                <td class="volume-negative">-159,539</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2344</td>
+                                <td>半導體業</td>
+                                <td class="stock-name">華邦電          </td>
+                                <td class="volume-negative">-139,646</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2409</td>
+                                <td>光電業</td>
+                                <td class="stock-name">友達            </td>
+                                <td class="volume-negative">-88,146</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00929</td>
+                                <td>ETF</td>
+                                <td class="stock-name">復華台灣科技優息</td>
+                                <td class="volume-negative">-73,360</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2002</td>
+                                <td>鋼鐵工業</td>
+                                <td class="stock-name">中鋼            </td>
+                                <td class="volume-negative">-56,865</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2317</td>
+                                <td>其他電子業</td>
+                                <td class="stock-name">鴻海            </td>
+                                <td class="volume-negative">-43,479</td>
+                                <td><span class="badge badge-alert">⚠️同時出現在買超</span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00918</td>
+                                <td>ETF</td>
+                                <td class="stock-name">大華優利高填息30</td>
+                                <td class="volume-negative">-40,438</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2883</td>
+                                <td>金融保險業</td>
+                                <td class="stock-name">凱基金          </td>
+                                <td class="volume-negative">-39,779</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">1605</td>
+                                <td>電器電纜</td>
+                                <td class="stock-name">華新            </td>
+                                <td class="volume-negative">-39,214</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2330</td>
+                                <td>半導體業</td>
+                                <td class="stock-name">台積電          </td>
+                                <td class="volume-negative">-37,457</td>
+                                <td><span class="badge badge-alert">⚠️同時出現在買超</span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00922</td>
+                                <td>ETF</td>
+                                <td class="stock-name">國泰台灣領袖50  </td>
+                                <td class="volume-negative">-36,306</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">8422</td>
+                                <td>綠能環保</td>
+                                <td class="stock-name">可寧衛*         </td>
+                                <td class="volume-negative">-35,784</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00940</td>
+                                <td>ETF</td>
+                                <td class="stock-name">元大台灣價值高息</td>
+                                <td class="volume-negative">-35,675</td>
+                                <td><span class="badge badge-alert">⚠️同時出現在買超</span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2618</td>
+                                <td>航運業</td>
+                                <td class="stock-name">長榮航          </td>
+                                <td class="volume-negative">-30,254</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2887</td>
+                                <td>金融保險業</td>
+                                <td class="stock-name">台新新光金      </td>
+                                <td class="volume-negative">-29,076</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2324</td>
+                                <td>電腦及週邊設備業</td>
+                                <td class="stock-name">仁寶            </td>
+                                <td class="volume-negative">-25,424</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2515</td>
+                                <td>建材營造業</td>
+                                <td class="stock-name">中工            </td>
+                                <td class="volume-negative">-21,024</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">6770</td>
+                                <td>半導體業</td>
+                                <td class="stock-name">力積電          </td>
+                                <td class="volume-negative">-19,221</td>
+                                <td><span class="badge badge-alert">⚠️同時出現在買超</span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">006208</td>
+                                <td>ETF</td>
+                                <td class="stock-name">富邦台50        </td>
+                                <td class="volume-negative">-19,029</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2801</td>
+                                <td>金融保險業</td>
+                                <td class="stock-name">彰銀            </td>
+                                <td class="volume-negative">-17,585</td>
+                                <td><span class="badge badge-alert">⚠️同時出現在買超</span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">3481</td>
+                                <td>光電業</td>
+                                <td class="stock-name">群創            </td>
+                                <td class="volume-negative">-14,750</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2408</td>
+                                <td>半導體業</td>
+                                <td class="stock-name">南亞科          </td>
+                                <td class="volume-negative">-13,391</td>
+                                <td><span class="badge badge-alert">⚠️同時出現在買超</span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2610</td>
+                                <td>航運業</td>
+                                <td class="stock-name">華航            </td>
+                                <td class="volume-negative">-12,791</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2886</td>
+                                <td>金融保險業</td>
+                                <td class="stock-name">兆豐金          </td>
+                                <td class="volume-negative">-11,327</td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2027</td>
+                                <td>鋼鐵工業</td>
+                                <td class="stock-name">大成鋼          </td>
+                                <td class="volume-negative">-10,639</td>
+                                <td><span class="badge badge-alert">⚠️同時出現在買超</span></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title attention">⚠️ 特別注意</h2>
+                    <p style="color: #718096; margin-bottom: 15px;">同時出現在買超前20和賣超前20的證券 (含日期明細)</p>
+                    <table>
+                        <thead class="attention">
+                            <tr>
+                                <th>代號</th>
+                                <th>名稱</th>
+                                <th>領域</th>
+                                <th>買超次數</th>
+                                <th>買超日期</th>
+                                <th>買超總和</th>
+                                <th>賣超次數</th>
+                                <th>賣超日期</th>
+                                <th>賣超總和</th>
+                                <th>淨買賣超</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="stock-code">00953B</td>
+                                <td class="stock-name">群益優選非投等債</td>
+                                <td>ETF</td>
+                                <td>3</td>
+                                <td>11/17, 11/18, 11/19</td>
+                                <td class="volume-positive">53,376</td>
+                                <td>1</td>
+                                <td>11/20</td>
+                                <td class="volume-negative">-10,736</td>
+                                <td class="volume-positive">42,640</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00632R</td>
+                                <td class="stock-name">元大台灣50反1   </td>
+                                <td>ETF</td>
+                                <td>3</td>
+                                <td>11/18, 11/19, 11/21</td>
+                                <td class="volume-positive">84,836</td>
+                                <td>2</td>
+                                <td>11/17, 11/20</td>
+                                <td class="volume-negative">-46,600</td>
+                                <td class="volume-positive">38,236</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2891</td>
+                                <td class="stock-name">中信金          </td>
+                                <td>金融保險業</td>
+                                <td>3</td>
+                                <td>11/18, 11/19, 11/21</td>
+                                <td class="volume-positive">21,989</td>
+                                <td>1</td>
+                                <td>11/17</td>
+                                <td class="volume-negative">-9,016</td>
+                                <td class="volume-positive">12,973</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2327</td>
+                                <td class="stock-name">國巨*           </td>
+                                <td>電子零組件業</td>
+                                <td>2</td>
+                                <td>11/18, 11/20</td>
+                                <td class="volume-positive">16,517</td>
+                                <td>1</td>
+                                <td>11/19</td>
+                                <td class="volume-negative">-8,820</td>
+                                <td class="volume-positive">7,697</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">8150</td>
+                                <td class="stock-name">南茂            </td>
+                                <td>半導體業</td>
+                                <td>2</td>
+                                <td>11/18, 11/21</td>
+                                <td class="volume-positive">17,892</td>
+                                <td>1</td>
+                                <td>11/17</td>
+                                <td class="volume-negative">-11,900</td>
+                                <td class="volume-positive">5,992</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2615</td>
+                                <td class="stock-name">萬海            </td>
+                                <td>航運業</td>
+                                <td>1</td>
+                                <td>11/18</td>
+                                <td class="volume-positive">7,909</td>
+                                <td>1</td>
+                                <td>11/20</td>
+                                <td class="volume-negative">-4,319</td>
+                                <td class="volume-positive">3,590</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2337</td>
+                                <td class="stock-name">旺宏            </td>
+                                <td>半導體業</td>
+                                <td>2</td>
+                                <td>11/18, 11/21</td>
+                                <td class="volume-positive">30,489</td>
+                                <td>1</td>
+                                <td>11/17</td>
+                                <td class="volume-negative">-30,878</td>
+                                <td class="volume-negative">-389</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">1802</td>
+                                <td class="stock-name">台玻            </td>
+                                <td>玻璃陶瓷</td>
+                                <td>2</td>
+                                <td>11/18, 11/20</td>
+                                <td class="volume-positive">21,689</td>
+                                <td>2</td>
+                                <td>11/17, 11/21</td>
+                                <td class="volume-negative">-23,875</td>
+                                <td class="volume-negative">-2,186</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">3231</td>
+                                <td class="stock-name">緯創            </td>
+                                <td>電腦及週邊設備業</td>
+                                <td>1</td>
+                                <td>11/20</td>
+                                <td class="volume-positive">9,162</td>
+                                <td>1</td>
+                                <td>11/21</td>
+                                <td class="volume-negative">-11,985</td>
+                                <td class="volume-negative">-2,823</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">3037</td>
+                                <td class="stock-name">欣興            </td>
+                                <td>電子零組件業</td>
+                                <td>2</td>
+                                <td>11/18, 11/20</td>
+                                <td class="volume-positive">22,724</td>
+                                <td>2</td>
+                                <td>11/19, 11/21</td>
+                                <td class="volume-negative">-27,179</td>
+                                <td class="volume-negative">-4,455</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">3715</td>
+                                <td class="stock-name">定穎投控        </td>
+                                <td>電子零組件業</td>
+                                <td>1</td>
+                                <td>11/18</td>
+                                <td class="volume-positive">6,581</td>
+                                <td>2</td>
+                                <td>11/17, 11/20</td>
+                                <td class="volume-negative">-13,355</td>
+                                <td class="volume-negative">-6,774</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2881</td>
+                                <td class="stock-name">富邦金          </td>
+                                <td>金融保險業</td>
+                                <td>1</td>
+                                <td>11/21</td>
+                                <td class="volume-positive">6,668</td>
+                                <td>1</td>
+                                <td>11/19</td>
+                                <td class="volume-negative">-14,115</td>
+                                <td class="volume-negative">-7,447</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2027</td>
+                                <td class="stock-name">大成鋼          </td>
+                                <td>鋼鐵工業</td>
+                                <td>1</td>
+                                <td>11/17</td>
+                                <td class="volume-positive">3,565</td>
+                                <td>1</td>
+                                <td>11/19</td>
+                                <td class="volume-negative">-14,204</td>
+                                <td class="volume-negative">-10,639</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2408</td>
+                                <td class="stock-name">南亞科          </td>
+                                <td>半導體業</td>
+                                <td>3</td>
+                                <td>11/17, 11/18, 11/19</td>
+                                <td class="volume-positive">27,494</td>
+                                <td>2</td>
+                                <td>11/20, 11/21</td>
+                                <td class="volume-negative">-40,885</td>
+                                <td class="volume-negative">-13,391</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2801</td>
+                                <td class="stock-name">彰銀            </td>
+                                <td>金融保險業</td>
+                                <td>2</td>
+                                <td>11/20, 11/21</td>
+                                <td class="volume-positive">15,764</td>
+                                <td>3</td>
+                                <td>11/17, 11/18, 11/19</td>
+                                <td class="volume-negative">-33,349</td>
+                                <td class="volume-negative">-17,585</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">6770</td>
+                                <td class="stock-name">力積電          </td>
+                                <td>半導體業</td>
+                                <td>1</td>
+                                <td>11/18</td>
+                                <td class="volume-positive">46,905</td>
+                                <td>3</td>
+                                <td>11/17, 11/19, 11/20</td>
+                                <td class="volume-negative">-66,126</td>
+                                <td class="volume-negative">-19,221</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">00940</td>
+                                <td class="stock-name">元大台灣價值高息</td>
+                                <td>ETF</td>
+                                <td>1</td>
+                                <td>11/20</td>
+                                <td class="volume-positive">8,417</td>
+                                <td>2</td>
+                                <td>11/18, 11/21</td>
+                                <td class="volume-negative">-44,092</td>
+                                <td class="volume-negative">-35,675</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2330</td>
+                                <td class="stock-name">台積電          </td>
+                                <td>半導體業</td>
+                                <td>1</td>
+                                <td>11/20</td>
+                                <td class="volume-positive">7,526</td>
+                                <td>2</td>
+                                <td>11/18, 11/21</td>
+                                <td class="volume-negative">-44,983</td>
+                                <td class="volume-negative">-37,457</td>
+                            </tr>
+
+                            <tr>
+                                <td class="stock-code">2317</td>
+                                <td class="stock-name">鴻海            </td>
+                                <td>其他電子業</td>
+                                <td>1</td>
+                                <td>11/19</td>
+                                <td class="volume-positive">5,735</td>
+                                <td>2</td>
+                                <td>11/20, 11/21</td>
+                                <td class="volume-negative">-49,214</td>
+                                <td class="volume-negative">-43,479</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div id="tab-1" class="tab-content">
+                <div class="section">
+                    <h2 class="section-title buy">📈 買超 TOP 50 (2025-11-21)</h2>
+                    <table>
+                        <thead class="buy">
+                            <tr>
+                                <th>排名</th>
+                                <th>代號</th>
+                                <th>證券名稱</th>
+                                <th>收盤價</th>
+                                <th>漲跌</th>
+                                <th>買賣超(張)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="rank">1</td>
+                                <td class="stock-code">00632R</td>
+                                <td class="stock-name">元大台灣50反1   </td>
+                                <td>17.94</td>
+                                <td class="price-up">+0.57</td>
+                                <td class="volume-positive">46,692</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">2</td>
+                                <td class="stock-code">00712</td>
+                                <td class="stock-name">復華富時不動產  </td>
+                                <td>8.81</td>
+                                <td class="price-down">-0.01</td>
+                                <td class="volume-positive">11,738</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">3</td>
+                                <td class="stock-code">2337</td>
+                                <td class="stock-name">旺宏            </td>
+                                <td>34.50</td>
+                                <td class="price-down">-3.05</td>
+                                <td class="volume-positive">11,579</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">4</td>
+                                <td class="stock-code">2303</td>
+                                <td class="stock-name">聯電            </td>
+                                <td>45.00</td>
+                                <td class="price-up">+0.35</td>
+                                <td class="volume-positive">8,979</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">5</td>
+                                <td class="stock-code">1303</td>
+                                <td class="stock-name">南亞            </td>
+                                <td>52.50</td>
+                                <td class="price-down">-4.1</td>
+                                <td class="volume-positive">8,062</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">6</td>
+                                <td class="stock-code">2801</td>
+                                <td class="stock-name">彰銀            </td>
+                                <td>19.95</td>
+                                <td class="price-down">-0.1</td>
+                                <td class="volume-positive">7,785</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">7</td>
+                                <td class="stock-code">2884</td>
+                                <td class="stock-name">玉山金          </td>
+                                <td>30.05</td>
+                                <td class="price-down">-0.15</td>
+                                <td class="volume-positive">7,722</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">8</td>
+                                <td class="stock-code">8150</td>
+                                <td class="stock-name">南茂            </td>
+                                <td>45.15</td>
+                                <td class="price-down">-2.15</td>
+                                <td class="volume-positive">7,537</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">9</td>
+                                <td class="stock-code">00882</td>
+                                <td class="stock-name">中信中國高股息  </td>
+                                <td>15.25</td>
+                                <td class="price-down">-0.21</td>
+                                <td class="volume-positive">7,390</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">10</td>
+                                <td class="stock-code">2881</td>
+                                <td class="stock-name">富邦金          </td>
+                                <td>88.70</td>
+                                <td class="price-down">-0.6</td>
+                                <td class="volume-positive">6,668</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">11</td>
+                                <td class="stock-code">2885</td>
+                                <td class="stock-name">元大金          </td>
+                                <td>35.65</td>
+                                <td class="price-down">-0.4</td>
+                                <td class="volume-positive">6,580</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">12</td>
+                                <td class="stock-code">2867</td>
+                                <td class="stock-name">三商壽          </td>
+                                <td>7.16</td>
+                                <td class="price-down">-0.03</td>
+                                <td class="volume-positive">6,506</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">13</td>
+                                <td class="stock-code">8112</td>
+                                <td class="stock-name">至上            </td>
+                                <td>68.20</td>
+                                <td class="price-down">-0.9</td>
+                                <td class="volume-positive">5,479</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">14</td>
+                                <td class="stock-code">2880</td>
+                                <td class="stock-name">華南金          </td>
+                                <td>29.20</td>
+                                <td class="price-up">+0.4</td>
+                                <td class="volume-positive">4,329</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">15</td>
+                                <td class="stock-code">2892</td>
+                                <td class="stock-name">第一金          </td>
+                                <td>28.30</td>
+                                <td class="">0</td>
+                                <td class="volume-positive">4,051</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">16</td>
+                                <td class="stock-code">2891</td>
+                                <td class="stock-name">中信金          </td>
+                                <td>43.40</td>
+                                <td class="price-up">+0.1</td>
+                                <td class="volume-positive">3,711</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">17</td>
+                                <td class="stock-code">2472</td>
+                                <td class="stock-name">立隆電          </td>
+                                <td>108.50</td>
+                                <td class="price-up">+5.0</td>
+                                <td class="volume-positive">3,232</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">18</td>
+                                <td class="stock-code">5871</td>
+                                <td class="stock-name">中租-KY         </td>
+                                <td>103.00</td>
+                                <td class="price-up">+1.5</td>
+                                <td class="volume-positive">2,835</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">19</td>
+                                <td class="stock-code">2834</td>
+                                <td class="stock-name">臺企銀          </td>
+                                <td>15.50</td>
+                                <td class="price-down">-0.05</td>
+                                <td class="volume-positive">2,703</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">20</td>
+                                <td class="stock-code">2353</td>
+                                <td class="stock-name">宏碁            </td>
+                                <td>27.95</td>
+                                <td class="price-down">-0.3</td>
+                                <td class="volume-positive">2,634</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">21</td>
+                                <td class="stock-code">5880</td>
+                                <td class="stock-name">合庫金          </td>
+                                <td>24.00</td>
+                                <td class="price-down">-0.05</td>
+                                <td class="volume-positive">2,533</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">22</td>
+                                <td class="stock-code">1409</td>
+                                <td class="stock-name">新纖            </td>
+                                <td>15.35</td>
+                                <td class="price-down">-0.4</td>
+                                <td class="volume-positive">2,392</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">23</td>
+                                <td class="stock-code">1402</td>
+                                <td class="stock-name">遠東新          </td>
+                                <td>28.25</td>
+                                <td class="price-up">+0.05</td>
+                                <td class="volume-positive">1,913</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">24</td>
+                                <td class="stock-code">5876</td>
+                                <td class="stock-name">上海商銀        </td>
+                                <td>40.00</td>
+                                <td class="price-up">+0.35</td>
+                                <td class="volume-positive">1,840</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">25</td>
+                                <td class="stock-code">2486</td>
+                                <td class="stock-name">一詮            </td>
+                                <td>91.10</td>
+                                <td class="price-down">-7.4</td>
+                                <td class="volume-positive">1,601</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">26</td>
+                                <td class="stock-code">8271</td>
+                                <td class="stock-name">宇瞻            </td>
+                                <td>95.80</td>
+                                <td class="price-down">-6.2</td>
+                                <td class="volume-positive">1,568</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">27</td>
+                                <td class="stock-code">4967</td>
+                                <td class="stock-name">十銓            </td>
+                                <td>126.00</td>
+                                <td class="price-down">-9.5</td>
+                                <td class="volume-positive">1,505</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">28</td>
+                                <td class="stock-code">2498</td>
+                                <td class="stock-name">宏達電          </td>
+                                <td>47.80</td>
+                                <td class="price-down">-0.9</td>
+                                <td class="volume-positive">1,478</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">29</td>
+                                <td class="stock-code">2897</td>
+                                <td class="stock-name">王道銀行        </td>
+                                <td>9.03</td>
+                                <td class="price-up">+0.01</td>
+                                <td class="volume-positive">1,418</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">30</td>
+                                <td class="stock-code">2412</td>
+                                <td class="stock-name">中華電          </td>
+                                <td>131.50</td>
+                                <td class="price-down">-0.5</td>
+                                <td class="volume-positive">1,349</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">31</td>
+                                <td class="stock-code">4989</td>
+                                <td class="stock-name">榮科            </td>
+                                <td>42.55</td>
+                                <td class="price-down">-1.05</td>
+                                <td class="volume-positive">1,326</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">32</td>
+                                <td class="stock-code">4958</td>
+                                <td class="stock-name">臻鼎-KY         </td>
+                                <td>141.00</td>
+                                <td class="">0</td>
+                                <td class="volume-positive">1,305</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">33</td>
+                                <td class="stock-code">2027</td>
+                                <td class="stock-name">大成鋼          </td>
+                                <td>35.60</td>
+                                <td class="price-down">-0.1</td>
+                                <td class="volume-positive">1,272</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">34</td>
+                                <td class="stock-code">2838</td>
+                                <td class="stock-name">聯邦銀          </td>
+                                <td>19.10</td>
+                                <td class="price-up">+0.05</td>
+                                <td class="volume-positive">1,214</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">35</td>
+                                <td class="stock-code">2903</td>
+                                <td class="stock-name">遠百            </td>
+                                <td>23.90</td>
+                                <td class="price-down">-0.25</td>
+                                <td class="volume-positive">1,169</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">36</td>
+                                <td class="stock-code">4938</td>
+                                <td class="stock-name">和碩            </td>
+                                <td>70.80</td>
+                                <td class="price-down">-0.8</td>
+                                <td class="volume-positive">1,166</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">37</td>
+                                <td class="stock-code">6505</td>
+                                <td class="stock-name">台塑化          </td>
+                                <td>53.00</td>
+                                <td class="price-down">-3.2</td>
+                                <td class="volume-positive">1,165</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">38</td>
+                                <td class="stock-code">2105</td>
+                                <td class="stock-name">正新            </td>
+                                <td>32.35</td>
+                                <td class="price-down">-0.05</td>
+                                <td class="volume-positive">1,080</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">39</td>
+                                <td class="stock-code">2887</td>
+                                <td class="stock-name">台新新光金      </td>
+                                <td>18.35</td>
+                                <td class="price-down">-0.2</td>
+                                <td class="volume-positive">1,066</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">40</td>
+                                <td class="stock-code">1229</td>
+                                <td class="stock-name">聯華            </td>
+                                <td>47.60</td>
+                                <td class="price-up">+0.4</td>
+                                <td class="volume-positive">1,055</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">41</td>
+                                <td class="stock-code">00953B</td>
+                                <td class="stock-name">群益優選非投等債</td>
+                                <td>9.63</td>
+                                <td class="price-up">+0.02</td>
+                                <td class="volume-positive">1,023</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">42</td>
+                                <td class="stock-code">6442</td>
+                                <td class="stock-name">光聖            </td>
+                                <td>1,120.00</td>
+                                <td class="price-up">+15.0</td>
+                                <td class="volume-positive">1,005</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">43</td>
+                                <td class="stock-code">2449</td>
+                                <td class="stock-name">京元電子        </td>
+                                <td>204.50</td>
+                                <td class="price-down">-7.0</td>
+                                <td class="volume-positive">1,002</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">44</td>
+                                <td class="stock-code">2368</td>
+                                <td class="stock-name">金像電          </td>
+                                <td>550.00</td>
+                                <td class="price-down">-24.0</td>
+                                <td class="volume-positive">985</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">45</td>
+                                <td class="stock-code">9921</td>
+                                <td class="stock-name">巨大            </td>
+                                <td>94.50</td>
+                                <td class="price-up">+2.3</td>
+                                <td class="volume-positive">936</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">46</td>
+                                <td class="stock-code">3060</td>
+                                <td class="stock-name">銘異            </td>
+                                <td>26.45</td>
+                                <td class="price-down">-2.25</td>
+                                <td class="volume-positive">935</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">47</td>
+                                <td class="stock-code">3450</td>
+                                <td class="stock-name">聯鈞            </td>
+                                <td>212.50</td>
+                                <td class="price-down">-13.5</td>
+                                <td class="volume-positive">919</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">48</td>
+                                <td class="stock-code">2832</td>
+                                <td class="stock-name">台產            </td>
+                                <td>52.40</td>
+                                <td class="price-up">+1.1</td>
+                                <td class="volume-positive">906</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">49</td>
+                                <td class="stock-code">8110</td>
+                                <td class="stock-name">華東            </td>
+                                <td>32.25</td>
+                                <td class="price-down">-3.55</td>
+                                <td class="volume-positive">893</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">50</td>
+                                <td class="stock-code">00713</td>
+                                <td class="stock-name">元大台灣高息低波</td>
+                                <td>49.77</td>
+                                <td class="price-down">-0.43</td>
+                                <td class="volume-positive">814</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title sell">📉 賣超 TOP 10 (2025-11-21)</h2>
+                    <table>
+                        <thead class="sell">
+                            <tr>
+                                <th>排名</th>
+                                <th>代號</th>
+                                <th>證券名稱</th>
+                                <th>收盤價</th>
+                                <th>漲跌</th>
+                                <th>買賣超(張)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="rank">1</td>
+                                <td class="stock-code">0050</td>
+                                <td class="stock-name">元大台灣50      </td>
+                                <td>59.85</td>
+                                <td class="price-down">-2.05</td>
+                                <td class="volume-negative">-266,091</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">2</td>
+                                <td class="stock-code">00919</td>
+                                <td class="stock-name">群益台灣精選高息</td>
+                                <td>21.13</td>
+                                <td class="price-down">-0.2</td>
+                                <td class="volume-negative">-84,984</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">3</td>
+                                <td class="stock-code">0056</td>
+                                <td class="stock-name">元大高股息      </td>
+                                <td>35.00</td>
+                                <td class="price-down">-0.5</td>
+                                <td class="volume-negative">-61,577</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">4</td>
+                                <td class="stock-code">2317</td>
+                                <td class="stock-name">鴻海            </td>
+                                <td>225.00</td>
+                                <td class="price-down">-11.5</td>
+                                <td class="volume-negative">-42,748</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">5</td>
+                                <td class="stock-code">00900</td>
+                                <td class="stock-name">富邦特選高股息30</td>
+                                <td>12.87</td>
+                                <td class="price-down">-0.23</td>
+                                <td class="volume-negative">-38,934</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">6</td>
+                                <td class="stock-code">2330</td>
+                                <td class="stock-name">台積電          </td>
+                                <td>1,385.00</td>
+                                <td class="price-down">-70.0</td>
+                                <td class="volume-negative">-30,540</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">7</td>
+                                <td class="stock-code">00878</td>
+                                <td class="stock-name">國泰永續高股息  </td>
+                                <td>20.33</td>
+                                <td class="price-down">-0.24</td>
+                                <td class="volume-negative">-22,924</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">8</td>
+                                <td class="stock-code">2409</td>
+                                <td class="stock-name">友達            </td>
+                                <td>10.80</td>
+                                <td class="price-down">-0.35</td>
+                                <td class="volume-negative">-22,763</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">9</td>
+                                <td class="stock-code">00922</td>
+                                <td class="stock-name">國泰台灣領袖50  </td>
+                                <td>23.75</td>
+                                <td class="price-down">-0.73</td>
+                                <td class="volume-negative">-20,855</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">10</td>
+                                <td class="stock-code">2344</td>
+                                <td class="stock-name">華邦電          </td>
+                                <td>52.20</td>
+                                <td class="price-down">-5.8</td>
+                                <td class="volume-negative">-17,829</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div id="tab-2" class="tab-content">
+                <div class="section">
+                    <h2 class="section-title buy">📈 買超 TOP 50 (2025-11-20)</h2>
+                    <table>
+                        <thead class="buy">
+                            <tr>
+                                <th>排名</th>
+                                <th>代號</th>
+                                <th>證券名稱</th>
+                                <th>收盤價</th>
+                                <th>漲跌</th>
+                                <th>買賣超(張)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="rank">1</td>
+                                <td class="stock-code">00881</td>
+                                <td class="stock-name">國泰台灣科技龍頭</td>
+                                <td>30.84</td>
+                                <td class="price-up">+1.14</td>
+                                <td class="volume-positive">25,240</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">2</td>
+                                <td class="stock-code">2890</td>
+                                <td class="stock-name">永豐金          </td>
+                                <td>27.05</td>
+                                <td class="price-up">+0.6</td>
+                                <td class="volume-positive">20,197</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">3</td>
+                                <td class="stock-code">2885</td>
+                                <td class="stock-name">元大金          </td>
+                                <td>36.05</td>
+                                <td class="price-up">+1.15</td>
+                                <td class="volume-positive">19,647</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">4</td>
+                                <td class="stock-code">3037</td>
+                                <td class="stock-name">欣興            </td>
+                                <td>171.50</td>
+                                <td class="price-up">+11.0</td>
+                                <td class="volume-positive">12,450</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">5</td>
+                                <td class="stock-code">3231</td>
+                                <td class="stock-name">緯創            </td>
+                                <td>143.00</td>
+                                <td class="price-up">+6.0</td>
+                                <td class="volume-positive">9,162</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">6</td>
+                                <td class="stock-code">00940</td>
+                                <td class="stock-name">元大台灣價值高息</td>
+                                <td>9.19</td>
+                                <td class="price-up">+0.13</td>
+                                <td class="volume-positive">8,417</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">7</td>
+                                <td class="stock-code">1802</td>
+                                <td class="stock-name">台玻            </td>
+                                <td>34.25</td>
+                                <td class="price-up">+3.1</td>
+                                <td class="volume-positive">8,253</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">8</td>
+                                <td class="stock-code">2801</td>
+                                <td class="stock-name">彰銀            </td>
+                                <td>20.05</td>
+                                <td class="price-up">+0.25</td>
+                                <td class="volume-positive">7,979</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">9</td>
+                                <td class="stock-code">2330</td>
+                                <td class="stock-name">台積電          </td>
+                                <td>1,455.00</td>
+                                <td class="price-up">+60.0</td>
+                                <td class="volume-positive">7,526</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">10</td>
+                                <td class="stock-code">2884</td>
+                                <td class="stock-name">玉山金          </td>
+                                <td>30.20</td>
+                                <td class="price-up">+0.2</td>
+                                <td class="volume-positive">7,481</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">11</td>
+                                <td class="stock-code">1303</td>
+                                <td class="stock-name">南亞            </td>
+                                <td>56.60</td>
+                                <td class="price-up">+2.8</td>
+                                <td class="volume-positive">6,769</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">12</td>
+                                <td class="stock-code">2903</td>
+                                <td class="stock-name">遠百            </td>
+                                <td>24.15</td>
+                                <td class="price-up">+0.9</td>
+                                <td class="volume-positive">6,636</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">13</td>
+                                <td class="stock-code">2327</td>
+                                <td class="stock-name">國巨*           </td>
+                                <td>230.50</td>
+                                <td class="price-up">+5.5</td>
+                                <td class="volume-positive">6,409</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">14</td>
+                                <td class="stock-code">2606</td>
+                                <td class="stock-name">裕民            </td>
+                                <td>56.90</td>
+                                <td class="price-up">+2.0</td>
+                                <td class="volume-positive">5,649</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">15</td>
+                                <td class="stock-code">2481</td>
+                                <td class="stock-name">強茂            </td>
+                                <td>84.60</td>
+                                <td class="price-up">+3.7</td>
+                                <td class="volume-positive">5,586</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">16</td>
+                                <td class="stock-code">2867</td>
+                                <td class="stock-name">三商壽          </td>
+                                <td>7.19</td>
+                                <td class="price-up">+0.03</td>
+                                <td class="volume-positive">5,228</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">17</td>
+                                <td class="stock-code">5469</td>
+                                <td class="stock-name">瀚宇博          </td>
+                                <td>92.80</td>
+                                <td class="price-up">+5.8</td>
+                                <td class="volume-positive">4,658</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">18</td>
+                                <td class="stock-code">3711</td>
+                                <td class="stock-name">日月光投控      </td>
+                                <td>222.50</td>
+                                <td class="price-up">+13.0</td>
+                                <td class="volume-positive">4,616</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">19</td>
+                                <td class="stock-code">1301</td>
+                                <td class="stock-name">台塑            </td>
+                                <td>41.30</td>
+                                <td class="price-up">+1.25</td>
+                                <td class="volume-positive">4,541</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">20</td>
+                                <td class="stock-code">6005</td>
+                                <td class="stock-name">群益證          </td>
+                                <td>25.10</td>
+                                <td class="price-up">+0.75</td>
+                                <td class="volume-positive">4,538</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">21</td>
+                                <td class="stock-code">2637</td>
+                                <td class="stock-name">慧洋-KY         </td>
+                                <td>65.20</td>
+                                <td class="price-up">+1.9</td>
+                                <td class="volume-positive">4,490</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">22</td>
+                                <td class="stock-code">1314</td>
+                                <td class="stock-name">中石化          </td>
+                                <td>8.42</td>
+                                <td class="price-up">+0.22</td>
+                                <td class="volume-positive">4,318</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">23</td>
+                                <td class="stock-code">00929</td>
+                                <td class="stock-name">復華台灣科技優息</td>
+                                <td>17.67</td>
+                                <td class="price-up">+0.31</td>
+                                <td class="volume-positive">4,303</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">24</td>
+                                <td class="stock-code">8150</td>
+                                <td class="stock-name">南茂            </td>
+                                <td>47.30</td>
+                                <td class="price-up">+0.4</td>
+                                <td class="volume-positive">4,197</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">25</td>
+                                <td class="stock-code">2347</td>
+                                <td class="stock-name">聯強            </td>
+                                <td>61.00</td>
+                                <td class="price-up">+2.2</td>
+                                <td class="volume-positive">4,151</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">26</td>
+                                <td class="stock-code">6239</td>
+                                <td class="stock-name">力成            </td>
+                                <td>158.50</td>
+                                <td class="price-up">+4.5</td>
+                                <td class="volume-positive">4,084</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">27</td>
+                                <td class="stock-code">00662</td>
+                                <td class="stock-name">富邦NASDAQ      </td>
+                                <td>100.55</td>
+                                <td class="price-up">+2.45</td>
+                                <td class="volume-positive">4,008</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">28</td>
+                                <td class="stock-code">00713</td>
+                                <td class="stock-name">元大台灣高息低波</td>
+                                <td>50.20</td>
+                                <td class="price-up">+0.58</td>
+                                <td class="volume-positive">3,996</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">29</td>
+                                <td class="stock-code">1326</td>
+                                <td class="stock-name">台化            </td>
+                                <td>33.10</td>
+                                <td class="price-up">+1.4</td>
+                                <td class="volume-positive">3,856</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">30</td>
+                                <td class="stock-code">2834</td>
+                                <td class="stock-name">臺企銀          </td>
+                                <td>15.55</td>
+                                <td class="price-up">+0.2</td>
+                                <td class="volume-positive">3,750</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">31</td>
+                                <td class="stock-code">1605</td>
+                                <td class="stock-name">華新            </td>
+                                <td>29.65</td>
+                                <td class="price-up">+0.6</td>
+                                <td class="volume-positive">3,584</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">32</td>
+                                <td class="stock-code">6505</td>
+                                <td class="stock-name">台塑化          </td>
+                                <td>56.20</td>
+                                <td class="price-up">+2.7</td>
+                                <td class="volume-positive">3,390</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">33</td>
+                                <td class="stock-code">00878</td>
+                                <td class="stock-name">國泰永續高股息  </td>
+                                <td>20.57</td>
+                                <td class="price-up">+0.31</td>
+                                <td class="volume-positive">3,388</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">34</td>
+                                <td class="stock-code">2301</td>
+                                <td class="stock-name">光寶科          </td>
+                                <td>160.00</td>
+                                <td class="price-up">+6.5</td>
+                                <td class="volume-positive">3,323</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">35</td>
+                                <td class="stock-code">8131</td>
+                                <td class="stock-name">福懋科          </td>
+                                <td>42.95</td>
+                                <td class="price-down">-1.15</td>
+                                <td class="volume-positive">3,153</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">36</td>
+                                <td class="stock-code">6282</td>
+                                <td class="stock-name">康舒            </td>
+                                <td>39.90</td>
+                                <td class="price-up">+0.95</td>
+                                <td class="volume-positive">3,065</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">37</td>
+                                <td class="stock-code">2368</td>
+                                <td class="stock-name">金像電          </td>
+                                <td>574.00</td>
+                                <td class="price-up">+52.0</td>
+                                <td class="volume-positive">3,044</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">38</td>
+                                <td class="stock-code">2353</td>
+                                <td class="stock-name">宏碁            </td>
+                                <td>28.25</td>
+                                <td class="price-up">+0.85</td>
+                                <td class="volume-positive">3,001</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">39</td>
+                                <td class="stock-code">2492</td>
+                                <td class="stock-name">華新科          </td>
+                                <td>121.50</td>
+                                <td class="price-up">+3.5</td>
+                                <td class="volume-positive">2,995</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">40</td>
+                                <td class="stock-code">6191</td>
+                                <td class="stock-name">精成科          </td>
+                                <td>114.00</td>
+                                <td class="price-up">+10.0</td>
+                                <td class="volume-positive">2,932</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">41</td>
+                                <td class="stock-code">00922</td>
+                                <td class="stock-name">國泰台灣領袖50  </td>
+                                <td>24.48</td>
+                                <td class="price-up">+0.68</td>
+                                <td class="volume-positive">2,893</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">42</td>
+                                <td class="stock-code">1402</td>
+                                <td class="stock-name">遠東新          </td>
+                                <td>28.20</td>
+                                <td class="price-up">+0.25</td>
+                                <td class="volume-positive">2,826</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">43</td>
+                                <td class="stock-code">2883</td>
+                                <td class="stock-name">凱基金          </td>
+                                <td>15.55</td>
+                                <td class="price-up">+0.25</td>
+                                <td class="volume-positive">2,783</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">44</td>
+                                <td class="stock-code">8046</td>
+                                <td class="stock-name">南電            </td>
+                                <td>269.00</td>
+                                <td class="price-up">+18.0</td>
+                                <td class="volume-positive">2,675</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">45</td>
+                                <td class="stock-code">1717</td>
+                                <td class="stock-name">長興            </td>
+                                <td>40.10</td>
+                                <td class="price-up">+1.0</td>
+                                <td class="volume-positive">2,661</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">46</td>
+                                <td class="stock-code">2605</td>
+                                <td class="stock-name">新興            </td>
+                                <td>24.00</td>
+                                <td class="price-up">+0.75</td>
+                                <td class="volume-positive">2,653</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">47</td>
+                                <td class="stock-code">2892</td>
+                                <td class="stock-name">第一金          </td>
+                                <td>28.30</td>
+                                <td class="price-up">+0.45</td>
+                                <td class="volume-positive">2,423</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">48</td>
+                                <td class="stock-code">2393</td>
+                                <td class="stock-name">億光            </td>
+                                <td>51.80</td>
+                                <td class="price-up">+0.1</td>
+                                <td class="volume-positive">2,374</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">49</td>
+                                <td class="stock-code">00882</td>
+                                <td class="stock-name">中信中國高股息  </td>
+                                <td>15.46</td>
+                                <td class="price-up">+0.17</td>
+                                <td class="volume-positive">2,372</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">50</td>
+                                <td class="stock-code">2891</td>
+                                <td class="stock-name">中信金          </td>
+                                <td>43.30</td>
+                                <td class="price-up">+0.4</td>
+                                <td class="volume-positive">2,250</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title sell">📉 賣超 TOP 10 (2025-11-20)</h2>
+                    <table>
+                        <thead class="sell">
+                            <tr>
+                                <th>排名</th>
+                                <th>代號</th>
+                                <th>證券名稱</th>
+                                <th>收盤價</th>
+                                <th>漲跌</th>
+                                <th>買賣超(張)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="rank">1</td>
+                                <td class="stock-code">00632R</td>
+                                <td class="stock-name">元大台灣50反1   </td>
+                                <td>17.37</td>
+                                <td class="price-down">-0.52</td>
+                                <td class="volume-negative">-31,106</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">2</td>
+                                <td class="stock-code">2408</td>
+                                <td class="stock-name">南亞科          </td>
+                                <td>155.50</td>
+                                <td class="price-down">-4.5</td>
+                                <td class="volume-negative">-28,371</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">3</td>
+                                <td class="stock-code">00953B</td>
+                                <td class="stock-name">群益優選非投等債</td>
+                                <td>9.61</td>
+                                <td class="price-up">+0.04</td>
+                                <td class="volume-negative">-10,736</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">4</td>
+                                <td class="stock-code">0050</td>
+                                <td class="stock-name">元大台灣50      </td>
+                                <td>61.90</td>
+                                <td class="price-up">+1.85</td>
+                                <td class="volume-negative">-8,982</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">5</td>
+                                <td class="stock-code">2344</td>
+                                <td class="stock-name">華邦電          </td>
+                                <td>58.00</td>
+                                <td class="price-down">-1.4</td>
+                                <td class="volume-negative">-8,082</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">6</td>
+                                <td class="stock-code">2324</td>
+                                <td class="stock-name">仁寶            </td>
+                                <td>29.40</td>
+                                <td class="">0</td>
+                                <td class="volume-negative">-7,371</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">7</td>
+                                <td class="stock-code">2317</td>
+                                <td class="stock-name">鴻海            </td>
+                                <td>236.50</td>
+                                <td class="price-up">+7.5</td>
+                                <td class="volume-negative">-6,466</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">8</td>
+                                <td class="stock-code">0056</td>
+                                <td class="stock-name">元大高股息      </td>
+                                <td>35.50</td>
+                                <td class="price-up">+0.76</td>
+                                <td class="volume-negative">-6,451</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">9</td>
+                                <td class="stock-code">2002</td>
+                                <td class="stock-name">中鋼            </td>
+                                <td>17.75</td>
+                                <td class="price-up">+0.05</td>
+                                <td class="volume-negative">-6,421</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">10</td>
+                                <td class="stock-code">6770</td>
+                                <td class="stock-name">力積電          </td>
+                                <td>35.40</td>
+                                <td class="price-up">+0.05</td>
+                                <td class="volume-negative">-6,304</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div id="tab-3" class="tab-content">
+                <div class="section">
+                    <h2 class="section-title buy">📈 買超 TOP 50 (2025-11-19)</h2>
+                    <table>
+                        <thead class="buy">
+                            <tr>
+                                <th>排名</th>
+                                <th>代號</th>
+                                <th>證券名稱</th>
+                                <th>收盤價</th>
+                                <th>漲跌</th>
+                                <th>買賣超(張)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="rank">1</td>
+                                <td class="stock-code">00632R</td>
+                                <td class="stock-name">元大台灣50反1   </td>
+                                <td>17.89</td>
+                                <td class="price-up">+0.11</td>
+                                <td class="volume-positive">23,321</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">2</td>
+                                <td class="stock-code">2891</td>
+                                <td class="stock-name">中信金          </td>
+                                <td>42.90</td>
+                                <td class="price-up">+0.3</td>
+                                <td class="volume-positive">9,747</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">3</td>
+                                <td class="stock-code">00953B</td>
+                                <td class="stock-name">群益優選非投等債</td>
+                                <td>9.57</td>
+                                <td class="">0</td>
+                                <td class="volume-positive">9,215</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">4</td>
+                                <td class="stock-code">00881</td>
+                                <td class="stock-name">國泰台灣科技龍頭</td>
+                                <td>29.70</td>
+                                <td class="price-down">-0.23</td>
+                                <td class="volume-positive">8,350</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">5</td>
+                                <td class="stock-code">2301</td>
+                                <td class="stock-name">光寶科          </td>
+                                <td>153.50</td>
+                                <td class="price-down">-1.0</td>
+                                <td class="volume-positive">7,980</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">6</td>
+                                <td class="stock-code">00712</td>
+                                <td class="stock-name">復華富時不動產  </td>
+                                <td>8.80</td>
+                                <td class="price-up">+0.01</td>
+                                <td class="volume-positive">7,776</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">7</td>
+                                <td class="stock-code">3711</td>
+                                <td class="stock-name">日月光投控      </td>
+                                <td>209.50</td>
+                                <td class="price-down">-5.5</td>
+                                <td class="volume-positive">7,618</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">8</td>
+                                <td class="stock-code">00882</td>
+                                <td class="stock-name">中信中國高股息  </td>
+                                <td>15.29</td>
+                                <td class="price-down">-0.01</td>
+                                <td class="volume-positive">7,144</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">9</td>
+                                <td class="stock-code">2885</td>
+                                <td class="stock-name">元大金          </td>
+                                <td>34.90</td>
+                                <td class="price-down">-0.3</td>
+                                <td class="volume-positive">6,119</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">10</td>
+                                <td class="stock-code">2317</td>
+                                <td class="stock-name">鴻海            </td>
+                                <td>229.00</td>
+                                <td class="price-down">-1.0</td>
+                                <td class="volume-positive">5,735</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">11</td>
+                                <td class="stock-code">2890</td>
+                                <td class="stock-name">永豐金          </td>
+                                <td>26.45</td>
+                                <td class="price-up">+0.05</td>
+                                <td class="volume-positive">5,640</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">12</td>
+                                <td class="stock-code">2303</td>
+                                <td class="stock-name">聯電            </td>
+                                <td>44.35</td>
+                                <td class="price-up">+0.15</td>
+                                <td class="volume-positive">4,979</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">13</td>
+                                <td class="stock-code">2867</td>
+                                <td class="stock-name">三商壽          </td>
+                                <td>7.16</td>
+                                <td class="">0</td>
+                                <td class="volume-positive">4,410</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">14</td>
+                                <td class="stock-code">2408</td>
+                                <td class="stock-name">南亞科          </td>
+                                <td>160.00</td>
+                                <td class="price-down">-0.5</td>
+                                <td class="volume-positive">4,067</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">15</td>
+                                <td class="stock-code">2105</td>
+                                <td class="stock-name">正新            </td>
+                                <td>32.40</td>
+                                <td class="price-up">+0.75</td>
+                                <td class="volume-positive">3,362</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">16</td>
+                                <td class="stock-code">9904</td>
+                                <td class="stock-name">寶成            </td>
+                                <td>29.40</td>
+                                <td class="price-up">+0.3</td>
+                                <td class="volume-positive">3,079</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">17</td>
+                                <td class="stock-code">1409</td>
+                                <td class="stock-name">新纖            </td>
+                                <td>15.65</td>
+                                <td class="price-down">-0.3</td>
+                                <td class="volume-positive">2,854</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">18</td>
+                                <td class="stock-code">2884</td>
+                                <td class="stock-name">玉山金          </td>
+                                <td>30.00</td>
+                                <td class="price-up">+0.1</td>
+                                <td class="volume-positive">2,426</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">19</td>
+                                <td class="stock-code">6505</td>
+                                <td class="stock-name">台塑化          </td>
+                                <td>53.50</td>
+                                <td class="price-down">-0.6</td>
+                                <td class="volume-positive">2,252</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">20</td>
+                                <td class="stock-code">2903</td>
+                                <td class="stock-name">遠百            </td>
+                                <td>23.25</td>
+                                <td class="price-up">+0.25</td>
+                                <td class="volume-positive">2,045</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">21</td>
+                                <td class="stock-code">8150</td>
+                                <td class="stock-name">南茂            </td>
+                                <td>46.90</td>
+                                <td class="price-up">+0.4</td>
+                                <td class="volume-positive">1,996</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">22</td>
+                                <td class="stock-code">8110</td>
+                                <td class="stock-name">華東            </td>
+                                <td>36.85</td>
+                                <td class="price-up">+1.35</td>
+                                <td class="volume-positive">1,850</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">23</td>
+                                <td class="stock-code">6139</td>
+                                <td class="stock-name">亞翔            </td>
+                                <td>428.50</td>
+                                <td class="price-up">+14.0</td>
+                                <td class="volume-positive">1,753</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">24</td>
+                                <td class="stock-code">2369</td>
+                                <td class="stock-name">菱生            </td>
+                                <td>20.20</td>
+                                <td class="price-down">-1.5</td>
+                                <td class="volume-positive">1,680</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">25</td>
+                                <td class="stock-code">2498</td>
+                                <td class="stock-name">宏達電          </td>
+                                <td>49.05</td>
+                                <td class="price-up">+0.2</td>
+                                <td class="volume-positive">1,664</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">26</td>
+                                <td class="stock-code">3450</td>
+                                <td class="stock-name">聯鈞            </td>
+                                <td>214.00</td>
+                                <td class="price-down">-10.0</td>
+                                <td class="volume-positive">1,567</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">27</td>
+                                <td class="stock-code">8271</td>
+                                <td class="stock-name">宇瞻            </td>
+                                <td>101.00</td>
+                                <td class="price-down">-6.5</td>
+                                <td class="volume-positive">1,564</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">28</td>
+                                <td class="stock-code">6005</td>
+                                <td class="stock-name">群益證          </td>
+                                <td>24.35</td>
+                                <td class="price-up">+0.25</td>
+                                <td class="volume-positive">1,408</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">29</td>
+                                <td class="stock-code">6239</td>
+                                <td class="stock-name">力成            </td>
+                                <td>154.00</td>
+                                <td class="price-down">-6.5</td>
+                                <td class="volume-positive">1,204</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">30</td>
+                                <td class="stock-code">2449</td>
+                                <td class="stock-name">京元電子        </td>
+                                <td>196.50</td>
+                                <td class="price-down">-1.5</td>
+                                <td class="volume-positive">1,108</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">31</td>
+                                <td class="stock-code">2606</td>
+                                <td class="stock-name">裕民            </td>
+                                <td>54.90</td>
+                                <td class="price-up">+0.3</td>
+                                <td class="volume-positive">1,058</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">32</td>
+                                <td class="stock-code">3060</td>
+                                <td class="stock-name">銘異            </td>
+                                <td>27.50</td>
+                                <td class="price-down">-1.15</td>
+                                <td class="volume-positive">965</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">33</td>
+                                <td class="stock-code">2912</td>
+                                <td class="stock-name">統一超          </td>
+                                <td>236.00</td>
+                                <td class="price-down">-0.5</td>
+                                <td class="volume-positive">886</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">34</td>
+                                <td class="stock-code">3305</td>
+                                <td class="stock-name">昇貿            </td>
+                                <td>94.20</td>
+                                <td class="price-down">-2.0</td>
+                                <td class="volume-positive">866</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">35</td>
+                                <td class="stock-code">2368</td>
+                                <td class="stock-name">金像電          </td>
+                                <td>522.00</td>
+                                <td class="price-up">+15.0</td>
+                                <td class="volume-positive">830</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">36</td>
+                                <td class="stock-code">6456</td>
+                                <td class="stock-name">GIS-KY          </td>
+                                <td>41.40</td>
+                                <td class="price-down">-0.85</td>
+                                <td class="volume-positive">827</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">37</td>
+                                <td class="stock-code">1102</td>
+                                <td class="stock-name">亞泥            </td>
+                                <td>37.55</td>
+                                <td class="price-up">+0.4</td>
+                                <td class="volume-positive">798</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">38</td>
+                                <td class="stock-code">5871</td>
+                                <td class="stock-name">中租-KY         </td>
+                                <td>100.00</td>
+                                <td class="">0</td>
+                                <td class="volume-positive">729</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">39</td>
+                                <td class="stock-code">2208</td>
+                                <td class="stock-name">台船            </td>
+                                <td>19.10</td>
+                                <td class="">0</td>
+                                <td class="volume-positive">647</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">40</td>
+                                <td class="stock-code">9938</td>
+                                <td class="stock-name">百和            </td>
+                                <td>53.50</td>
+                                <td class="price-up">+1.6</td>
+                                <td class="volume-positive">625</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">41</td>
+                                <td class="stock-code">3006</td>
+                                <td class="stock-name">晶豪科          </td>
+                                <td>85.60</td>
+                                <td class="price-down">-2.6</td>
+                                <td class="volume-positive">624</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">42</td>
+                                <td class="stock-code">2441</td>
+                                <td class="stock-name">超豐            </td>
+                                <td>72.60</td>
+                                <td class="price-up">+0.1</td>
+                                <td class="volume-positive">591</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">43</td>
+                                <td class="stock-code">3622</td>
+                                <td class="stock-name">洋華            </td>
+                                <td>66.90</td>
+                                <td class="price-down">-1.4</td>
+                                <td class="volume-positive">565</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">44</td>
+                                <td class="stock-code">8131</td>
+                                <td class="stock-name">福懋科          </td>
+                                <td>44.10</td>
+                                <td class="price-down">-1.2</td>
+                                <td class="volume-positive">545</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">45</td>
+                                <td class="stock-code">2451</td>
+                                <td class="stock-name">創見            </td>
+                                <td>204.50</td>
+                                <td class="price-up">+4.5</td>
+                                <td class="volume-positive">528</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">46</td>
+                                <td class="stock-code">00646</td>
+                                <td class="stock-name">元大S&P500      </td>
+                                <td>64.65</td>
+                                <td class="price-down">-0.4</td>
+                                <td class="volume-positive">498</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">47</td>
+                                <td class="stock-code">5515</td>
+                                <td class="stock-name">建國            </td>
+                                <td>30.70</td>
+                                <td class="price-down">-1.95</td>
+                                <td class="volume-positive">476</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">48</td>
+                                <td class="stock-code">6558</td>
+                                <td class="stock-name">興能高          </td>
+                                <td>35.80</td>
+                                <td class="price-down">-0.4</td>
+                                <td class="volume-positive">453</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">49</td>
+                                <td class="stock-code">1402</td>
+                                <td class="stock-name">遠東新          </td>
+                                <td>27.95</td>
+                                <td class="price-up">+0.05</td>
+                                <td class="volume-positive">443</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">50</td>
+                                <td class="stock-code">2634</td>
+                                <td class="stock-name">漢翔            </td>
+                                <td>47.35</td>
+                                <td class="price-down">-0.15</td>
+                                <td class="volume-positive">438</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title sell">📉 賣超 TOP 10 (2025-11-19)</h2>
+                    <table>
+                        <thead class="sell">
+                            <tr>
+                                <th>排名</th>
+                                <th>代號</th>
+                                <th>證券名稱</th>
+                                <th>收盤價</th>
+                                <th>漲跌</th>
+                                <th>買賣超(張)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="rank">1</td>
+                                <td class="stock-code">0050</td>
+                                <td class="stock-name">元大台灣50      </td>
+                                <td>60.05</td>
+                                <td class="price-down">-0.4</td>
+                                <td class="volume-negative">-92,489</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">2</td>
+                                <td class="stock-code">0056</td>
+                                <td class="stock-name">元大高股息      </td>
+                                <td>34.74</td>
+                                <td class="price-down">-0.26</td>
+                                <td class="volume-negative">-69,530</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">3</td>
+                                <td class="stock-code">00919</td>
+                                <td class="stock-name">群益台灣精選高息</td>
+                                <td>21.16</td>
+                                <td class="price-down">-0.08</td>
+                                <td class="volume-negative">-41,707</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">4</td>
+                                <td class="stock-code">00878</td>
+                                <td class="stock-name">國泰永續高股息  </td>
+                                <td>20.26</td>
+                                <td class="price-down">-0.09</td>
+                                <td class="volume-negative">-32,263</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">5</td>
+                                <td class="stock-code">00900</td>
+                                <td class="stock-name">富邦特選高股息30</td>
+                                <td>12.92</td>
+                                <td class="price-down">-0.08</td>
+                                <td class="volume-negative">-28,617</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">6</td>
+                                <td class="stock-code">6770</td>
+                                <td class="stock-name">力積電          </td>
+                                <td>35.35</td>
+                                <td class="price-down">-0.55</td>
+                                <td class="volume-negative">-27,218</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">7</td>
+                                <td class="stock-code">2409</td>
+                                <td class="stock-name">友達            </td>
+                                <td>11.00</td>
+                                <td class="price-down">-0.15</td>
+                                <td class="volume-negative">-19,359</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">8</td>
+                                <td class="stock-code">2883</td>
+                                <td class="stock-name">凱基金          </td>
+                                <td>15.30</td>
+                                <td class="price-down">-0.2</td>
+                                <td class="volume-negative">-18,529</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">9</td>
+                                <td class="stock-code">2515</td>
+                                <td class="stock-name">中工            </td>
+                                <td>15.25</td>
+                                <td class="price-down">-1.6</td>
+                                <td class="volume-negative">-18,064</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">10</td>
+                                <td class="stock-code">8422</td>
+                                <td class="stock-name">可寧衛*         </td>
+                                <td>20.90</td>
+                                <td class="price-down">-1.35</td>
+                                <td class="volume-negative">-15,666</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div id="tab-4" class="tab-content">
+                <div class="section">
+                    <h2 class="section-title buy">📈 買超 TOP 50 (2025-11-18)</h2>
+                    <table>
+                        <thead class="buy">
+                            <tr>
+                                <th>排名</th>
+                                <th>代號</th>
+                                <th>證券名稱</th>
+                                <th>收盤價</th>
+                                <th>漲跌</th>
+                                <th>買賣超(張)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="rank">1</td>
+                                <td class="stock-code">6770</td>
+                                <td class="stock-name">力積電          </td>
+                                <td>35.90</td>
+                                <td class="price-up">+0.9</td>
+                                <td class="volume-positive">46,905</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">2</td>
+                                <td class="stock-code">00953B</td>
+                                <td class="stock-name">群益優選非投等債</td>
+                                <td>9.57</td>
+                                <td class="price-up">+0.03</td>
+                                <td class="volume-positive">20,907</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">3</td>
+                                <td class="stock-code">2337</td>
+                                <td class="stock-name">旺宏            </td>
+                                <td>37.65</td>
+                                <td class="price-down">-1.1</td>
+                                <td class="volume-positive">18,910</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">4</td>
+                                <td class="stock-code">1303</td>
+                                <td class="stock-name">南亞            </td>
+                                <td>57.30</td>
+                                <td class="price-up">+0.8</td>
+                                <td class="volume-positive">18,075</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">5</td>
+                                <td class="stock-code">00632R</td>
+                                <td class="stock-name">元大台灣50反1   </td>
+                                <td>17.78</td>
+                                <td class="price-up">+0.36</td>
+                                <td class="volume-positive">14,823</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">6</td>
+                                <td class="stock-code">1802</td>
+                                <td class="stock-name">台玻            </td>
+                                <td>30.80</td>
+                                <td class="price-down">-1.55</td>
+                                <td class="volume-positive">13,436</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">7</td>
+                                <td class="stock-code">00882</td>
+                                <td class="stock-name">中信中國高股息  </td>
+                                <td>15.30</td>
+                                <td class="price-down">-0.32</td>
+                                <td class="volume-positive">13,211</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">8</td>
+                                <td class="stock-code">1314</td>
+                                <td class="stock-name">中石化          </td>
+                                <td>8.54</td>
+                                <td class="price-down">-0.21</td>
+                                <td class="volume-positive">11,330</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">9</td>
+                                <td class="stock-code">8112</td>
+                                <td class="stock-name">至上            </td>
+                                <td>72.60</td>
+                                <td class="price-down">-2.8</td>
+                                <td class="volume-positive">10,759</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">10</td>
+                                <td class="stock-code">8150</td>
+                                <td class="stock-name">南茂            </td>
+                                <td>46.50</td>
+                                <td class="price-up">+0.45</td>
+                                <td class="volume-positive">10,355</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">11</td>
+                                <td class="stock-code">3037</td>
+                                <td class="stock-name">欣興            </td>
+                                <td>170.00</td>
+                                <td class="price-up">+2.5</td>
+                                <td class="volume-positive">10,274</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">12</td>
+                                <td class="stock-code">2867</td>
+                                <td class="stock-name">三商壽          </td>
+                                <td>7.16</td>
+                                <td class="price-down">-0.05</td>
+                                <td class="volume-positive">10,205</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">13</td>
+                                <td class="stock-code">2327</td>
+                                <td class="stock-name">國巨*           </td>
+                                <td>229.00</td>
+                                <td class="price-up">+2.5</td>
+                                <td class="volume-positive">10,108</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">14</td>
+                                <td class="stock-code">2891</td>
+                                <td class="stock-name">中信金          </td>
+                                <td>42.60</td>
+                                <td class="price-up">+0.4</td>
+                                <td class="volume-positive">8,531</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">15</td>
+                                <td class="stock-code">2615</td>
+                                <td class="stock-name">萬海            </td>
+                                <td>83.30</td>
+                                <td class="price-up">+1.9</td>
+                                <td class="volume-positive">7,909</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">16</td>
+                                <td class="stock-code">2408</td>
+                                <td class="stock-name">南亞科          </td>
+                                <td>160.50</td>
+                                <td class="price-down">-6.0</td>
+                                <td class="volume-positive">6,710</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">17</td>
+                                <td class="stock-code">3715</td>
+                                <td class="stock-name">定穎投控        </td>
+                                <td>116.50</td>
+                                <td class="price-down">-4.0</td>
+                                <td class="volume-positive">6,581</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">18</td>
+                                <td class="stock-code">2890</td>
+                                <td class="stock-name">永豐金          </td>
+                                <td>26.40</td>
+                                <td class="price-down">-0.15</td>
+                                <td class="volume-positive">5,378</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">19</td>
+                                <td class="stock-code">3189</td>
+                                <td class="stock-name">景碩            </td>
+                                <td>145.50</td>
+                                <td class="price-up">+4.0</td>
+                                <td class="volume-positive">4,833</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">20</td>
+                                <td class="stock-code">1409</td>
+                                <td class="stock-name">新纖            </td>
+                                <td>15.95</td>
+                                <td class="price-up">+0.15</td>
+                                <td class="volume-positive">4,813</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">21</td>
+                                <td class="stock-code">1326</td>
+                                <td class="stock-name">台化            </td>
+                                <td>32.90</td>
+                                <td class="price-down">-1.1</td>
+                                <td class="volume-positive">4,792</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">22</td>
+                                <td class="stock-code">3711</td>
+                                <td class="stock-name">日月光投控      </td>
+                                <td>215.00</td>
+                                <td class="price-down">-5.0</td>
+                                <td class="volume-positive">4,430</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">23</td>
+                                <td class="stock-code">2303</td>
+                                <td class="stock-name">聯電            </td>
+                                <td>44.20</td>
+                                <td class="price-up">+0.35</td>
+                                <td class="volume-positive">4,240</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">24</td>
+                                <td class="stock-code">2885</td>
+                                <td class="stock-name">元大金          </td>
+                                <td>35.20</td>
+                                <td class="">0</td>
+                                <td class="volume-positive">3,991</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">25</td>
+                                <td class="stock-code">6239</td>
+                                <td class="stock-name">力成            </td>
+                                <td>160.50</td>
+                                <td class="price-down">-4.0</td>
+                                <td class="volume-positive">3,909</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">26</td>
+                                <td class="stock-code">1402</td>
+                                <td class="stock-name">遠東新          </td>
+                                <td>27.90</td>
+                                <td class="price-down">-0.35</td>
+                                <td class="volume-positive">3,885</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">27</td>
+                                <td class="stock-code">00712</td>
+                                <td class="stock-name">復華富時不動產  </td>
+                                <td>8.79</td>
+                                <td class="price-down">-0.08</td>
+                                <td class="volume-positive">3,830</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">28</td>
+                                <td class="stock-code">2301</td>
+                                <td class="stock-name">光寶科          </td>
+                                <td>154.50</td>
+                                <td class="price-down">-8.0</td>
+                                <td class="volume-positive">3,349</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">29</td>
+                                <td class="stock-code">2312</td>
+                                <td class="stock-name">金寶            </td>
+                                <td>21.05</td>
+                                <td class="price-down">-0.25</td>
+                                <td class="volume-positive">3,270</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">30</td>
+                                <td class="stock-code">8110</td>
+                                <td class="stock-name">華東            </td>
+                                <td>35.50</td>
+                                <td class="price-down">-3.5</td>
+                                <td class="volume-positive">3,122</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">31</td>
+                                <td class="stock-code">4989</td>
+                                <td class="stock-name">榮科            </td>
+                                <td>42.50</td>
+                                <td class="price-down">-4.2</td>
+                                <td class="volume-positive">3,037</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">32</td>
+                                <td class="stock-code">1301</td>
+                                <td class="stock-name">台塑            </td>
+                                <td>41.50</td>
+                                <td class="price-down">-1.6</td>
+                                <td class="volume-positive">2,983</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">33</td>
+                                <td class="stock-code">2368</td>
+                                <td class="stock-name">金像電          </td>
+                                <td>507.00</td>
+                                <td class="price-down">-30.0</td>
+                                <td class="volume-positive">2,764</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">34</td>
+                                <td class="stock-code">2441</td>
+                                <td class="stock-name">超豐            </td>
+                                <td>72.50</td>
+                                <td class="price-up">+0.3</td>
+                                <td class="volume-positive">2,626</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">35</td>
+                                <td class="stock-code">2486</td>
+                                <td class="stock-name">一詮            </td>
+                                <td>102.00</td>
+                                <td class="price-up">+1.5</td>
+                                <td class="volume-positive">2,618</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">36</td>
+                                <td class="stock-code">8131</td>
+                                <td class="stock-name">福懋科          </td>
+                                <td>45.30</td>
+                                <td class="price-down">-0.9</td>
+                                <td class="volume-positive">2,596</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">37</td>
+                                <td class="stock-code">6505</td>
+                                <td class="stock-name">台塑化          </td>
+                                <td>54.10</td>
+                                <td class="price-down">-0.8</td>
+                                <td class="volume-positive">2,573</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">38</td>
+                                <td class="stock-code">1102</td>
+                                <td class="stock-name">亞泥            </td>
+                                <td>37.15</td>
+                                <td class="price-down">-0.5</td>
+                                <td class="volume-positive">2,289</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">39</td>
+                                <td class="stock-code">6209</td>
+                                <td class="stock-name">今國光          </td>
+                                <td>56.60</td>
+                                <td class="price-up">+2.9</td>
+                                <td class="volume-positive">2,025</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">40</td>
+                                <td class="stock-code">00646</td>
+                                <td class="stock-name">元大S&P500      </td>
+                                <td>65.05</td>
+                                <td class="price-down">-0.95</td>
+                                <td class="volume-positive">2,019</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">41</td>
+                                <td class="stock-code">2634</td>
+                                <td class="stock-name">漢翔            </td>
+                                <td>47.50</td>
+                                <td class="price-down">-1.1</td>
+                                <td class="volume-positive">1,998</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">42</td>
+                                <td class="stock-code">5521</td>
+                                <td class="stock-name">工信            </td>
+                                <td>15.00</td>
+                                <td class="price-up">+0.05</td>
+                                <td class="volume-positive">1,698</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">43</td>
+                                <td class="stock-code">2201</td>
+                                <td class="stock-name">裕隆            </td>
+                                <td>37.10</td>
+                                <td class="price-down">-1.95</td>
+                                <td class="volume-positive">1,668</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">44</td>
+                                <td class="stock-code">3006</td>
+                                <td class="stock-name">晶豪科          </td>
+                                <td>88.20</td>
+                                <td class="price-down">-3.6</td>
+                                <td class="volume-positive">1,617</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">45</td>
+                                <td class="stock-code">2313</td>
+                                <td class="stock-name">華通            </td>
+                                <td>78.00</td>
+                                <td class="price-down">-3.0</td>
+                                <td class="volume-positive">1,551</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">46</td>
+                                <td class="stock-code">2428</td>
+                                <td class="stock-name">興勤            </td>
+                                <td>189.00</td>
+                                <td class="price-up">+10.5</td>
+                                <td class="volume-positive">1,532</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">47</td>
+                                <td class="stock-code">2485</td>
+                                <td class="stock-name">兆赫            </td>
+                                <td>17.60</td>
+                                <td class="price-down">-0.45</td>
+                                <td class="volume-positive">1,521</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">48</td>
+                                <td class="stock-code">8271</td>
+                                <td class="stock-name">宇瞻            </td>
+                                <td>107.50</td>
+                                <td class="price-down">-1.5</td>
+                                <td class="volume-positive">1,448</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">49</td>
+                                <td class="stock-code">2637</td>
+                                <td class="stock-name">慧洋-KY         </td>
+                                <td>63.60</td>
+                                <td class="price-up">+0.4</td>
+                                <td class="volume-positive">1,393</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">50</td>
+                                <td class="stock-code">4722</td>
+                                <td class="stock-name">國精化          </td>
+                                <td>149.50</td>
+                                <td class="price-down">-10.0</td>
+                                <td class="volume-positive">1,362</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title sell">📉 賣超 TOP 10 (2025-11-18)</h2>
+                    <table>
+                        <thead class="sell">
+                            <tr>
+                                <th>排名</th>
+                                <th>代號</th>
+                                <th>證券名稱</th>
+                                <th>收盤價</th>
+                                <th>漲跌</th>
+                                <th>買賣超(張)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="rank">1</td>
+                                <td class="stock-code">0050</td>
+                                <td class="stock-name">元大台灣50      </td>
+                                <td>60.45</td>
+                                <td class="price-down">-1.45</td>
+                                <td class="volume-negative">-170,392</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">2</td>
+                                <td class="stock-code">0056</td>
+                                <td class="stock-name">元大高股息      </td>
+                                <td>35.00</td>
+                                <td class="price-down">-0.79</td>
+                                <td class="volume-negative">-144,621</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">3</td>
+                                <td class="stock-code">00878</td>
+                                <td class="stock-name">國泰永續高股息  </td>
+                                <td>20.35</td>
+                                <td class="">0</td>
+                                <td class="volume-negative">-143,751</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">4</td>
+                                <td class="stock-code">2344</td>
+                                <td class="stock-name">華邦電          </td>
+                                <td>61.40</td>
+                                <td class="price-down">-4.8</td>
+                                <td class="volume-negative">-113,735</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">5</td>
+                                <td class="stock-code">00900</td>
+                                <td class="stock-name">富邦特選高股息30</td>
+                                <td>13.00</td>
+                                <td class="">0</td>
+                                <td class="volume-negative">-64,640</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">6</td>
+                                <td class="stock-code">00919</td>
+                                <td class="stock-name">群益台灣精選高息</td>
+                                <td>21.24</td>
+                                <td class="price-down">-0.22</td>
+                                <td class="volume-negative">-63,395</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">7</td>
+                                <td class="stock-code">00918</td>
+                                <td class="stock-name">大華優利高填息30</td>
+                                <td>21.87</td>
+                                <td class="price-down">-0.43</td>
+                                <td class="volume-negative">-31,599</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">8</td>
+                                <td class="stock-code">00929</td>
+                                <td class="stock-name">復華台灣科技優息</td>
+                                <td>17.53</td>
+                                <td class="price-down">-0.41</td>
+                                <td class="volume-negative">-31,236</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">9</td>
+                                <td class="stock-code">00940</td>
+                                <td class="stock-name">元大台灣價值高息</td>
+                                <td>9.12</td>
+                                <td class="price-down">-0.19</td>
+                                <td class="volume-negative">-26,902</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">10</td>
+                                <td class="stock-code">2887</td>
+                                <td class="stock-name">台新新光金      </td>
+                                <td>18.50</td>
+                                <td class="price-down">-0.35</td>
+                                <td class="volume-negative">-18,895</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div id="tab-5" class="tab-content">
+                <div class="section">
+                    <h2 class="section-title buy">📈 買超 TOP 50 (2025-11-17)</h2>
+                    <table>
+                        <thead class="buy">
+                            <tr>
+                                <th>排名</th>
+                                <th>代號</th>
+                                <th>證券名稱</th>
+                                <th>收盤價</th>
+                                <th>漲跌</th>
+                                <th>買賣超(張)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="rank">1</td>
+                                <td class="stock-code">00953B</td>
+                                <td class="stock-name">群益優選非投等債</td>
+                                <td>9.54</td>
+                                <td class="price-down">-0.03</td>
+                                <td class="volume-positive">23,254</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">2</td>
+                                <td class="stock-code">2408</td>
+                                <td class="stock-name">南亞科          </td>
+                                <td>166.50</td>
+                                <td class="price-up">+8.0</td>
+                                <td class="volume-positive">16,717</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">3</td>
+                                <td class="stock-code">1303</td>
+                                <td class="stock-name">南亞            </td>
+                                <td>56.50</td>
+                                <td class="price-up">+0.9</td>
+                                <td class="volume-positive">15,295</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">4</td>
+                                <td class="stock-code">2867</td>
+                                <td class="stock-name">三商壽          </td>
+                                <td>7.21</td>
+                                <td class="">0</td>
+                                <td class="volume-positive">11,674</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">5</td>
+                                <td class="stock-code">00712</td>
+                                <td class="stock-name">復華富時不動產  </td>
+                                <td>8.87</td>
+                                <td class="price-down">-0.01</td>
+                                <td class="volume-positive">11,589</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">6</td>
+                                <td class="stock-code">00882</td>
+                                <td class="stock-name">中信中國高股息  </td>
+                                <td>15.62</td>
+                                <td class="price-down">-0.14</td>
+                                <td class="volume-positive">10,459</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">7</td>
+                                <td class="stock-code">00881</td>
+                                <td class="stock-name">國泰台灣科技龍頭</td>
+                                <td>30.70</td>
+                                <td class="price-up">+0.1</td>
+                                <td class="volume-positive">9,089</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">8</td>
+                                <td class="stock-code">2884</td>
+                                <td class="stock-name">玉山金          </td>
+                                <td>30.20</td>
+                                <td class="price-up">+0.2</td>
+                                <td class="volume-positive">7,299</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">9</td>
+                                <td class="stock-code">3189</td>
+                                <td class="stock-name">景碩            </td>
+                                <td>141.50</td>
+                                <td class="price-up">+4.5</td>
+                                <td class="volume-positive">6,698</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">10</td>
+                                <td class="stock-code">3167</td>
+                                <td class="stock-name">大量            </td>
+                                <td>225.50</td>
+                                <td class="price-up">+20.5</td>
+                                <td class="volume-positive">6,676</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">11</td>
+                                <td class="stock-code">1504</td>
+                                <td class="stock-name">東元            </td>
+                                <td>96.60</td>
+                                <td class="price-down">-3.2</td>
+                                <td class="volume-positive">6,659</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">12</td>
+                                <td class="stock-code">2329</td>
+                                <td class="stock-name">華泰            </td>
+                                <td>52.40</td>
+                                <td class="price-up">+3.0</td>
+                                <td class="volume-positive">6,549</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">13</td>
+                                <td class="stock-code">3711</td>
+                                <td class="stock-name">日月光投控      </td>
+                                <td>220.00</td>
+                                <td class="price-down">-2.5</td>
+                                <td class="volume-positive">6,438</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">14</td>
+                                <td class="stock-code">1402</td>
+                                <td class="stock-name">遠東新          </td>
+                                <td>28.25</td>
+                                <td class="price-up">+0.5</td>
+                                <td class="volume-positive">6,234</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">15</td>
+                                <td class="stock-code">1301</td>
+                                <td class="stock-name">台塑            </td>
+                                <td>43.10</td>
+                                <td class="price-up">+0.55</td>
+                                <td class="volume-positive">5,646</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">16</td>
+                                <td class="stock-code">2481</td>
+                                <td class="stock-name">強茂            </td>
+                                <td>85.90</td>
+                                <td class="price-up">+3.9</td>
+                                <td class="volume-positive">5,377</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">17</td>
+                                <td class="stock-code">1727</td>
+                                <td class="stock-name">中華化          </td>
+                                <td>40.30</td>
+                                <td class="price-up">+2.8</td>
+                                <td class="volume-positive">5,329</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">18</td>
+                                <td class="stock-code">2449</td>
+                                <td class="stock-name">京元電子        </td>
+                                <td>213.50</td>
+                                <td class="price-up">+5.0</td>
+                                <td class="volume-positive">4,374</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">19</td>
+                                <td class="stock-code">1102</td>
+                                <td class="stock-name">亞泥            </td>
+                                <td>37.65</td>
+                                <td class="price-up">+0.25</td>
+                                <td class="volume-positive">3,819</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">20</td>
+                                <td class="stock-code">2027</td>
+                                <td class="stock-name">大成鋼          </td>
+                                <td>38.00</td>
+                                <td class="price-down">-0.6</td>
+                                <td class="volume-positive">3,565</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">21</td>
+                                <td class="stock-code">1909</td>
+                                <td class="stock-name">榮成            </td>
+                                <td>10.65</td>
+                                <td class="price-up">+0.55</td>
+                                <td class="volume-positive">3,360</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">22</td>
+                                <td class="stock-code">2903</td>
+                                <td class="stock-name">遠百            </td>
+                                <td>23.40</td>
+                                <td class="price-up">+0.65</td>
+                                <td class="volume-positive">3,354</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">23</td>
+                                <td class="stock-code">4967</td>
+                                <td class="stock-name">十銓            </td>
+                                <td>146.50</td>
+                                <td class="price-up">+4.0</td>
+                                <td class="volume-positive">3,196</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">24</td>
+                                <td class="stock-code">1409</td>
+                                <td class="stock-name">新纖            </td>
+                                <td>15.80</td>
+                                <td class="price-up">+0.4</td>
+                                <td class="volume-positive">2,966</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">25</td>
+                                <td class="stock-code">5880</td>
+                                <td class="stock-name">合庫金          </td>
+                                <td>24.10</td>
+                                <td class="">0</td>
+                                <td class="volume-positive">2,250</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">26</td>
+                                <td class="stock-code">6282</td>
+                                <td class="stock-name">康舒            </td>
+                                <td>40.85</td>
+                                <td class="price-up">+1.1</td>
+                                <td class="volume-positive">2,191</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">27</td>
+                                <td class="stock-code">2330</td>
+                                <td class="stock-name">台積電          </td>
+                                <td>1,445.00</td>
+                                <td class="price-up">+15.0</td>
+                                <td class="volume-positive">2,165</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">28</td>
+                                <td class="stock-code">6191</td>
+                                <td class="stock-name">精成科          </td>
+                                <td>114.00</td>
+                                <td class="price-down">-1.5</td>
+                                <td class="volume-positive">1,971</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">29</td>
+                                <td class="stock-code">8021</td>
+                                <td class="stock-name">尖點            </td>
+                                <td>133.00</td>
+                                <td class="price-up">+6.5</td>
+                                <td class="volume-positive">1,958</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">30</td>
+                                <td class="stock-code">2457</td>
+                                <td class="stock-name">飛宏            </td>
+                                <td>30.55</td>
+                                <td class="price-up">+0.85</td>
+                                <td class="volume-positive">1,941</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">31</td>
+                                <td class="stock-code">2371</td>
+                                <td class="stock-name">大同            </td>
+                                <td>31.50</td>
+                                <td class="price-down">-0.75</td>
+                                <td class="volume-positive">1,911</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">32</td>
+                                <td class="stock-code">2834</td>
+                                <td class="stock-name">臺企銀          </td>
+                                <td>15.65</td>
+                                <td class="price-down">-0.05</td>
+                                <td class="volume-positive">1,701</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">33</td>
+                                <td class="stock-code">2327</td>
+                                <td class="stock-name">國巨*           </td>
+                                <td>226.50</td>
+                                <td class="price-down">-7.0</td>
+                                <td class="volume-positive">1,680</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">34</td>
+                                <td class="stock-code">2883</td>
+                                <td class="stock-name">凱基金          </td>
+                                <td>15.80</td>
+                                <td class="price-down">-0.2</td>
+                                <td class="volume-positive">1,572</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">35</td>
+                                <td class="stock-code">2606</td>
+                                <td class="stock-name">裕民            </td>
+                                <td>54.70</td>
+                                <td class="price-up">+1.0</td>
+                                <td class="volume-positive">1,515</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">36</td>
+                                <td class="stock-code">2637</td>
+                                <td class="stock-name">慧洋-KY         </td>
+                                <td>63.20</td>
+                                <td class="price-up">+0.9</td>
+                                <td class="volume-positive">1,460</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">37</td>
+                                <td class="stock-code">5521</td>
+                                <td class="stock-name">工信            </td>
+                                <td>14.95</td>
+                                <td class="price-up">+0.2</td>
+                                <td class="volume-positive">1,456</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">38</td>
+                                <td class="stock-code">6239</td>
+                                <td class="stock-name">力成            </td>
+                                <td>164.50</td>
+                                <td class="price-up">+4.0</td>
+                                <td class="volume-positive">1,371</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">39</td>
+                                <td class="stock-code">2633</td>
+                                <td class="stock-name">台灣高鐵        </td>
+                                <td>28.45</td>
+                                <td class="price-up">+0.1</td>
+                                <td class="volume-positive">1,366</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">40</td>
+                                <td class="stock-code">2323</td>
+                                <td class="stock-name">中環            </td>
+                                <td>9.65</td>
+                                <td class="price-up">+0.12</td>
+                                <td class="volume-positive">1,356</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">41</td>
+                                <td class="stock-code">2731</td>
+                                <td class="stock-name">雄獅            </td>
+                                <td>182.50</td>
+                                <td class="price-up">+9.5</td>
+                                <td class="volume-positive">1,295</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">42</td>
+                                <td class="stock-code">2495</td>
+                                <td class="stock-name">普安            </td>
+                                <td>26.80</td>
+                                <td class="price-up">+0.7</td>
+                                <td class="volume-positive">1,295</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">43</td>
+                                <td class="stock-code">6505</td>
+                                <td class="stock-name">台塑化          </td>
+                                <td>54.90</td>
+                                <td class="price-up">+1.7</td>
+                                <td class="volume-positive">1,268</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">44</td>
+                                <td class="stock-code">3005</td>
+                                <td class="stock-name">神基            </td>
+                                <td>127.00</td>
+                                <td class="price-down">-4.0</td>
+                                <td class="volume-positive">1,205</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">45</td>
+                                <td class="stock-code">2312</td>
+                                <td class="stock-name">金寶            </td>
+                                <td>21.30</td>
+                                <td class="price-down">-0.45</td>
+                                <td class="volume-positive">1,133</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">46</td>
+                                <td class="stock-code">3706</td>
+                                <td class="stock-name">神達            </td>
+                                <td>92.70</td>
+                                <td class="price-down">-0.2</td>
+                                <td class="volume-positive">1,085</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">47</td>
+                                <td class="stock-code">2885</td>
+                                <td class="stock-name">元大金          </td>
+                                <td>35.20</td>
+                                <td class="price-up">+0.1</td>
+                                <td class="volume-positive">1,084</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">48</td>
+                                <td class="stock-code">6414</td>
+                                <td class="stock-name">樺漢            </td>
+                                <td>297.00</td>
+                                <td class="price-up">+15.0</td>
+                                <td class="volume-positive">1,078</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">49</td>
+                                <td class="stock-code">00631L</td>
+                                <td class="stock-name">元大台灣50正2   </td>
+                                <td>329.90</td>
+                                <td class="price-up">+2.0</td>
+                                <td class="volume-positive">1,057</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">50</td>
+                                <td class="stock-code">1314</td>
+                                <td class="stock-name">中石化          </td>
+                                <td>8.75</td>
+                                <td class="price-down">-0.16</td>
+                                <td class="volume-positive">1,055</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title sell">📉 賣超 TOP 10 (2025-11-17)</h2>
+                    <table>
+                        <thead class="sell">
+                            <tr>
+                                <th>排名</th>
+                                <th>代號</th>
+                                <th>證券名稱</th>
+                                <th>收盤價</th>
+                                <th>漲跌</th>
+                                <th>買賣超(張)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="rank">1</td>
+                                <td class="stock-code">00878</td>
+                                <td class="stock-name">國泰永續高股息  </td>
+                                <td>21.11</td>
+                                <td class="price-down">-0.16</td>
+                                <td class="volume-negative">-126,129</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">2</td>
+                                <td class="stock-code">0056</td>
+                                <td class="stock-name">元大高股息      </td>
+                                <td>35.79</td>
+                                <td class="price-down">-0.34</td>
+                                <td class="volume-negative">-92,940</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">3</td>
+                                <td class="stock-code">6770</td>
+                                <td class="stock-name">力積電          </td>
+                                <td>35.00</td>
+                                <td class="price-up">+0.85</td>
+                                <td class="volume-negative">-32,604</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">4</td>
+                                <td class="stock-code">2337</td>
+                                <td class="stock-name">旺宏            </td>
+                                <td>38.75</td>
+                                <td class="price-up">+0.7</td>
+                                <td class="volume-negative">-30,878</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">5</td>
+                                <td class="stock-code">1605</td>
+                                <td class="stock-name">華新            </td>
+                                <td>31.25</td>
+                                <td class="price-down">-1.55</td>
+                                <td class="volume-negative">-29,717</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">6</td>
+                                <td class="stock-code">2409</td>
+                                <td class="stock-name">友達            </td>
+                                <td>11.55</td>
+                                <td class="price-down">-0.15</td>
+                                <td class="volume-negative">-27,634</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">7</td>
+                                <td class="stock-code">0050</td>
+                                <td class="stock-name">元大台灣50      </td>
+                                <td>61.90</td>
+                                <td class="price-up">+0.2</td>
+                                <td class="volume-negative">-25,534</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">8</td>
+                                <td class="stock-code">00900</td>
+                                <td class="stock-name">富邦特選高股息30</td>
+                                <td>13.43</td>
+                                <td class="price-down">-0.02</td>
+                                <td class="volume-negative">-21,546</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">9</td>
+                                <td class="stock-code">00929</td>
+                                <td class="stock-name">復華台灣科技優息</td>
+                                <td>17.94</td>
+                                <td class="price-down">-0.17</td>
+                                <td class="volume-negative">-17,924</td>
+                            </tr>
+
+                            <tr>
+                                <td class="rank">10</td>
+                                <td class="stock-code">00632R</td>
+                                <td class="stock-name">元大台灣50反1   </td>
+                                <td>17.42</td>
+                                <td class="price-down">-0.04</td>
+                                <td class="volume-negative">-15,494</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+        
+        <div class="footer">
+            <p>資料來源：台灣證券交易所 | 生成時間：2025-11-24</p>
+        </div>
+    </div>
+    
+    <script>
+        function switchTab(tabIndex) {
+            const allContents = document.querySelectorAll('.tab-content');
+            allContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            const allButtons = document.querySelectorAll('.tab-button');
+            allButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById('tab-' + tabIndex).classList.add('active');
+            allButtons[tabIndex].classList.add('active');
+        }
+    </script>
+</body>
+</html>
