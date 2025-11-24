@@ -668,11 +668,11 @@
                         <th style="width: 70px;">代號</th>
                         <th style="width: 110px; text-align: left; padding-left: 12px;">股票名稱</th>
                         <th style="width: 70px;">昨收</th>
+                        <th style="width: 100px;">買進(張)</th>
                         <th style="width: 70px;">成交價</th>
+                        <th style="width: 100px;">賣出(張)</th>
                         <th style="width: 70px;">漲跌</th>
                         <th style="width: 80px;">漲跌幅</th>
-                        <th style="width: 100px;">買進(張)</th>
-                        <th style="width: 100px;">賣出(張)</th>
                         <th style="width: 70px;">買賣比</th>
                     </tr>
                 </thead>
@@ -964,11 +964,11 @@
                     <td class="stock-code">${stock.code}</td>
                     <td class="stock-name">${stock.name}</td>
                     <td style="font-weight: 600; color: #2c3e50;">${stock.close_price}</td>
+                    <td style="color: #e74c3c; font-weight: 500;">${formatNumber(stock.buy_volume)}</td>
                     <td style="font-weight: 600; color: #2c3e50;">${stock.current_price}</td>
+                    <td style="color: #27ae60; font-weight: 500;">${formatNumber(stock.sell_volume)}</td>
                     <td class="${changeClass}">${stock.change}</td>
                     <td class="${changePercentClass}">${stock.change_percent}</td>
-                    <td style="color: #e74c3c; font-weight: 500;">${formatNumber(stock.buy_volume)}</td>
-                    <td style="color: #27ae60; font-weight: 500;">${formatNumber(stock.sell_volume)}</td>
                     <td class="${ratioClass}" style="font-weight: 600;">${buySellRatio}</td>
                 `;
 
