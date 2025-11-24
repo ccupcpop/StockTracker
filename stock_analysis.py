@@ -216,6 +216,11 @@ def get_stock_info(stock_code, market='TSE'):
                 
                 value = value_span.get_text(strip=True)
                 
+                # 檢查該 span 的 class 來判斷顏色（漲跌）
+                value_classes = ' '.join(value_span.get('class', []))
+                is_up = 'trend-up' in value_classes or 'c-trend-up' in value_classes
+                is_down = 'trend-down' in value_classes or 'c-trend-down' in value_classes
+                
                 # 根據標籤分配到對應的欄位
                 if label == '成交':
                     stock_info['成交'] = value
@@ -224,10 +229,59 @@ def get_stock_info(stock_code, market='TSE'):
                 elif label == '開盤':
                     stock_info['開盤'] = value
                 elif label == '漲跌':
-                    stock_info['漲跌'] = value
+                    # 根據顏色添加正負號
+                    if value and value != '-':
+                        if not value.startswith(('+', '-')):
+                            if is_up:
+                                stock_info['漲跌'] = f'+{value}'
+                            elif is_down:
+                                stock_info['漲跌'] = f'-{value}' if not value.startswith('-') else value
+                            else:
+                                # 嘗試用數字判斷
+                                try:
+                                    num_val = float(value.replace(',', ''))
+                                    if num_val > 0:
+                                        stock_info['漲跌'] = f'+{value}'
+                                    elif num_val < 0:
+                                        stock_info['漲跌'] = value
+                                    else:
+                                        stock_info['漲跌'] = '0.00'
+                                except:
+                                    stock_info['漲跌'] = value
+                        else:
+                            stock_info['漲跌'] = value
+                    else:
+                        stock_info['漲跌'] = value
+                        
                 elif label == '漲跌幅':
-                    # 移除可能的符號，只保留數字和正負號
-                    stock_info['漲跌幅'] = value
+                    # 根據顏色添加正負號
+                    clean_value = value.replace('%', '').strip()
+                    if clean_value and clean_value != '-':
+                        if not clean_value.startswith(('+', '-')):
+                            if is_up:
+                                stock_info['漲跌幅'] = f'+{clean_value}%'
+                            elif is_down:
+                                stock_info['漲跌幅'] = f'-{clean_value}%' if not clean_value.startswith('-') else f'{clean_value}%'
+                            else:
+                                # 嘗試用數字判斷
+                                try:
+                                    num_val = float(clean_value)
+                                    if num_val > 0:
+                                        stock_info['漲跌幅'] = f'+{clean_value}%'
+                                    elif num_val < 0:
+                                        stock_info['漲跌幅'] = f'{clean_value}%'
+                                    else:
+                                        stock_info['漲跌幅'] = '0.00%'
+                                except:
+                                    stock_info['漲跌幅'] = value
+                        else:
+                            # 已經有符號，確保有百分號
+                            if not value.endswith('%'):
+                                stock_info['漲跌幅'] = f'{value}%'
+                            else:
+                                stock_info['漲跌幅'] = value
+                    else:
+                        stock_info['漲跌幅'] = value
             
             # 方法2: 提取委買委賣小計（從不同的結構）
             all_divs = soup.find_all('div', class_=True)

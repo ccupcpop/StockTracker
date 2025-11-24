@@ -465,7 +465,11 @@
             font-weight: 600;
             color: #2c3e50;
             text-align: left;
+            padding-left: 16px !important;
             position: relative;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .badge {
@@ -666,16 +670,16 @@
             <table id="dataTable">
                 <thead>
                     <tr>
-                        <th>排名</th>
-                        <th>代號</th>
-                        <th>股票名稱</th>
-                        <th>昨收</th>
-                        <th>成交價</th>
-                        <th>漲跌</th>
-                        <th>漲跌幅</th>
-                        <th>買進(張)</th>
-                        <th>賣出(張)</th>
-                        <th>買賣比</th>
+                        <th style="width: 60px;">排名</th>
+                        <th style="width: 80px;">代號</th>
+                        <th style="width: 120px; text-align: left; padding-left: 16px;">股票名稱</th>
+                        <th style="width: 90px;">昨收</th>
+                        <th style="width: 90px;">成交價</th>
+                        <th style="width: 80px;">漲跌</th>
+                        <th style="width: 90px;">漲跌幅</th>
+                        <th style="width: 110px;">買進(張)</th>
+                        <th style="width: 110px;">賣出(張)</th>
+                        <th style="width: 80px;">買賣比</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
