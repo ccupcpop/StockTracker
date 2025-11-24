@@ -393,6 +393,61 @@
             z-index: 10;
         }
 
+        /* 凍結前兩欄（排名和股票） */
+        th:nth-child(1),
+        td:nth-child(1) {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+            background: inherit;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            position: sticky;
+            left: 50px;  /* 排名欄寬度 */
+            z-index: 2;
+            background: inherit;
+        }
+
+        /* 表頭凍結欄需要更高的 z-index */
+        thead th:nth-child(1),
+        thead th:nth-child(2) {
+            z-index: 12;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* tbody 凍結欄背景色 */
+        tbody td:nth-child(1),
+        tbody td:nth-child(2) {
+            background: white;
+        }
+
+        tbody tr:hover td:nth-child(1),
+        tbody tr:hover td:nth-child(2) {
+            background: #f8f9ff;
+        }
+
+        /* 凍結欄右邊加陰影分隔線 */
+        th:nth-child(2)::after,
+        td:nth-child(2)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.08), transparent);
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            position: sticky;
+            left: 50px;
+            z-index: 2;
+            background: inherit;
+        }
+
         th {
             padding: 14px 8px;
             text-align: center;
@@ -456,21 +511,24 @@
             font-size: 1em;
         }
 
-        .stock-code {
-            font-weight: 600;
-            color: #667eea;
-            font-family: 'Courier New', monospace;
+        .stock-info {
+            text-align: left;
+            padding-left: 12px !important;
+            line-height: 1.3;
         }
 
         .stock-name {
             font-weight: 600;
             color: #2c3e50;
-            text-align: left;
-            padding-left: 12px !important;
-            position: relative;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            font-size: 0.95em;
+            margin-bottom: 2px;
+        }
+
+        .stock-code {
+            font-weight: 500;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
         }
 
         .badge {
@@ -723,8 +781,7 @@
                 <thead>
                     <tr>
                         <th style="width: 50px;">排名</th>
-                        <th style="width: 70px;">代號</th>
-                        <th style="width: 110px; text-align: left; padding-left: 12px;">股票名稱</th>
+                        <th style="width: 120px; text-align: left; padding-left: 12px;">股票</th>
                         <th style="width: 70px;">昨收</th>
                         <th style="width: 100px;">買進(張)</th>
                         <th style="width: 70px;">成交價</th>
@@ -736,7 +793,7 @@
                 </thead>
                 <tbody id="tableBody">
                     <tr>
-                        <td colspan="10" style="padding: 60px 20px; color: #95a5a6; font-size: 1.1em;">
+                        <td colspan="9" style="padding: 60px 20px; color: #95a5a6; font-size: 1.1em;">
                             載入資料中...
                         </td>
                     </tr>
@@ -1060,8 +1117,10 @@
 
                 row.innerHTML = `
                     <td class="${rankClass}">${index + 1}</td>
-                    <td class="stock-code">${stock.code}</td>
-                    <td class="stock-name">${stock.name}</td>
+                    <td class="stock-info">
+                        <div class="stock-name">${stock.name}</div>
+                        <div class="stock-code">${stock.code}</div>
+                    </td>
                     <td style="font-weight: 600; color: #2c3e50;">${stock.close_price}</td>
                     <td class="volume-cell">
                         <div class="volume-wrapper">
