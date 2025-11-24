@@ -825,7 +825,7 @@
                     updateDisplay(data);
                 }
             } else if (currentCategory === 'fiveday') {
-                loadExternalPage(market === 'TSE' ? 'tse_analysis_complete.html' : 'otc_analysis_complete.html');
+                loadExternalPage(market === 'TSE' ? 'tse_analysis_result_complete.html' : 'otc_analysis_result_complete.html');
             } else if (currentCategory === 'sixtyDay') {
                 loadExternalPage(market === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
             }
@@ -846,7 +846,7 @@
             } else if (category === 'fiveday') {
                 document.getElementById('tabFiveDay').classList.add('active');
                 showIframeView();
-                loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_complete.html' : 'otc_analysis_complete.html');
+                loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_result_complete.html' : 'otc_analysis_result_complete.html');
             } else if (category === 'sixtyDay') {
                 document.getElementById('tabSixtyDay').classList.add('active');
                 showIframeView();
@@ -1027,7 +1027,7 @@
                     } else if (currentCategory === 'fiveday') {
                         document.getElementById('tabFiveDay').classList.add('active');
                         showIframeView();
-                        loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_complete.html' : 'otc_analysis_complete.html');
+                        loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_result_complete.html' : 'otc_analysis_result_complete.html');
                     } else if (currentCategory === 'sixtyDay') {
                         document.getElementById('tabSixtyDay').classList.add('active');
                         showIframeView();
