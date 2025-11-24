@@ -651,12 +651,10 @@
                 <span class="sort-label">排序依據：</span>
                 <select class="sort-select" id="sortField">
                     <option value="default">預設排序</option>
-                    <option value="code">股票代號</option>
-                    <option value="name">股票名稱</option>
-                    <option value="price">成交價</option>
+                    <option value="change_value">漲跌</option>
                     <option value="change">漲跌幅</option>
-                    <option value="buy_volume">買進張數</option>
-                    <option value="sell_volume">賣出張數</option>
+                    <option value="buy_volume">買進(張)</option>
+                    <option value="sell_volume">賣出(張)</option>
                     <option value="ratio">買賣比</option>
                 </select>
             </div>
@@ -748,6 +746,11 @@
                     case 'price':
                         aVal = parseFloat(a.current_price) || 0;
                         bVal = parseFloat(b.current_price) || 0;
+                        break;
+                    
+                    case 'change_value':
+                        aVal = parseFloat(a.change) || 0;
+                        bVal = parseFloat(b.change) || 0;
                         break;
                     
                     case 'change':
