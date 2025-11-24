@@ -811,13 +811,13 @@
                     <tr>
                         <th class="col-rank">排名</th>
                         <th class="col-stock">股票</th>
-                        <th style="width: 55px;">昨收</th>
+                        <th style="width: 65px;">昨收</th>
                         <th style="width: 95px;">買進(張)</th>
-                        <th style="width: 55px;">成交價</th>
+                        <th style="width: 65px;">成交價</th>
                         <th style="width: 95px;">賣出(張)</th>
-                        <th style="width: 50px;">漲跌</th>
-                        <th style="width: 60px;">漲跌幅</th>
-                        <th style="width: 50px;">買賣比</th>
+                        <th style="width: 60px;">漲跌</th>
+                        <th style="width: 70px;">漲跌幅</th>
+                        <th style="width: 60px;">買賣比</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -845,7 +845,7 @@
         // ========== 環境設定 ==========
         // true = 本地測試 (直接讀取 JSON 檔案)
         // false = 伺服器模式 (從 ./StockInfo/ 路徑讀取)
-        const IS_LOCAL = true;
+        const IS_LOCAL = false;
         
         // 根據環境設定路徑
         const DATA_PATH = IS_LOCAL ? './' : './StockInfo/';
