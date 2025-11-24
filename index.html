@@ -510,6 +510,61 @@
             color: #95a5a6;
         }
 
+        /* 五檔分布長條圖樣式 */
+        .volume-cell {
+            padding: 0 !important;
+            position: relative;
+        }
+
+        .volume-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;  /* 數字置中 */
+            height: 100%;
+            padding: 8px 12px;
+            position: relative;
+            min-height: 45px;
+        }
+
+        .volume-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .vol-bars-container {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1px;
+        }
+
+        .bid-bars {
+            right: 0;
+            left: 0;
+        }
+
+        .ask-bars {
+            left: 0;
+            right: 0;
+        }
+
+        .vol-bar {
+            height: 5px;
+            border-radius: 2px;
+            min-width: 2px;
+        }
+
+        .bid-bar {
+            margin-left: auto;  /* 從右邊開始 */
+        }
+
+        .ask-bar {
+            margin-right: auto;  /* 從左邊開始 */
+        }
+
         .loading {
             position: fixed;
             top: 50%;
@@ -698,6 +753,14 @@
     </div>
 
     <script>
+        // ========== 環境設定 ==========
+        // true = 本地測試 (直接讀取 JSON 檔案)
+        // false = 伺服器模式 (從 ./StockInfo/ 路徑讀取)
+        const IS_LOCAL = false;
+        
+        // 根據環境設定路徑
+        const DATA_PATH = IS_LOCAL ? './' : './StockInfo/';
+        
         let currentMarket = localStorage.getItem('currentMarket') || 'TSE';
         let currentCategory = localStorage.getItem('currentCategory') || 'latest';
         let currentStocks = [];
@@ -808,6 +871,35 @@
             return 'price-neutral';
         }
 
+        // 生成五檔分布長條圖
+        function generateVolumeBars(volumes, type) {
+            if (!volumes || !Array.isArray(volumes) || volumes.length === 0) {
+                return '';
+            }
+            
+            // 轉換為數字並找最大值
+            const nums = volumes.map(v => parseInt(v) || 0);
+            const maxVol = Math.max(...nums);
+            
+            if (maxVol === 0) return '';
+            
+            // 生成5個長條
+            const bars = nums.map((vol, i) => {
+                const percent = (vol / maxVol) * 100;
+                const color = type === 'bid' ? 'rgba(231, 76, 60, 0.3)' : 'rgba(39, 174, 96, 0.3)';
+                
+                if (type === 'bid') {
+                    // 委買：長條從右往左延伸
+                    return `<div class="vol-bar bid-bar" style="width: ${percent}%; background: ${color};"></div>`;
+                } else {
+                    // 委賣：長條從左往右延伸
+                    return `<div class="vol-bar ask-bar" style="width: ${percent}%; background: ${color};"></div>`;
+                }
+            }).join('');
+            
+            return `<div class="vol-bars-container ${type}-bars">${bars}</div>`;
+        }
+
         function switchMarket(market) {
             currentMarket = market;
             localStorage.setItem('currentMarket', market);
@@ -871,7 +963,7 @@
 
         function loadExternalPage(filename) {
             const iframe = document.getElementById('externalFrame');
-            iframe.src = './StockInfo/' + filename;
+            iframe.src = DATA_PATH + filename;
         }
 
         function loadCategoryData() {
@@ -959,14 +1051,28 @@
                     ratioClass = 'price-up';
                 }
 
+                // 生成五檔分布長條圖
+                const bidBars = generateVolumeBars(stock.bid_volumes, 'bid');
+                const askBars = generateVolumeBars(stock.ask_volumes, 'ask');
+
                 row.innerHTML = `
                     <td class="${rankClass}">${index + 1}</td>
                     <td class="stock-code">${stock.code}</td>
                     <td class="stock-name">${stock.name}</td>
                     <td style="font-weight: 600; color: #2c3e50;">${stock.close_price}</td>
-                    <td style="color: #e74c3c; font-weight: 500;">${formatNumber(stock.buy_volume)}</td>
+                    <td class="volume-cell">
+                        <div class="volume-wrapper">
+                            ${bidBars}
+                            <span class="volume-text" style="color: #e74c3c; font-weight: 500;">${formatNumber(stock.buy_volume)}</span>
+                        </div>
+                    </td>
                     <td style="font-weight: 600; color: #2c3e50;">${stock.current_price}</td>
-                    <td style="color: #27ae60; font-weight: 500;">${formatNumber(stock.sell_volume)}</td>
+                    <td class="volume-cell">
+                        <div class="volume-wrapper">
+                            ${askBars}
+                            <span class="volume-text" style="color: #27ae60; font-weight: 500;">${formatNumber(stock.sell_volume)}</span>
+                        </div>
+                    </td>
                     <td class="${changeClass}">${stock.change}</td>
                     <td class="${changePercentClass}">${stock.change_percent}</td>
                     <td class="${ratioClass}" style="font-weight: 600;">${buySellRatio}</td>
@@ -983,13 +1089,13 @@
             loading.style.display = 'block';
             
             try {
-                const tseResponse = await fetch('./StockInfo/TSE_hotstock_data.json');
+                const tseResponse = await fetch(DATA_PATH + 'TSE_hotstock_data.json');
                 if (tseResponse.ok) {
                     tseData = await tseResponse.json();
                     console.log('✅ TSE 資料已載入');
                 }
                 
-                const otcResponse = await fetch('./StockInfo/OTC_hotstock_data.json');
+                const otcResponse = await fetch(DATA_PATH + 'OTC_hotstock_data.json');
                 if (otcResponse.ok) {
                     otcData = await otcResponse.json();
                     console.log('✅ OTC 資料已載入');

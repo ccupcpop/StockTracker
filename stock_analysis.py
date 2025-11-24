@@ -15,7 +15,7 @@ import time
 import traceback
 
 # ========== 執行設定 ==========
-PROCESS_MODE = os.environ.get('PROCESS_MODE', 'BOTH')  # 'TSE', 'OTC', 'BOTH'
+PROCESS_MODE = os.environ.get('PROCESS_MODE', 'TSE')  # 'TSE', 'OTC', 'BOTH'
 TW_TZ = pytz.timezone('Asia/Taipei')
 
 # 超時設定
@@ -308,57 +308,56 @@ def get_stock_info(stock_code, market='TSE'):
                         stock_info['委賣小計'] = value
             
             # 方法3: 提取五檔委買量和委賣量
-            # 找到包含 "量" 和 "委買價" 的區塊（委買區）
-            # 找到包含 "量" 和 "委賣價" 的區塊（委賣區）
+            # 委買量: class 包含 Jc(fs) 和 Mend(4px)
+            # 委賣量: class 包含 Jc(fe) 和 Mstart(4px)
             
-            # 尋找包含五檔掛單資訊的區塊
-            # 委買量在左邊區塊（W(50%)），委賣量在右邊區塊（W(50%)）
-            w50_divs = soup.find_all('div', class_=re.compile(r'W\(50%\)'))
+            all_divs = soup.find_all('div')
+            buy_block = None
+            sell_block = None
             
-            for w50_div in w50_divs:
-                # 檢查此區塊是否包含 "量" 和 "委買價" 或 "委賣價"
-                div_text = w50_div.get_text()
+            # 先找委買/委賣區塊
+            for div in all_divs:
+                classes = div.get('class', [])
+                if not classes:
+                    continue
+                class_str = ' '.join(classes)
                 
-                # 委買區塊 (包含 "委買價")
-                if '委買價' in div_text:
-                    # 找到所有 Flxg(2) 的 div，這些包含五檔數據
-                    flxg_divs = w50_div.find_all('div', class_=re.compile(r'Flxg\(2\)'))
-                    buy_volumes = []
-                    
-                    for flxg_div in flxg_divs:
-                        # 在每個 Flxg(2) div 中找數字
-                        # 委買量的結構: 數字在第一個位置
-                        inner_divs = flxg_div.find_all('div', class_=re.compile(r'Pos\(r\)'))
-                        for inner_div in inner_divs:
-                            # 找到包含數字的 div
-                            num_div = inner_div.find('div', class_=re.compile(r'Bgc\(#7dcbff\)'))
-                            if num_div:
-                                num_text = num_div.get_text(strip=True).strip('"').replace(',', '')
-                                if re.match(r'^[\d,]+$', num_text.replace(',', '')):
-                                    buy_volumes.append(num_text)
-                    
-                    # 如果找到數據，更新 stock_info
-                    if buy_volumes:
-                        for i, vol in enumerate(buy_volumes[:5]):
-                            stock_info['委買量'][i] = vol
+                if 'W(50%)' in class_str and 'Bxz(bb)' in class_str:
+                    text = div.get_text()
+                    if '委買價' in text and buy_block is None:
+                        buy_block = div
+                    elif '委賣價' in text and sell_block is None:
+                        sell_block = div
+            
+            # 從委買區塊提取量 (Jc(fs) + Mend(4px))
+            if buy_block:
+                buy_volumes = []
+                for inner_div in buy_block.find_all('div'):
+                    classes = inner_div.get('class', [])
+                    class_str = ' '.join(classes)
+                    # 委買量的特徵: Jc(fs) 和 Mend(4px)
+                    if 'Jc(fs)' in class_str and 'Mend(4px)' in class_str:
+                        num_text = inner_div.get_text(strip=True).replace('"', '').replace(',', '')
+                        if num_text and re.match(r'^\d+$', num_text):
+                            buy_volumes.append(num_text)
                 
-                # 委賣區塊 (包含 "委賣價")
-                elif '委賣價' in div_text:
-                    flxg_divs = w50_div.find_all('div', class_=re.compile(r'Flxg\(2\)'))
-                    sell_volumes = []
-                    
-                    for flxg_div in flxg_divs:
-                        inner_divs = flxg_div.find_all('div', class_=re.compile(r'Pos\(r\)'))
-                        for inner_div in inner_divs:
-                            num_div = inner_div.find('div', class_=re.compile(r'Bgc\(#7dcbff\)'))
-                            if num_div:
-                                num_text = num_div.get_text(strip=True).strip('"').replace(',', '')
-                                if re.match(r'^[\d,]+$', num_text.replace(',', '')):
-                                    sell_volumes.append(num_text)
-                    
-                    if sell_volumes:
-                        for i, vol in enumerate(sell_volumes[:5]):
-                            stock_info['委賣量'][i] = vol
+                for i, vol in enumerate(buy_volumes[:5]):
+                    stock_info['委買量'][i] = vol
+            
+            # 從委賣區塊提取量 (Jc(fe) + Mstart(4px))
+            if sell_block:
+                sell_volumes = []
+                for inner_div in sell_block.find_all('div'):
+                    classes = inner_div.get('class', [])
+                    class_str = ' '.join(classes)
+                    # 委賣量的特徵: Jc(fe) 和 Mstart(4px)
+                    if 'Jc(fe)' in class_str and 'Mstart(4px)' in class_str:
+                        num_text = inner_div.get_text(strip=True).replace('"', '').replace(',', '')
+                        if num_text and re.match(r'^\d+$', num_text):
+                            sell_volumes.append(num_text)
+                
+                for i, vol in enumerate(sell_volumes[:5]):
+                    stock_info['委賣量'][i] = vol
             
             return stock_info
             
@@ -394,10 +393,6 @@ def fetch_stocks_price(stocks_dict, market_type, delay=1.5):
         
         info = get_stock_info(code, market_type)
         if info:
-            # 委買量需要反轉順序（從最高買價到最低買價）
-            bid_vols = info.get('委買量', ['-', '-', '-', '-', '-'])
-            bid_vols_reversed = bid_vols[::-1] if isinstance(bid_vols, list) else bid_vols
-            
             result = {
                 'code': code,
                 'name': name,
@@ -409,7 +404,7 @@ def fetch_stocks_price(stocks_dict, market_type, delay=1.5):
                 'change_percent': info.get('漲跌幅', '-'),
                 'buy_volume': info.get('委買小計', '-'),
                 'sell_volume': info.get('委賣小計', '-'),
-                'bid_volumes': bid_vols_reversed,  # 五檔委買量（反轉順序）
+                'bid_volumes': info.get('委買量', ['-', '-', '-', '-', '-']),  # 五檔委買量
                 'ask_volumes': info.get('委賣量', ['-', '-', '-', '-', '-'])   # 五檔委賣量
             }
             results.append(result)
