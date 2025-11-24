@@ -13,6 +13,8 @@
 
         html {
             overflow-x: hidden;
+            width: 100%;
+            position: relative;
         }
 
         body {
@@ -21,7 +23,8 @@
             padding: 10px;
             min-height: 100vh;
             overflow-x: hidden;
-            max-width: 100vw;
+            width: 100%;
+            position: relative;
         }
 
         @media (min-width: 768px) {
@@ -755,19 +758,40 @@
             border-radius: 16px;
             overflow: hidden;
             position: relative;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);
+        }
+
+        .iframe-container iframe {
+            display: block;
+            width: 100%;
+            height: calc(100vh - 280px);
+            min-height: 500px;
+            border: none;
+            border-radius: 16px;
         }
 
         @media (max-width: 767px) {
+            /* 手機版關鍵修復：固定外層，讓滾動只發生在 iframe 內部 */
+            html, body {
+                overflow-x: hidden !important;
+                overscroll-behavior-x: none;
+            }
+            
             .iframe-container {
                 border-radius: 12px;
-                margin: 0 -10px;
-                width: calc(100% + 20px);
+                margin: 0;
+                width: 100%;
+                overflow: hidden;
+                /* 使用 clip 確保內容不會溢出 */
+                overflow: clip;
             }
 
             .iframe-container iframe {
                 border-radius: 12px;
-                height: calc(100vh - 320px) !important;
-                min-height: 500px;
+                height: calc(100vh - 300px);
+                min-height: 450px;
+                width: 100%;
             }
         }
     </style>
@@ -860,8 +884,8 @@
         </div>
 
         <!-- iframe 容器用於顯示外部頁面 -->
-        <div class="iframe-container" id="iframeContainer" style="display: none; overflow: hidden; width: 100%; max-width: 100vw;">
-            <iframe id="externalFrame" style="width: 100%; height: calc(100vh - 280px); border: none; border-radius: 20px; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08); display: block;"></iframe>
+        <div class="iframe-container" id="iframeContainer" style="display: none;">
+            <iframe id="externalFrame" scrolling="auto"></iframe>
         </div>
     </div>
 
@@ -1071,17 +1095,44 @@
             document.getElementById('controls').style.display = 'flex';
             document.getElementById('tableContainer').style.display = 'block';
             document.getElementById('iframeContainer').style.display = 'none';
+            // 恢復頁面滾動
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
         }
 
         function showIframeView() {
             document.getElementById('controls').style.display = 'none';
             document.getElementById('tableContainer').style.display = 'none';
             document.getElementById('iframeContainer').style.display = 'block';
+            // 手機版時禁止頁面水平滾動
+            if (window.innerWidth < 768) {
+                document.body.style.overflowX = 'hidden';
+                document.documentElement.style.overflowX = 'hidden';
+            }
         }
 
         function loadExternalPage(filename) {
             const iframe = document.getElementById('externalFrame');
             iframe.src = DATA_PATH + filename;
+            
+            // iframe 載入完成後嘗試調整
+            iframe.onload = function() {
+                try {
+                    // 嘗試注入 CSS（僅同源時有效）
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    const style = iframeDoc.createElement('style');
+                    style.textContent = `
+                        html, body { 
+                            overflow-x: hidden !important; 
+                            max-width: 100vw !important;
+                        }
+                    `;
+                    iframeDoc.head.appendChild(style);
+                } catch(e) {
+                    // 跨域時會失敗，忽略錯誤
+                    console.log('Cannot inject CSS into iframe (cross-origin)');
+                }
+            };
         }
 
         function loadCategoryData() {
@@ -1292,6 +1343,30 @@
                     applySorting();
                 });
             }
+            
+            // 防止頁面水平滑動（但允許 iframe 內部滾動）
+            let startX = 0;
+            document.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            }, { passive: true });
+            
+            document.addEventListener('touchmove', (e) => {
+                // 如果是在 iframe 容器內，允許滾動
+                if (e.target.closest('.iframe-container') || e.target.closest('.table-container')) {
+                    return;
+                }
+                
+                const deltaX = Math.abs(e.touches[0].clientX - startX);
+                const deltaY = Math.abs(e.touches[0].clientY - startX);
+                
+                // 如果水平移動大於垂直移動，阻止預設行為
+                if (deltaX > deltaY && deltaX > 10) {
+                    // 檢查是否在頁面邊緣
+                    if (window.scrollX <= 0 || window.scrollX >= document.body.scrollWidth - window.innerWidth) {
+                        e.preventDefault();
+                    }
+                }
+            }, { passive: false });
             
             autoLoadData();
         });
