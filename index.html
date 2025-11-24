@@ -649,7 +649,7 @@
                     <option value="default">預設排序</option>
                     <option value="code">股票代號</option>
                     <option value="name">股票名稱</option>
-                    <option value="price">收盤價</option>
+                    <option value="price">成交價</option>
                     <option value="change">漲跌幅</option>
                     <option value="buy_volume">買進張數</option>
                     <option value="sell_volume">賣出張數</option>
@@ -669,8 +669,8 @@
                         <th>排名</th>
                         <th>代號</th>
                         <th>股票名稱</th>
-                        <th>收盤價</th>
-                        <th>開盤價</th>
+                        <th>昨收</th>
+                        <th>成交價</th>
                         <th>漲跌</th>
                         <th>漲跌幅</th>
                         <th>買進(張)</th>
@@ -961,8 +961,8 @@
                     <td class="${rankClass}">${index + 1}</td>
                     <td class="stock-code">${stock.code}</td>
                     <td class="stock-name">${stock.name}</td>
+                    <td style="font-weight: 600; color: #2c3e50;">${stock.close_price}</td>
                     <td style="font-weight: 600; color: #2c3e50;">${stock.current_price}</td>
-                    <td style="color: #95a5a6;">${stock.open_price}</td>
                     <td class="${changeClass}">${stock.change}</td>
                     <td class="${changePercentClass}">${stock.change_percent}</td>
                     <td style="color: #e74c3c; font-weight: 500;">${formatNumber(stock.buy_volume)}</td>
