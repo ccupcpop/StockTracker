@@ -28,12 +28,6 @@
             max-width: 1400px;
             margin: 0 auto;
         }
-        
-        @media (max-width: 767px) {
-            .container {
-                padding: 8px;
-            }
-        }
 
         .header {
             background: white;
@@ -619,6 +613,23 @@
             <h1>台股機構投資人買賣分析</h1>
             <div class="subtitle">即時追蹤三大法人買賣超數據</div>
             
+            <div class="info-bar">
+                <div class="info-item">
+                    <span class="info-icon">🕐</span>
+                    <span class="info-text" id="updateTime">--:--:--</span>
+                </div>
+                <div class="info-divider"></div>
+                <div class="info-item">
+                    <span class="info-label">買超</span>
+                    <span class="info-value" style="color: #e74c3c;" id="buyCount">0</span>
+                </div>
+                <div class="info-divider"></div>
+                <div class="info-item">
+                    <span class="info-label">賣超</span>
+                    <span class="info-value" style="color: #27ae60;" id="sellCount">0</span>
+                </div>
+            </div>
+            
             <!-- 中間三個分類 -->
             <div class="category-tabs">
                 <button class="category-tab active" id="tabLatest" onclick="switchCategory('latest')">
@@ -630,25 +641,6 @@
                 <button class="category-tab" id="tabSixtyDay" onclick="switchCategory('sixtyDay')">
                     歷史60天買賣
                 </button>
-            </div>
-            
-            <div class="stats">
-                <div class="stat-box">
-                    <div class="label">更新時間</div>
-                    <div class="value" id="updateTime">--:--:--</div>
-                </div>
-                <div class="stat-box">
-                    <div class="label">追蹤股票數</div>
-                    <div class="value" id="stockCount">0</div>
-                </div>
-                <div class="stat-box">
-                    <div class="label">買超家數</div>
-                    <div class="value" id="buyCount">0</div>
-                </div>
-                <div class="stat-box">
-                    <div class="label">賣超家數</div>
-                    <div class="value" id="sellCount">0</div>
-                </div>
             </div>
         </div>
 
