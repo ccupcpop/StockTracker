@@ -28,6 +28,12 @@
             max-width: 1400px;
             margin: 0 auto;
         }
+        
+        @media (max-width: 767px) {
+            .container {
+                padding: 8px;
+            }
+        }
 
         .header {
             background: white;
@@ -179,10 +185,9 @@
         }
 
         .category-tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-            color: white !important;
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35) !important;
-            border: 2px solid transparent !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
         }
 
         .category-tab:hover:not(.active) {
