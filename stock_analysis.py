@@ -35,6 +35,10 @@ OTC_ANALYSIS_HTML = os.path.join(BASE_PATH, 'otc_analysis_result_complete.html')
 ALL_TSE_HTML = os.path.join(BASE_PATH, 'ALL_TSE.html')
 ALL_OTC_HTML = os.path.join(BASE_PATH, 'ALL_OTC.html')
 
+# 買超排行榜檔案路徑
+TSE_BUY_RANKING = os.path.join(BASE_PATH, 'TSE_buy_ranking.txt')
+OTC_BUY_RANKING = os.path.join(BASE_PATH, 'OTC_buy_ranking.txt')
+
 # 輸出檔案路徑
 TSE_OUTPUT_JSON = os.path.join(BASE_PATH, 'TSE_hotstock_data.json')
 OTC_OUTPUT_JSON = os.path.join(BASE_PATH, 'OTC_hotstock_data.json')
@@ -122,6 +126,45 @@ def load_stocks_from_html_files(market_type):
     log_info(f"{market_type} 市場總共載入 {len(all_stocks)} 檔股票")
     return all_stocks
 
+# ========== 買超排行榜載入函數 ==========
+def load_buy_ranking(filepath):
+    """載入買超排行榜檔案"""
+    buy_ranking = {}
+    if not os.path.exists(filepath):
+        log_warning(f"找不到檔案: {filepath}")
+        return buy_ranking
+    
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        
+        for line in lines:
+            line = line.strip()
+            # 跳過註解和空行
+            if line.startswith('#') or not line:
+                continue
+            
+            # 解析格式: #,代碼,名稱,買超量
+            parts = line.split(',')
+            if len(parts) >= 4:
+                code = parts[1].strip()
+                name = parts[2].strip()
+                buy_volume = parts[3].strip()
+                try:
+                    buy_ranking[code] = {
+                        'name': name,
+                        'volume': int(buy_volume)
+                    }
+                except:
+                    pass
+        
+        log_success(f"載入買超排行: {len(buy_ranking)} 檔 - {os.path.basename(filepath)}")
+        return buy_ranking
+        
+    except Exception as e:
+        log_error(f"載入買超排行榜失敗: {e}")
+        return buy_ranking
+
 # ========== 股價抓取函數 ==========
 def get_stock_info(stock_code, market='TSE'):
     """抓取單一股票即時資訊（從 Yahoo Finance）"""
@@ -190,14 +233,27 @@ def get_stock_info(stock_code, market='TSE'):
     return None
 
 def fetch_stocks_price(stocks_dict, market_type, delay=1.5):
-    """批次抓取股票即時資訊"""
+    """批次抓取股票即時資訊
+    
+    stocks_dict 格式可以是:
+    1. {code: name} - 從 HTML 提取
+    2. {code: {'name': name, 'volume': volume}} - 從買超排行讀取
+    """
     results = []
     total = len(stocks_dict)
     log_info(f"開始抓取 {market_type} {total} 檔股票...")
     
-    for i, (code, name) in enumerate(stocks_dict.items(), 1):
+    for i, (code, data) in enumerate(stocks_dict.items(), 1):
         if i % 10 == 0 or i == total:
             log_info(f"進度: {i}/{total} ({i*100//total}%)")
+        
+        # 判斷 data 是字串還是字典
+        if isinstance(data, dict):
+            name = data.get('name', '')
+            yesterday_buy = data.get('volume', 0)
+        else:
+            name = data
+            yesterday_buy = 0
         
         info = get_stock_info(code, market_type)
         if info:
@@ -205,6 +261,7 @@ def fetch_stocks_price(stocks_dict, market_type, delay=1.5):
                 'code': code,
                 'name': name,
                 'market': market_type,
+                'yesterday_buy': yesterday_buy,  # 昨日買超量
                 'current_price': info.get('成交價', '-'),
                 'open_price': info.get('開盤價', '-'),
                 'change': info.get('漲跌', '-'),
@@ -234,7 +291,12 @@ def main():
         # 處理 TSE 市場
         if PROCESS_MODE in ['TSE', 'BOTH']:
             log_info("開始處理 TSE (上市) 市場...")
-            tse_stocks = load_stocks_from_html_files('TSE')
+            
+            # 優先載入買超排行榜，如果沒有則載入 HTML
+            tse_stocks = load_buy_ranking(TSE_BUY_RANKING)
+            if not tse_stocks:
+                log_info("找不到買超排行榜，改從 HTML 檔案載入...")
+                tse_stocks = load_stocks_from_html_files('TSE')
             
             if tse_stocks:
                 tse_stock_data = fetch_stocks_price(tse_stocks, 'TSE', STOCK_DELAY)
@@ -255,7 +317,12 @@ def main():
         # 處理 OTC 市場
         if PROCESS_MODE in ['OTC', 'BOTH']:
             log_info("開始處理 OTC (上櫃) 市場...")
-            otc_stocks = load_stocks_from_html_files('OTC')
+            
+            # 優先載入買超排行榜，如果沒有則載入 HTML
+            otc_stocks = load_buy_ranking(OTC_BUY_RANKING)
+            if not otc_stocks:
+                log_info("找不到買超排行榜，改從 HTML 檔案載入...")
+                otc_stocks = load_stocks_from_html_files('OTC')
             
             if otc_stocks:
                 otc_stock_data = fetch_stocks_price(otc_stocks, 'OTC', STOCK_DELAY)
