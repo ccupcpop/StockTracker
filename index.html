@@ -31,7 +31,7 @@
 
         .header {
             background: white;
-            padding: 20px 15px;
+            padding: 15px 15px;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);
             margin-bottom: 10px;
@@ -40,7 +40,7 @@
 
         @media (min-width: 768px) {
             .header {
-                padding: 40px 30px;
+                padding: 25px 30px;
                 border-radius: 20px;
                 margin-bottom: 20px;
             }
@@ -63,20 +63,18 @@
             }
         }
 
-        /* 左上角市場選擇 */
+        /* 市場選擇（置中顯示在標題下方） */
         .market-selector {
-            position: absolute;
-            top: 15px;
-            left: 15px;
             display: flex;
             gap: 8px;
+            justify-content: center;
+            margin-bottom: 10px;
         }
 
         @media (min-width: 768px) {
             .market-selector {
-                top: 20px;
-                left: 25px;
                 gap: 10px;
+                margin-bottom: 12px;
             }
         }
 
@@ -131,14 +129,14 @@
             text-align: center;
             color: #7f8c8d;
             font-size: 0.85em;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             font-weight: 400;
         }
 
         @media (min-width: 768px) {
             .subtitle {
                 font-size: 1em;
-                margin-bottom: 32px;
+                margin-bottom: 16px;
             }
         }
 
@@ -147,14 +145,14 @@
             display: flex;
             gap: 8px;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 0;
             flex-wrap: wrap;
         }
 
         @media (min-width: 768px) {
             .category-tabs {
                 gap: 12px;
-                margin-bottom: 32px;
+                margin-bottom: 0;
             }
         }
 
@@ -603,30 +601,30 @@
 <body>
     <div class="container">
         <div class="header">
-            <!-- 左上角市場選擇 -->
-            <div class="market-selector">
-                <button class="market-btn active" id="btnTSE" onclick="switchMarket('TSE')">上市</button>
-                <button class="market-btn" id="btnOTC" onclick="switchMarket('OTC')">上櫃</button>
-            </div>
-
             <div class="version">v2.0</div>
             <h1>台股機構投資人買賣分析</h1>
             <div class="subtitle">即時追蹤三大法人買賣超數據</div>
             
-            <div class="info-bar">
-                <div class="info-item">
+            <!-- 市場選擇（上市/上櫃）-->
+            <div class="market-selector">
+                <button class="market-btn active" id="btnTSE" onclick="switchMarket('TSE')">上市</button>
+                <button class="market-btn" id="btnOTC" onclick="switchMarket('OTC')">上櫃</button>
+            </div>
+            
+            <div class="info-bar" style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; font-size: 0.9em;">
+                <div class="info-item" style="display: flex; align-items: center; gap: 4px;">
                     <span class="info-icon">🕐</span>
                     <span class="info-text" id="updateTime">--:--:--</span>
                 </div>
-                <div class="info-divider"></div>
-                <div class="info-item">
+                <div class="info-divider" style="width: 1px; height: 16px; background: #ddd;"></div>
+                <div class="info-item" style="display: flex; align-items: center; gap: 4px;">
                     <span class="info-label">買超</span>
-                    <span class="info-value" style="color: #e74c3c;" id="buyCount">0</span>
+                    <span class="info-value" style="color: #e74c3c; font-weight: 600;" id="buyCount">0</span>
                 </div>
-                <div class="info-divider"></div>
-                <div class="info-item">
+                <div class="info-divider" style="width: 1px; height: 16px; background: #ddd;"></div>
+                <div class="info-item" style="display: flex; align-items: center; gap: 4px;">
                     <span class="info-label">賣超</span>
-                    <span class="info-value" style="color: #27ae60;" id="sellCount">0</span>
+                    <span class="info-value" style="color: #27ae60; font-weight: 600;" id="sellCount">0</span>
                 </div>
             </div>
             
