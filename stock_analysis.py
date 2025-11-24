@@ -288,17 +288,27 @@ def get_stock_info(stock_code, market='TSE'):
             for div in all_divs:
                 div_text = div.get_text()
                 
-                # 委買小計
-                if '小計' in div_text and stock_info['委買小計'] == '-':
+                # 只處理包含「小計」的 div，避免抓到其他資料
+                if '小計' not in div_text:
+                    continue
+                
+                # 委買小計：格式是 "數字 小計"
+                if stock_info['委買小計'] == '-':
                     match = re.search(r'([\d,]+)\s*小計', div_text)
                     if match:
-                        stock_info['委買小計'] = match.group(1).replace(',', '')
+                        value = match.group(1).replace(',', '')
+                        # 確保是合理的數字（不要太長）
+                        if len(value) <= 12:
+                            stock_info['委買小計'] = value
                 
-                # 委賣小計
-                if '小計' in div_text and stock_info['委賣小計'] == '-':
+                # 委賣小計：格式是 "小計 數字"
+                if stock_info['委賣小計'] == '-':
                     match = re.search(r'小計\s*([\d,]+)', div_text)
                     if match:
-                        stock_info['委賣小計'] = match.group(1).replace(',', '')
+                        value = match.group(1).replace(',', '')
+                        # 確保是合理的數字（不要太長）
+                        if len(value) <= 12:
+                            stock_info['委賣小計'] = value
             
             return stock_info
             
