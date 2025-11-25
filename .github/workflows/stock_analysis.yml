@@ -2,9 +2,8 @@ name: Taiwan Stock Price Update
 
 on:
   schedule:
-    # 台灣時間 09:00-13:00 每20分鐘執行 (UTC 01:00-05:00)
-    - cron: '0,20,40 1,2,3,4 * * *'
-    - cron: '0 5 * * *'
+  # 台灣時間 09:00-13:00 每30分鐘執行 (UTC 01:00-05:00)
+  - cron: '0,30 1-5 * * *'
   
   # 允許手動觸發
   workflow_dispatch:
