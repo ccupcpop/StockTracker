@@ -800,7 +800,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="version">v2.1.1125C</div>
+            <div class="version">v2.2A</div>
             <h1>台股機構投資人買賣分析</h1>
             <div class="subtitle">即時追蹤三大法人買賣超數據</div>
             
@@ -1264,13 +1264,13 @@
             loading.style.display = 'block';
             
             try {
-                const tseResponse = await fetch(DATA_PATH + 'TSE_hotstock_data.json');
+                const tseResponse = await fetch(DATA_PATH + 'TSE_hotstock_data.json?t=' + Date.now());
                 if (tseResponse.ok) {
                     tseData = await tseResponse.json();
                     console.log('✅ TSE 資料已載入');
                 }
                 
-                const otcResponse = await fetch(DATA_PATH + 'OTC_hotstock_data.json');
+                const otcResponse = await fetch(DATA_PATH + 'OTC_hotstock_data.json?t=' + Date.now());
                 if (otcResponse.ok) {
                     otcData = await otcResponse.json();
                     console.log('✅ OTC 資料已載入');
