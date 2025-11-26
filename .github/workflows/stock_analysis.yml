@@ -48,6 +48,8 @@ jobs:
           echo "✅ StockInfo directory exists"
           echo "📄 Listing HTML files:"
           ls -lh StockInfo/*.html 2>/dev/null || echo "⚠️  No HTML files found"
+          echo "📄 Listing ranking files:"
+          ls -lh StockInfo/*_buy_ranking.txt 2>/dev/null || echo "ℹ️  No ranking files yet (will be created on first run)"
         else
           echo "❌ StockInfo directory not found"
           exit 1
@@ -66,5 +68,6 @@ jobs:
         TAIWAN_TIME=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add StockInfo/*.json
+        # 加入 JSON 和 ranking.txt 檔案
+        git add StockInfo/*.json StockInfo/*_buy_ranking.txt
         git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock prices - ${TAIWAN_TIME}" && git pull --rebase origin main && git push)

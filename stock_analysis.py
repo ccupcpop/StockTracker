@@ -16,7 +16,6 @@ import pytz
 
 # ========== 執行設定 ==========
 PROCESS_MODE = os.environ.get('PROCESS_MODE', 'BOTH')  # 'TSE', 'OTC', 'BOTH'
-READ_ALL = os.environ.get('READ_ALL', 'True').lower() == 'true'  # True: 從 CSV 讀取全部, False: 從 TXT 讀取排行榜
 
 TW_TZ = pytz.timezone('Asia/Taipei')
 
@@ -33,11 +32,11 @@ BASE_PATH = os.path.join(os.path.dirname(__file__), 'StockInfo')
 if not os.path.exists(BASE_PATH):
     os.makedirs(BASE_PATH)
 
-# 股票列表檔案 (READ_ALL = True)
+# 股票列表檔案
 TSE_COMPANY_LIST = os.path.join(BASE_PATH, 'tse_company_list.csv')
 OTC_COMPANY_LIST = os.path.join(BASE_PATH, 'otc_company_list.csv')
 
-# 買超排行榜檔案 (READ_ALL = False)
+# 買超排行榜檔案
 TSE_BUY_RANKING = os.path.join(BASE_PATH, 'TSE_buy_ranking.txt')
 OTC_BUY_RANKING = os.path.join(BASE_PATH, 'OTC_buy_ranking.txt')
 
@@ -79,9 +78,72 @@ def log_error(message):
     print(f"[{timestamp}] ❌ {message}")
     sys.stdout.flush()
 
+# ========== 日期判斷函數 ==========
+def is_first_run_today(ranking_file):
+    """
+    判斷今天是否第一次執行
+    透過檢查 ranking.txt 第一行的日期來判斷
+    """
+    today_str = datetime.now(TW_TZ).strftime('%Y-%m-%d')
+    
+    if not os.path.exists(ranking_file):
+        log_info(f"排行榜檔案不存在，將從 CSV 讀取全部")
+        return True
+    
+    try:
+        with open(ranking_file, 'r', encoding='utf-8') as f:
+            first_line = f.readline().strip()
+        
+        # 格式: # TSE - 2025-11-26 或 # OTC - 2025-11-26
+        if first_line.startswith('#'):
+            parts = first_line.split('-', 1)
+            if len(parts) >= 2:
+                date_part = parts[1].strip()
+                # 可能是 "2025-11-26" 格式
+                if date_part == today_str:
+                    log_info(f"今天已執行過，從排行榜讀取")
+                    return False
+                else:
+                    log_info(f"排行榜日期 ({date_part}) 非今天，將從 CSV 讀取全部")
+                    return True
+    except Exception as e:
+        log_warning(f"讀取排行榜日期失敗: {e}")
+    
+    return True
+
+def get_ranking_file(market):
+    """取得對應市場的排行榜檔案路徑"""
+    return TSE_BUY_RANKING if market == 'TSE' else OTC_BUY_RANKING
+
+def get_csv_file(market):
+    """取得對應市場的 CSV 檔案路徑"""
+    return TSE_COMPANY_LIST if market == 'TSE' else OTC_COMPANY_LIST
+
+# ========== 價格格式化函數 ==========
+def format_price(price_str):
+    """
+    根據價格大小格式化:
+    - >= 1000: 取整數
+    - >= 100 且 < 1000: 取小數點第一位
+    - < 100: 取小數點第二位
+    """
+    if price_str in ['-', '', None]:
+        return '-'
+    
+    try:
+        price = float(price_str)
+        if price >= 1000:
+            return str(int(round(price)))
+        elif price >= 100:
+            return f"{price:.1f}"
+        else:
+            return f"{price:.2f}"
+    except (ValueError, TypeError):
+        return str(price_str)
+
 # ========== 股票列表載入函數 ==========
 def load_stocks_from_csv(filepath):
-    """從 CSV 載入股票列表 (READ_ALL = True)"""
+    """從 CSV 載入股票列表"""
     stocks = {}
     if not os.path.exists(filepath):
         log_warning(f"找不到檔案: {filepath}")
@@ -103,7 +165,7 @@ def load_stocks_from_csv(filepath):
         return stocks
 
 def load_stocks_from_ranking(filepath):
-    """從買超排行榜載入 (READ_ALL = False)"""
+    """從買超排行榜載入"""
     stocks = {}
     if not os.path.exists(filepath):
         log_warning(f"找不到檔案: {filepath}")
@@ -134,18 +196,46 @@ def load_stocks_from_ranking(filepath):
         log_error(f"載入排行榜失敗: {e}")
         return stocks
 
-def load_stocks(market):
-    """根據 READ_ALL 設定載入股票列表"""
-    if READ_ALL:
-        if market == 'TSE':
-            return load_stocks_from_csv(TSE_COMPANY_LIST)
-        else:
-            return load_stocks_from_csv(OTC_COMPANY_LIST)
-    else:
-        if market == 'TSE':
-            return load_stocks_from_ranking(TSE_BUY_RANKING)
-        else:
-            return load_stocks_from_ranking(OTC_BUY_RANKING)
+# ========== 儲存排行榜函數 ==========
+def save_to_ranking(results, market, institutional_data):
+    """
+    將有成交價的股票儲存到排行榜檔案
+    格式: 排名,代碼,名稱,法人買賣超
+    """
+    ranking_file = get_ranking_file(market)
+    today_str = datetime.now(TW_TZ).strftime('%Y-%m-%d')
+    
+    # 過濾有成交價的股票
+    valid_stocks = []
+    for stock in results:
+        current_price = stock.get('current_price', '-')
+        if current_price not in ['-', '', None, '0']:
+            try:
+                price = float(current_price)
+                if price > 0:
+                    valid_stocks.append(stock)
+            except:
+                pass
+    
+    # 按法人買賣超排序 (由大到小)
+    valid_stocks.sort(key=lambda x: x.get('yesterday_buy', 0), reverse=True)
+    
+    # 寫入檔案
+    try:
+        with open(ranking_file, 'w', encoding='utf-8') as f:
+            f.write(f"# {market} - {today_str}\n")
+            
+            for idx, stock in enumerate(valid_stocks, 1):
+                code = stock['code']
+                name = stock['name'].ljust(16)  # 對齊
+                volume = stock.get('yesterday_buy', 0)
+                f.write(f"{idx},{code},{name},{volume}\n")
+        
+        log_success(f"已儲存排行榜: {ranking_file} ({len(valid_stocks)} 檔有成交價)")
+        return len(valid_stocks)
+    except Exception as e:
+        log_error(f"儲存排行榜失敗: {e}")
+        return 0
 
 # ========== 非同步抓取函數 ==========
 async def get_institutional_data(session, market):
@@ -223,14 +313,14 @@ async def fetch_batch(session, codes, market):
             log_warning(f"Error: {e}")
     return []
 
-def parse_stock_data(raw, institutional_data, stock_info, market):
+def parse_stock_data(raw, institutional_data, stock_info, market, is_first_run):
     """解析股票資料"""
     code = raw.get('c', '')
     info = stock_info.get(code, {})
     name = info.get('name', raw.get('n', ''))
     
-    # 如果從排行榜讀取，使用排行榜的買超資料；否則使用法人資料
-    if not READ_ALL and info.get('volume', 0) != 0:
+    # 如果不是第一次執行且排行榜有買超資料，使用排行榜的資料
+    if not is_first_run and info.get('volume', 0) != 0:
         yesterday_buy = info.get('volume', 0)
     else:
         yesterday_buy = institutional_data.get(code, 0)
@@ -279,14 +369,14 @@ def parse_stock_data(raw, institutional_data, stock_info, market):
         'ask_volumes': ask_volumes
     }
 
-async def fetch_market_stocks(session, stocks_dict, market):
+async def fetch_market_stocks(session, stocks_dict, market, is_first_run):
     """抓取指定市場的所有股票"""
     results = []
     codes = list(stocks_dict.keys())
     total = len(codes)
     
     if total == 0:
-        return results
+        return results, {}
     
     # 取得法人資料
     log_info(f"取得 {market} 法人買賣超...")
@@ -302,7 +392,7 @@ async def fetch_market_stocks(session, stocks_dict, market):
         raw_data = await fetch_batch(session, batch, market)
         
         for raw in raw_data:
-            parsed = parse_stock_data(raw, institutional_data, stocks_dict, market)
+            parsed = parse_stock_data(raw, institutional_data, stocks_dict, market, is_first_run)
             if parsed['code']:
                 results.append(parsed)
                 success_count += 1
@@ -315,21 +405,25 @@ async def fetch_market_stocks(session, stocks_dict, market):
             await asyncio.sleep(REQUEST_DELAY)
     
     log_success(f"{market} 完成: {success_count}/{total} 檔")
-    return results
+    return results, institutional_data
 
 def parse_change_percent(pct_str):
     """解析漲跌幅字串為數字，用於排序"""
     try:
-        # 移除 % 和 + 符號
         clean = pct_str.replace('%', '').replace('+', '').strip()
         return float(clean)
     except:
-        return -9999  # 無法解析的放最後
+        return -9999
 
 def save_results(results, market, output_path):
-    """儲存結果到 JSON"""
+    """儲存結果到 JSON，並格式化價格"""
     # 按漲跌幅排序 (由大到小)
     results.sort(key=lambda x: parse_change_percent(x['change_percent']), reverse=True)
+    
+    # 格式化價格
+    for stock in results:
+        stock['close_price'] = format_price(stock['close_price'])
+        stock['current_price'] = format_price(stock['current_price'])
     
     output = {
         'update_time': datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S'),
@@ -350,7 +444,6 @@ async def async_main():
     print("台股即時股價抓取系統 - 非同步加速版")
     print("=" * 70)
     log_info(f"處理模式: {PROCESS_MODE}")
-    log_info(f"讀取模式: {'全部股票 (CSV)' if READ_ALL else '買超排行榜 (TXT)'}")
     log_info(f"執行時間: {datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 70)
     
@@ -366,11 +459,26 @@ async def async_main():
             print("\n" + "-" * 50)
             log_info("處理 TSE (上市) 市場...")
             
-            tse_stocks = load_stocks('TSE')
+            # 判斷今天是否第一次執行
+            tse_first_run = is_first_run_today(TSE_BUY_RANKING)
+            
+            if tse_first_run:
+                log_info("📥 從 CSV 讀取全部股票...")
+                tse_stocks = load_stocks_from_csv(TSE_COMPANY_LIST)
+            else:
+                log_info("📋 從排行榜讀取股票...")
+                tse_stocks = load_stocks_from_ranking(TSE_BUY_RANKING)
             
             if tse_stocks:
-                tse_results = await fetch_market_stocks(session, tse_stocks, 'TSE')
+                tse_results, tse_institutional = await fetch_market_stocks(
+                    session, tse_stocks, 'TSE', tse_first_run
+                )
+                
                 if tse_results:
+                    # 第一次執行時，儲存有成交價的股票到排行榜
+                    if tse_first_run:
+                        save_to_ranking(tse_results, 'TSE', tse_institutional)
+                    
                     save_results(tse_results, 'TSE', TSE_OUTPUT_JSON)
             else:
                 log_warning("TSE 沒有找到股票資料")
@@ -380,11 +488,26 @@ async def async_main():
             print("\n" + "-" * 50)
             log_info("處理 OTC (上櫃) 市場...")
             
-            otc_stocks = load_stocks('OTC')
+            # 判斷今天是否第一次執行
+            otc_first_run = is_first_run_today(OTC_BUY_RANKING)
+            
+            if otc_first_run:
+                log_info("📥 從 CSV 讀取全部股票...")
+                otc_stocks = load_stocks_from_csv(OTC_COMPANY_LIST)
+            else:
+                log_info("📋 從排行榜讀取股票...")
+                otc_stocks = load_stocks_from_ranking(OTC_BUY_RANKING)
             
             if otc_stocks:
-                otc_results = await fetch_market_stocks(session, otc_stocks, 'OTC')
+                otc_results, otc_institutional = await fetch_market_stocks(
+                    session, otc_stocks, 'OTC', otc_first_run
+                )
+                
                 if otc_results:
+                    # 第一次執行時，儲存有成交價的股票到排行榜
+                    if otc_first_run:
+                        save_to_ranking(otc_results, 'OTC', otc_institutional)
+                    
                     save_results(otc_results, 'OTC', OTC_OUTPUT_JSON)
             else:
                 log_warning("OTC 沒有找到股票資料")
@@ -398,7 +521,6 @@ async def async_main():
 # ========== 主程式入口 ==========
 def main():
     try:
-        # Windows 相容性
         if sys.platform == 'win32':
             asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         
