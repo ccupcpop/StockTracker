@@ -1,27 +1,31 @@
 """
-台股即時股價抓取系統
-從 HTML 檔案讀取股票代碼，抓取即時股價資訊
+台股即時股價抓取系統 - 非同步加速版
+使用證交所 API 批量抓取，速度大幅提升
 """
 
 import os
 import sys
-import requests
-from bs4 import BeautifulSoup
-from datetime import datetime
+import asyncio
+import aiohttp
 import json
-import pytz
-import re
+import csv
 import time
 import traceback
+from datetime import datetime
+import pytz
 
 # ========== 執行設定 ==========
-PROCESS_MODE = os.environ.get('PROCESS_MODE', 'TSE')  # 'TSE', 'OTC', 'BOTH'
+PROCESS_MODE = os.environ.get('PROCESS_MODE', 'BOTH')  # 'TSE', 'OTC', 'BOTH'
+READ_ALL = os.environ.get('READ_ALL', 'False').lower() == 'true'  # True: 從 CSV 讀取全部, False: 從 TXT 讀取排行榜
+
 TW_TZ = pytz.timezone('Asia/Taipei')
 
-# 超時設定
-REQUEST_TIMEOUT = 10
-MAX_RETRY = 3
-STOCK_DELAY = 1.5
+# 批量抓取設定
+BATCH_SIZE = 40
+CONCURRENT_REQUESTS = 3
+REQUEST_DELAY = 1.5
+TIMEOUT = 20
+DEBUG = False
 
 # ========== 路徑設定 ==========
 BASE_PATH = os.path.join(os.path.dirname(__file__), 'StockInfo')
@@ -29,19 +33,30 @@ BASE_PATH = os.path.join(os.path.dirname(__file__), 'StockInfo')
 if not os.path.exists(BASE_PATH):
     os.makedirs(BASE_PATH)
 
-# HTML 檔案路徑
-TSE_ANALYSIS_HTML = os.path.join(BASE_PATH, 'tse_analysis_result_complete.html')
-OTC_ANALYSIS_HTML = os.path.join(BASE_PATH, 'otc_analysis_result_complete.html')
-ALL_TSE_HTML = os.path.join(BASE_PATH, 'ALL_TSE.html')
-ALL_OTC_HTML = os.path.join(BASE_PATH, 'ALL_OTC.html')
+# 股票列表檔案 (READ_ALL = True)
+TSE_COMPANY_LIST = os.path.join(BASE_PATH, 'tse_company_list.csv')
+OTC_COMPANY_LIST = os.path.join(BASE_PATH, 'otc_company_list.csv')
 
-# 買超排行榜檔案路徑
+# 買超排行榜檔案 (READ_ALL = False)
 TSE_BUY_RANKING = os.path.join(BASE_PATH, 'TSE_buy_ranking.txt')
 OTC_BUY_RANKING = os.path.join(BASE_PATH, 'OTC_buy_ranking.txt')
 
 # 輸出檔案路徑
 TSE_OUTPUT_JSON = os.path.join(BASE_PATH, 'TSE_hotstock_data.json')
 OTC_OUTPUT_JSON = os.path.join(BASE_PATH, 'OTC_hotstock_data.json')
+
+# ========== API URLs ==========
+REALTIME_API = "https://mis.twse.com.tw/stock/api/getStockInfo.jsp"
+TWSE_INST_API = "https://www.twse.com.tw/fund/T86"
+TPEX_INST_API = "https://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_result.php"
+
+# ========== Headers ==========
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept': 'application/json, text/javascript, */*; q=0.01',
+    'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+    'Referer': 'https://mis.twse.com.tw/stock/index.jsp',
+}
 
 # ========== 日誌函數 ==========
 def log_info(message):
@@ -64,75 +79,35 @@ def log_error(message):
     print(f"[{timestamp}] ❌ {message}")
     sys.stdout.flush()
 
-# ========== HTML 解析函數 ==========
-def extract_stocks_from_html(html_path, market_type):
-    """從 HTML 檔案中提取股票代碼和名稱"""
-    if not os.path.exists(html_path):
-        log_warning(f"找不到檔案: {html_path}")
-        return {}
-    
-    try:
-        with open(html_path, 'r', encoding='utf-8') as f:
-            html_content = f.read()
-        
-        soup = BeautifulSoup(html_content, 'html.parser')
-        stocks = {}
-        
-        # 查找所有表格行
-        rows = soup.find_all('tr')
-        log_info(f"在 {os.path.basename(html_path)} 中找到 {len(rows)} 行")
-        
-        for row in rows:
-            cells = row.find_all('td')
-            if len(cells) >= 2:
-                # 嘗試從第一個或第二個欄位提取股票代碼
-                for i in range(min(3, len(cells))):
-                    cell_text = cells[i].get_text(strip=True)
-                    # 匹配 4 位數字的股票代碼
-                    match = re.search(r'\b(\d{4})\b', cell_text)
-                    if match:
-                        stock_code = match.group(1)
-                        # 嘗試找到股票名稱（可能在同一欄位或下一欄位）
-                        stock_name = cell_text.replace(stock_code, '').strip()
-                        if not stock_name and i + 1 < len(cells):
-                            stock_name = cells[i + 1].get_text(strip=True)
-                        
-                        if stock_name:
-                            stocks[stock_code] = stock_name
-                        break
-        
-        log_success(f"從 {os.path.basename(html_path)} 提取了 {len(stocks)} 檔股票")
-        return stocks
-        
-    except Exception as e:
-        log_error(f"解析 HTML 失敗: {e}")
-        return {}
-
-def load_stocks_from_html_files(market_type):
-    """載入指定市場的所有股票"""
-    all_stocks = {}
-    
-    if market_type == 'TSE':
-        files = [TSE_ANALYSIS_HTML, ALL_TSE_HTML]
-    elif market_type == 'OTC':
-        files = [OTC_ANALYSIS_HTML, ALL_OTC_HTML]
-    else:
-        return {}
-    
-    for html_file in files:
-        stocks = extract_stocks_from_html(html_file, market_type)
-        all_stocks.update(stocks)
-    
-    log_info(f"{market_type} 市場總共載入 {len(all_stocks)} 檔股票")
-    return all_stocks
-
-# ========== 買超排行榜載入函數 ==========
-def load_buy_ranking(filepath):
-    """載入買超排行榜檔案"""
-    buy_ranking = {}
+# ========== 股票列表載入函數 ==========
+def load_stocks_from_csv(filepath):
+    """從 CSV 載入股票列表 (READ_ALL = True)"""
+    stocks = {}
     if not os.path.exists(filepath):
         log_warning(f"找不到檔案: {filepath}")
-        return buy_ranking
+        return stocks
+    
+    try:
+        with open(filepath, 'r', encoding='utf-8-sig') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if len(row) >= 2:
+                    code = row[0].strip()
+                    name = row[1].strip()
+                    stocks[code] = {'name': name, 'volume': 0}
+        
+        log_success(f"從 CSV 載入: {len(stocks)} 檔 - {os.path.basename(filepath)}")
+        return stocks
+    except Exception as e:
+        log_error(f"載入 CSV 失敗: {e}")
+        return stocks
+
+def load_stocks_from_ranking(filepath):
+    """從買超排行榜載入 (READ_ALL = False)"""
+    stocks = {}
+    if not os.path.exists(filepath):
+        log_warning(f"找不到檔案: {filepath}")
+        return stocks
     
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
@@ -140,346 +115,294 @@ def load_buy_ranking(filepath):
         
         for line in lines:
             line = line.strip()
-            # 跳過註解和空行
             if line.startswith('#') or not line:
                 continue
             
-            # 解析格式: #,代碼,名稱,買超量
             parts = line.split(',')
             if len(parts) >= 4:
                 code = parts[1].strip()
                 name = parts[2].strip()
-                buy_volume = parts[3].strip()
                 try:
-                    buy_ranking[code] = {
-                        'name': name,
-                        'volume': int(buy_volume)
-                    }
+                    volume = int(parts[3].strip())
                 except:
-                    pass
+                    volume = 0
+                stocks[code] = {'name': name, 'volume': volume}
         
-        log_success(f"載入買超排行: {len(buy_ranking)} 檔 - {os.path.basename(filepath)}")
-        return buy_ranking
-        
+        log_success(f"從排行榜載入: {len(stocks)} 檔 - {os.path.basename(filepath)}")
+        return stocks
     except Exception as e:
-        log_error(f"載入買超排行榜失敗: {e}")
-        return buy_ranking
+        log_error(f"載入排行榜失敗: {e}")
+        return stocks
 
-# ========== 股價抓取函數 ==========
-def get_stock_info(stock_code, market='TSE'):
-    """抓取單一股票即時資訊（從 Yahoo Finance）"""
-    if market == 'TSE':
-        url = f"https://tw.stock.yahoo.com/quote/{stock_code}.TW"
-    else:
-        url = f"https://tw.stock.yahoo.com/quote/{stock_code}.TWO"
-    
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-    }
-    
-    for attempt in range(MAX_RETRY):
-        try:
-            response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
-            if response.status_code != 200:
-                if attempt < MAX_RETRY - 1:
-                    time.sleep(1)
-                    continue
-                return None
-            
-            soup = BeautifulSoup(response.text, 'html.parser')
-            stock_info = {
-                '昨收': '-',
-                '成交': '-',
-                '漲跌': '-',
-                '漲跌幅': '-',
-                '開盤': '-',
-                '委買小計': '-',
-                '委賣小計': '-',
-                '委買量': ['-', '-', '-', '-', '-'],  # 五檔委買量
-                '委賣量': ['-', '-', '-', '-', '-']   # 五檔委賣量
-            }
-            
-            # 方法1: 從 price-detail-item 的 li 元素中提取資料
-            # 這是最可靠的方法，因為結構清楚
-            all_list_items = soup.find_all('li', class_=re.compile('price-detail-item'))
-            
-            for li in all_list_items:
-                # 找到標籤 span (包含 "成交"、"昨收" 等文字)
-                label_span = li.find('span', class_=re.compile('C\\(#232a31\\)'))
-                if not label_span:
-                    continue
-                
-                label = label_span.get_text(strip=True)
-                
-                # 找到數值 span (包含實際數字)
-                value_span = li.find('span', class_=re.compile('Fw\\(600\\)'))
-                if not value_span:
-                    continue
-                
-                value = value_span.get_text(strip=True)
-                
-                # 檢查該 span 的 class 來判斷顏色（漲跌）
-                value_classes = ' '.join(value_span.get('class', []))
-                is_up = 'trend-up' in value_classes or 'c-trend-up' in value_classes
-                is_down = 'trend-down' in value_classes or 'c-trend-down' in value_classes
-                
-                # 根據標籤分配到對應的欄位
-                if label == '成交':
-                    stock_info['成交'] = value
-                elif label == '昨收':
-                    stock_info['昨收'] = value
-                elif label == '開盤':
-                    stock_info['開盤'] = value
-                elif label == '漲跌':
-                    # 根據顏色添加正負號
-                    if value and value != '-':
-                        if not value.startswith(('+', '-')):
-                            if is_up:
-                                stock_info['漲跌'] = f'+{value}'
-                            elif is_down:
-                                stock_info['漲跌'] = f'-{value}' if not value.startswith('-') else value
-                            else:
-                                # 嘗試用數字判斷
-                                try:
-                                    num_val = float(value.replace(',', ''))
-                                    if num_val > 0:
-                                        stock_info['漲跌'] = f'+{value}'
-                                    elif num_val < 0:
-                                        stock_info['漲跌'] = value
-                                    else:
-                                        stock_info['漲跌'] = '0.00'
-                                except:
-                                    stock_info['漲跌'] = value
-                        else:
-                            stock_info['漲跌'] = value
-                    else:
-                        stock_info['漲跌'] = value
-                        
-                elif label == '漲跌幅':
-                    # 根據顏色添加正負號
-                    clean_value = value.replace('%', '').strip()
-                    if clean_value and clean_value != '-':
-                        if not clean_value.startswith(('+', '-')):
-                            if is_up:
-                                stock_info['漲跌幅'] = f'+{clean_value}%'
-                            elif is_down:
-                                stock_info['漲跌幅'] = f'-{clean_value}%' if not clean_value.startswith('-') else f'{clean_value}%'
-                            else:
-                                # 嘗試用數字判斷
-                                try:
-                                    num_val = float(clean_value)
-                                    if num_val > 0:
-                                        stock_info['漲跌幅'] = f'+{clean_value}%'
-                                    elif num_val < 0:
-                                        stock_info['漲跌幅'] = f'{clean_value}%'
-                                    else:
-                                        stock_info['漲跌幅'] = '0.00%'
-                                except:
-                                    stock_info['漲跌幅'] = value
-                        else:
-                            # 已經有符號，確保有百分號
-                            if not value.endswith('%'):
-                                stock_info['漲跌幅'] = f'{value}%'
-                            else:
-                                stock_info['漲跌幅'] = value
-                    else:
-                        stock_info['漲跌幅'] = value
-            
-            # 方法2: 提取委買委賣小計（從 div 的所有文字內容）
-            all_divs = soup.find_all('div', class_=True)
-            for div in all_divs:
-                # 取得 div 內所有文字（包括直接文字節點）
-                all_text = [s.strip().strip('"') for s in div.stripped_strings]
-                
-                # 必須包含「小計」且至少有2個元素
-                if len(all_text) < 2 or '小計' not in all_text:
-                    continue
-                
-                # 委買小計: 數字在前，"小計"在後
-                if all_text[-1] == '小計' and re.match(r'^[\d,]+$', all_text[0]) and stock_info['委買小計'] == '-':
-                    value = all_text[0].replace(',', '')
-                    if len(value) <= 10:
-                        stock_info['委買小計'] = value
-                
-                # 委賣小計: "小計"在前，數字在後
-                elif all_text[0] == '小計' and re.match(r'^[\d,]+$', all_text[-1]) and stock_info['委賣小計'] == '-':
-                    value = all_text[-1].replace(',', '')
-                    if len(value) <= 10:
-                        stock_info['委賣小計'] = value
-            
-            # 方法3: 提取五檔委買量和委賣量
-            # 委買量: class 包含 Jc(fs) 和 Mend(4px)
-            # 委賣量: class 包含 Jc(fe) 和 Mstart(4px)
-            
-            all_divs = soup.find_all('div')
-            buy_block = None
-            sell_block = None
-            
-            # 先找委買/委賣區塊
-            for div in all_divs:
-                classes = div.get('class', [])
-                if not classes:
-                    continue
-                class_str = ' '.join(classes)
-                
-                if 'W(50%)' in class_str and 'Bxz(bb)' in class_str:
-                    text = div.get_text()
-                    if '委買價' in text and buy_block is None:
-                        buy_block = div
-                    elif '委賣價' in text and sell_block is None:
-                        sell_block = div
-            
-            # 從委買區塊提取量 (Jc(fs) + Mend(4px))
-            if buy_block:
-                buy_volumes = []
-                for inner_div in buy_block.find_all('div'):
-                    classes = inner_div.get('class', [])
-                    class_str = ' '.join(classes)
-                    # 委買量的特徵: Jc(fs) 和 Mend(4px)
-                    if 'Jc(fs)' in class_str and 'Mend(4px)' in class_str:
-                        num_text = inner_div.get_text(strip=True).replace('"', '').replace(',', '')
-                        if num_text and re.match(r'^\d+$', num_text):
-                            buy_volumes.append(num_text)
-                
-                for i, vol in enumerate(buy_volumes[:5]):
-                    stock_info['委買量'][i] = vol
-            
-            # 從委賣區塊提取量 (Jc(fe) + Mstart(4px))
-            if sell_block:
-                sell_volumes = []
-                for inner_div in sell_block.find_all('div'):
-                    classes = inner_div.get('class', [])
-                    class_str = ' '.join(classes)
-                    # 委賣量的特徵: Jc(fe) 和 Mstart(4px)
-                    if 'Jc(fe)' in class_str and 'Mstart(4px)' in class_str:
-                        num_text = inner_div.get_text(strip=True).replace('"', '').replace(',', '')
-                        if num_text and re.match(r'^\d+$', num_text):
-                            sell_volumes.append(num_text)
-                
-                for i, vol in enumerate(sell_volumes[:5]):
-                    stock_info['委賣量'][i] = vol
-            
-            return stock_info
-            
-        except Exception as e:
-            if attempt < MAX_RETRY - 1:
-                time.sleep(1)
-            continue
-    
-    return None
-
-def fetch_stocks_price(stocks_dict, market_type, delay=1.5):
-    """批次抓取股票即時資訊
-    
-    stocks_dict 格式可以是:
-    1. {code: name} - 從 HTML 提取
-    2. {code: {'name': name, 'volume': volume}} - 從買超排行讀取
-    """
-    results = []
-    total = len(stocks_dict)
-    log_info(f"開始抓取 {market_type} {total} 檔股票...")
-    
-    for i, (code, data) in enumerate(stocks_dict.items(), 1):
-        if i % 10 == 0 or i == total:
-            log_info(f"進度: {i}/{total} ({i*100//total}%)")
-        
-        # 判斷 data 是字串還是字典
-        if isinstance(data, dict):
-            name = data.get('name', '')
-            yesterday_buy = data.get('volume', 0)
+def load_stocks(market):
+    """根據 READ_ALL 設定載入股票列表"""
+    if READ_ALL:
+        if market == 'TSE':
+            return load_stocks_from_csv(TSE_COMPANY_LIST)
         else:
-            name = data
-            yesterday_buy = 0
-        
-        info = get_stock_info(code, market_type)
-        if info:
-            result = {
-                'code': code,
-                'name': name,
-                'market': market_type,
-                'yesterday_buy': yesterday_buy,
-                'close_price': info.get('昨收', '-'),
-                'current_price': info.get('成交', '-'),
-                'change': info.get('漲跌', '-'),
-                'change_percent': info.get('漲跌幅', '-'),
-                'buy_volume': info.get('委買小計', '-'),
-                'sell_volume': info.get('委賣小計', '-'),
-                'bid_volumes': info.get('委買量', ['-', '-', '-', '-', '-']),  # 五檔委買量
-                'ask_volumes': info.get('委賣量', ['-', '-', '-', '-', '-'])   # 五檔委賣量
-            }
-            results.append(result)
-        
-        if i < total:
-            time.sleep(delay)
+            return load_stocks_from_csv(OTC_COMPANY_LIST)
+    else:
+        if market == 'TSE':
+            return load_stocks_from_ranking(TSE_BUY_RANKING)
+        else:
+            return load_stocks_from_ranking(OTC_BUY_RANKING)
+
+# ========== 非同步抓取函數 ==========
+async def get_institutional_data(session, market):
+    """取得三大法人買賣超"""
+    today = datetime.now(TW_TZ)
+    institutional = {}
     
-    log_success(f"完成 {len(results)}/{total} 檔")
+    if market == 'TSE':
+        try:
+            url = f"{TWSE_INST_API}?response=json&date={today.strftime('%Y%m%d')}&selectType=ALL"
+            async with session.get(url, timeout=aiohttp.ClientTimeout(total=30)) as resp:
+                text = await resp.text()
+                data = json.loads(text)
+                
+                if data.get('stat') == 'OK' and data.get('data'):
+                    for row in data['data']:
+                        code = row[0].strip()
+                        try:
+                            buy_sell = int(row[-1].replace(',', '')) // 1000
+                            institutional[code] = buy_sell
+                        except:
+                            pass
+            log_info(f"  上市法人資料: {len(institutional)} 筆")
+        except Exception as e:
+            log_warning(f"  上市法人資料失敗: {e}")
+    
+    elif market == 'OTC':
+        try:
+            tpex_date = f"{today.year-1911}/{today.month:02d}/{today.day:02d}"
+            url = f"{TPEX_INST_API}?l=zh-tw&se=AL&t=D&d={tpex_date}"
+            async with session.get(url, timeout=aiohttp.ClientTimeout(total=30)) as resp:
+                text = await resp.text()
+                data = json.loads(text)
+                
+                if data.get('aaData'):
+                    for row in data['aaData']:
+                        code = str(row[0]).strip()
+                        try:
+                            buy_sell = int(str(row[-1]).replace(',', '')) // 1000
+                            institutional[code] = buy_sell
+                        except:
+                            pass
+            log_info(f"  上櫃法人資料: {len(institutional)} 筆")
+        except Exception as e:
+            log_warning(f"  上櫃法人資料失敗: {e}")
+    
+    return institutional
+
+async def fetch_batch(session, codes, market):
+    """請求單批股票即時報價"""
+    market_code = 'tse' if market == 'TSE' else 'otc'
+    param = "|".join([f"{market_code}_{code}.tw" for code in codes])
+    url = f"{REALTIME_API}?ex_ch={param}&json=1&delay=0"
+    
+    try:
+        async with session.get(url, timeout=aiohttp.ClientTimeout(total=TIMEOUT)) as resp:
+            if resp.status != 200:
+                if DEBUG:
+                    log_warning(f"HTTP {resp.status}")
+                return []
+            
+            text = await resp.text()
+            data = json.loads(text)
+            
+            if data.get('rtcode') == '0000':
+                return data.get('msgArray', [])
+            else:
+                if DEBUG:
+                    log_warning(f"rtcode: {data.get('rtcode')}")
+    except asyncio.TimeoutError:
+        if DEBUG:
+            log_warning("Timeout")
+    except Exception as e:
+        if DEBUG:
+            log_warning(f"Error: {e}")
+    return []
+
+def parse_stock_data(raw, institutional_data, stock_info, market):
+    """解析股票資料"""
+    code = raw.get('c', '')
+    info = stock_info.get(code, {})
+    name = info.get('name', raw.get('n', ''))
+    
+    # 如果從排行榜讀取，使用排行榜的買超資料；否則使用法人資料
+    if not READ_ALL and info.get('volume', 0) != 0:
+        yesterday_buy = info.get('volume', 0)
+    else:
+        yesterday_buy = institutional_data.get(code, 0)
+    
+    yesterday_close = raw.get('y', '-')
+    current_price = raw.get('z', '-')
+    if current_price in ['-', '', None]:
+        current_price = raw.get('pz', yesterday_close)
+    
+    change_str = "-"
+    change_pct_str = "-"
+    try:
+        y = float(yesterday_close) if yesterday_close not in ['-', '', None] else 0
+        z = float(current_price) if current_price not in ['-', '', None] else y
+        if y > 0:
+            change = z - y
+            change_pct = (change / y * 100)
+            change_str = f"+{change:.2f}" if change >= 0 else f"{change:.2f}"
+            change_pct_str = f"+{change_pct:.2f}%" if change_pct >= 0 else f"{change_pct:.2f}%"
+    except:
+        pass
+    
+    bid_volumes = [v for v in raw.get('g', '').split('_') if v][:5]
+    ask_volumes = [v for v in raw.get('f', '').split('_') if v][:5]
+    bid_volumes = (bid_volumes + ['0'] * 5)[:5]
+    ask_volumes = (ask_volumes + ['0'] * 5)[:5]
+    
+    try:
+        buy_vol = sum(int(v) for v in bid_volumes if v.isdigit())
+        sell_vol = sum(int(v) for v in ask_volumes if v.isdigit())
+    except:
+        buy_vol = sell_vol = 0
+    
+    return {
+        'code': code,
+        'name': name,
+        'market': market,
+        'yesterday_buy': yesterday_buy,
+        'close_price': str(yesterday_close),
+        'current_price': str(current_price),
+        'change': change_str,
+        'change_percent': change_pct_str,
+        'buy_volume': str(buy_vol),
+        'sell_volume': str(sell_vol),
+        'bid_volumes': bid_volumes,
+        'ask_volumes': ask_volumes
+    }
+
+async def fetch_market_stocks(session, stocks_dict, market):
+    """抓取指定市場的所有股票"""
+    results = []
+    codes = list(stocks_dict.keys())
+    total = len(codes)
+    
+    if total == 0:
+        return results
+    
+    # 取得法人資料
+    log_info(f"取得 {market} 法人買賣超...")
+    institutional_data = await get_institutional_data(session, market)
+    
+    # 分批抓取
+    batches = [codes[i:i+BATCH_SIZE] for i in range(0, total, BATCH_SIZE)]
+    log_info(f"開始抓取 {market} {total} 檔股票 (分 {len(batches)} 批)...")
+    
+    success_count = 0
+    
+    for idx, batch in enumerate(batches):
+        raw_data = await fetch_batch(session, batch, market)
+        
+        for raw in raw_data:
+            parsed = parse_stock_data(raw, institutional_data, stocks_dict, market)
+            if parsed['code']:
+                results.append(parsed)
+                success_count += 1
+        
+        progress = min((idx + 1) * BATCH_SIZE, total)
+        if (idx + 1) % 5 == 0 or idx == len(batches) - 1:
+            log_info(f"  進度: {progress}/{total} ({progress*100//total}%) | 成功: {success_count}")
+        
+        if idx < len(batches) - 1:
+            await asyncio.sleep(REQUEST_DELAY)
+    
+    log_success(f"{market} 完成: {success_count}/{total} 檔")
     return results
 
-# ========== 主程式 ==========
-def main():
+def parse_change_percent(pct_str):
+    """解析漲跌幅字串為數字，用於排序"""
     try:
-        print("\n" + "=" * 80)
-        print("台股即時股價抓取系統")
-        print("=" * 80)
-        log_info(f"處理模式: {PROCESS_MODE}")
-        log_info(f"執行時間: {datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S')}")
-        print("=" * 80)
+        # 移除 % 和 + 符號
+        clean = pct_str.replace('%', '').replace('+', '').strip()
+        return float(clean)
+    except:
+        return -9999  # 無法解析的放最後
+
+def save_results(results, market, output_path):
+    """儲存結果到 JSON"""
+    # 按漲跌幅排序 (由大到小)
+    results.sort(key=lambda x: parse_change_percent(x['change_percent']), reverse=True)
+    
+    output = {
+        'update_time': datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S'),
+        'market': market,
+        'stock_count': len(results),
+        'stocks': results
+    }
+    
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(output, f, ensure_ascii=False, indent=2)
+    
+    log_success(f"已儲存: {output_path} ({len(results)} 檔)")
+
+# ========== 非同步主函數 ==========
+async def async_main():
+    """非同步主函數"""
+    print("\n" + "=" * 70)
+    print("台股即時股價抓取系統 - 非同步加速版")
+    print("=" * 70)
+    log_info(f"處理模式: {PROCESS_MODE}")
+    log_info(f"讀取模式: {'全部股票 (CSV)' if READ_ALL else '買超排行榜 (TXT)'}")
+    log_info(f"執行時間: {datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S')}")
+    print("=" * 70)
+    
+    start_time = time.time()
+    
+    # 建立 session
+    connector = aiohttp.TCPConnector(limit=10, force_close=True)
+    
+    async with aiohttp.ClientSession(connector=connector, headers=HEADERS) as session:
         
-        # 處理 TSE 市場
+        # 處理 TSE
         if PROCESS_MODE in ['TSE', 'BOTH']:
-            log_info("開始處理 TSE (上市) 市場...")
+            print("\n" + "-" * 50)
+            log_info("處理 TSE (上市) 市場...")
             
-            # 優先載入買超排行榜，如果沒有則載入 HTML
-            tse_stocks = load_buy_ranking(TSE_BUY_RANKING)
-            if not tse_stocks:
-                log_info("找不到買超排行榜，改從 HTML 檔案載入...")
-                tse_stocks = load_stocks_from_html_files('TSE')
+            tse_stocks = load_stocks('TSE')
             
             if tse_stocks:
-                tse_stock_data = fetch_stocks_price(tse_stocks, 'TSE', STOCK_DELAY)
-                
-                if tse_stock_data:
-                    tse_output = {
-                        'update_time': datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S'),
-                        'market': 'TSE',
-                        'stock_count': len(tse_stock_data),
-                        'stocks': tse_stock_data
-                    }
-                    with open(TSE_OUTPUT_JSON, 'w', encoding='utf-8') as f:
-                        json.dump(tse_output, f, ensure_ascii=False, indent=2)
-                    log_success(f"TSE 資料已儲存: {len(tse_stock_data)} 檔")
+                tse_results = await fetch_market_stocks(session, tse_stocks, 'TSE')
+                if tse_results:
+                    save_results(tse_results, 'TSE', TSE_OUTPUT_JSON)
             else:
-                log_warning("TSE 市場沒有找到股票資料")
+                log_warning("TSE 沒有找到股票資料")
         
-        # 處理 OTC 市場
+        # 處理 OTC
         if PROCESS_MODE in ['OTC', 'BOTH']:
-            log_info("開始處理 OTC (上櫃) 市場...")
+            print("\n" + "-" * 50)
+            log_info("處理 OTC (上櫃) 市場...")
             
-            # 優先載入買超排行榜，如果沒有則載入 HTML
-            otc_stocks = load_buy_ranking(OTC_BUY_RANKING)
-            if not otc_stocks:
-                log_info("找不到買超排行榜，改從 HTML 檔案載入...")
-                otc_stocks = load_stocks_from_html_files('OTC')
+            otc_stocks = load_stocks('OTC')
             
             if otc_stocks:
-                otc_stock_data = fetch_stocks_price(otc_stocks, 'OTC', STOCK_DELAY)
-                
-                if otc_stock_data:
-                    otc_output = {
-                        'update_time': datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S'),
-                        'market': 'OTC',
-                        'stock_count': len(otc_stock_data),
-                        'stocks': otc_stock_data
-                    }
-                    with open(OTC_OUTPUT_JSON, 'w', encoding='utf-8') as f:
-                        json.dump(otc_output, f, ensure_ascii=False, indent=2)
-                    log_success(f"OTC 資料已儲存: {len(otc_stock_data)} 檔")
+                otc_results = await fetch_market_stocks(session, otc_stocks, 'OTC')
+                if otc_results:
+                    save_results(otc_results, 'OTC', OTC_OUTPUT_JSON)
             else:
-                log_warning("OTC 市場沒有找到股票資料")
+                log_warning("OTC 沒有找到股票資料")
+    
+    elapsed = time.time() - start_time
+    
+    print("\n" + "=" * 70)
+    log_success(f"所有任務完成! 總耗時: {elapsed:.1f} 秒")
+    print("=" * 70 + "\n")
+
+# ========== 主程式入口 ==========
+def main():
+    try:
+        # Windows 相容性
+        if sys.platform == 'win32':
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         
-        print("\n" + "=" * 80)
-        log_success("所有任務完成!")
-        print("=" * 80 + "\n")
+        asyncio.run(async_main())
         
     except Exception as e:
         log_error(f"程式執行失敗: {e}")
