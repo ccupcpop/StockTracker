@@ -19,6 +19,14 @@ on:
           - 'TSE'
           - 'OTC'
           - 'BOTH'
+      read_all:
+        description: '讀取模式 (True=每天第一次從CSV讀取, False=全部從ranking.txt讀取)'
+        required: true
+        default: 'True'
+        type: choice
+        options:
+          - 'True'
+          - 'False'
 
 jobs:
   update-stock-prices:
@@ -58,6 +66,7 @@ jobs:
     - name: Run stock price update
       env:
         PROCESS_MODE: ${{ github.event.inputs.process_mode || 'BOTH' }}
+        READ_ALL: ${{ github.event.inputs.read_all || 'True' }}
       run: |
         TAIWAN_TIME=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
         echo "🕐 Current Taiwan time: $TAIWAN_TIME"

@@ -16,6 +16,7 @@ import pytz
 
 # ========== 執行設定 ==========
 PROCESS_MODE = os.environ.get('PROCESS_MODE', 'BOTH')  # 'TSE', 'OTC', 'BOTH'
+READ_ALL = os.environ.get('READ_ALL', 'True').lower() == 'true'  # True: 每天第一次從CSV讀取, False: 全部從ranking.txt讀取
 
 TW_TZ = pytz.timezone('Asia/Taipei')
 
@@ -82,8 +83,14 @@ def log_error(message):
 def is_first_run_today(ranking_file):
     """
     判斷今天是否第一次執行
-    透過檢查 ranking.txt 第一行的日期來判斷
+    - READ_ALL = False: 永遠返回 False，全部從 ranking.txt 讀取
+    - READ_ALL = True: 透過檢查 ranking.txt 第一行的日期來判斷
     """
+    # READ_ALL = False 時，永遠從 ranking.txt 讀取
+    if not READ_ALL:
+        log_info(f"READ_ALL=False，從排行榜讀取")
+        return False
+    
     today_str = datetime.now(TW_TZ).strftime('%Y-%m-%d')
     
     if not os.path.exists(ranking_file):
@@ -444,6 +451,7 @@ async def async_main():
     print("台股即時股價抓取系統 - 非同步加速版")
     print("=" * 70)
     log_info(f"處理模式: {PROCESS_MODE}")
+    log_info(f"READ_ALL: {READ_ALL} ({'每天第一次從CSV讀取' if READ_ALL else '全部從ranking.txt讀取'})")
     log_info(f"執行時間: {datetime.now(TW_TZ).strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 70)
     
