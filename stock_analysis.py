@@ -16,7 +16,7 @@ import pytz
 
 # ========== 執行設定 ==========
 PROCESS_MODE = os.environ.get('PROCESS_MODE', 'BOTH')  # 'TSE', 'OTC', 'BOTH'
-READ_ALL = os.environ.get('READ_ALL', 'False').lower() == 'true'  # True: 從 CSV 讀取全部, False: 從 TXT 讀取排行榜
+READ_ALL = os.environ.get('READ_ALL', 'True').lower() == 'true'  # True: 從 CSV 讀取全部, False: 從 TXT 讀取排行榜
 
 TW_TZ = pytz.timezone('Asia/Taipei')
 
