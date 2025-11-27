@@ -16,7 +16,7 @@ import pytz
 
 # ========== 執行設定 ==========
 PROCESS_MODE = os.environ.get('PROCESS_MODE', 'BOTH')  # 'TSE', 'OTC', 'BOTH'
-READ_ALL = os.environ.get('READ_ALL', 'True').lower() == 'true'  # True: 每天第一次從CSV讀取, False: 全部從ranking.txt讀取
+READ_ALL = os.environ.get('READ_ALL', 'False').lower() == 'true'  # True: 每天第一次從CSV讀取, False: 全部從ranking.txt讀取
 
 TW_TZ = pytz.timezone('Asia/Taipei')
 
@@ -332,10 +332,19 @@ def parse_stock_data(raw, institutional_data, stock_info, market, is_first_run):
     else:
         yesterday_buy = institutional_data.get(code, 0)
     
+    # 昨收、現價
     yesterday_close = raw.get('y', '-')
-    current_price = raw.get('z', '-')
-    if current_price in ['-', '', None]:
-        current_price = raw.get('pz', yesterday_close)
+
+    # 現價：z 有值就用 z，否則用買一價
+    current_price = '-'
+    z_val = raw.get('z', '')
+    if z_val and z_val != '-':
+        current_price = z_val
+    else:
+        # 用買一價 (b 的第一個)
+        bid_first = raw.get('b', '').split('_')[0]
+        if bid_first and bid_first != '-':
+            current_price = bid_first
     
     change_str = "-"
     change_pct_str = "-"
