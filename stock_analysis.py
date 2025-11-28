@@ -477,7 +477,7 @@ async def async_main():
             log_info("處理 TSE (上市) 市場...")
             
             # 判斷今天是否第一次執行
-            tse_first_run = is_first_run_today(TSE_BUY_RANKING)
+            tse_first_run = False #is_first_run_today(TSE_BUY_RANKING)
             
             if tse_first_run:
                 log_info("📥 從 CSV 讀取全部股票...")
