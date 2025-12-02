@@ -808,6 +808,7 @@
             <div class="market-selector">
                 <button class="market-btn active" id="btnTSE" onclick="switchMarket('TSE')">上市</button>
                 <button class="market-btn" id="btnOTC" onclick="switchMarket('OTC')">上櫃</button>
+                <button class="market-btn" id="btnConcept" onclick="showConceptStocks()">概念股</button>
             </div>
             
             <div class="info-bar" style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; font-size: 0.9em;">
@@ -1044,6 +1045,10 @@
             
             document.getElementById('btnTSE').classList.remove('active');
             document.getElementById('btnOTC').classList.remove('active');
+            document.getElementById('btnConcept').classList.remove('active');
+            
+            // 恢復分類按鈕顯示
+            document.querySelector('.category-tabs').style.display = 'flex';
             
             if (market === 'TSE') {
                 document.getElementById('btnTSE').classList.add('active');
@@ -1062,6 +1067,22 @@
             } else if (currentCategory === 'sixtyDay') {
                 loadExternalPage(market === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
             }
+        }
+
+        function showConceptStocks() {
+            // 移除所有市場按鈕的 active 狀態
+            document.getElementById('btnTSE').classList.remove('active');
+            document.getElementById('btnOTC').classList.remove('active');
+            document.getElementById('btnConcept').classList.add('active');
+            
+            // 隱藏分類按鈕（因為概念股不需要分類）
+            document.querySelector('.category-tabs').style.display = 'none';
+            
+            // 顯示 iframe 視圖
+            showIframeView();
+            
+            // 載入概念股頁面（DATA_PATH 已經包含 StockInfo/）
+            loadExternalPage('concept_stocks.html');
         }
 
         function switchCategory(category) {
