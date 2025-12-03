@@ -16,7 +16,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 2px;
             min-height: 100vh;
-            font-size: 14px; /* 基礎字體縮小 */
+            font-size: 15px; /* 基礎字體縮小 */
         }
         
         .container {
@@ -47,7 +47,7 @@
             color: #4a5568;
             cursor: pointer;
             border-radius: 8px 8px 0 0;
-            font-size: 1.0em; /* 縮小字體 */
+            font-size: 1.1em; /* 縮小字體 */
             font-weight: 600;
             transition: all 0.3s ease;
             font-family: "Microsoft JhengHei", sans-serif;
@@ -116,7 +116,7 @@
             min-width: 400px; /* 最小寬度 */
             border-collapse: collapse;
             background: white;
-            font-size: 0.85em; /* 縮小表格字體 */
+            font-size: 0.95em; /* 縮小表格字體 */
         }
         
         thead {
@@ -147,14 +147,14 @@
             padding: 2px 4px; /* 縮小間距 */
             text-align: left;
             font-weight: 600;
-            font-size: 1.0em;
+            font-size: 1.1em;
             white-space: nowrap; /* 標題不換行 */
         }
         
         td {
             padding: 2px 4px; /* 縮小間距 */
             border-bottom: 1px solid #e2e8f0;
-            font-size: 1.0em;
+            font-size: 1.1em;
         }
         
         tr:hover {
@@ -235,7 +235,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             text-align: center;
             color: #718096;
-            font-size: 1.0em;
+            font-size: 1.1em;
         }
         
         /* 手機專用樣式 */
@@ -251,7 +251,7 @@
             }
             
             .section-title {
-                font-size: 1.0em;
+                font-size: 1.1em;
                 margin-bottom: 5px;
             }
             
@@ -306,7 +306,7 @@
             <div id="tab-0" class="tab-content active">
                 <div class="section">
                     <h2 class="section-title buy">📈 彙整買超分析</h2>
-                    <p style="color: #718096; margin-bottom: 5px; font-size: 1.0em;">最近5天買賣超淨值 >= 10000張</p>
+                    <p style="color: #718096; margin-bottom: 5px; font-size: 1.1em;">最近5天買賣超淨值 >= 10000張</p>
                     <div class="table-container">
                         <table>
                             <thead class="buy">
@@ -647,7 +647,7 @@
                 
                 <div class="section">
                     <h2 class="section-title sell">📉 彙整賣超分析</h2>
-                    <p style="color: #718096; margin-bottom: 5px; font-size: 1.0em;">最近5天買賣超淨值 <= -10000張</p>
+                    <p style="color: #718096; margin-bottom: 5px; font-size: 1.1em;">最近5天買賣超淨值 <= -10000張</p>
                     <div class="table-container">
                         <table>
                             <thead class="sell">
@@ -1020,7 +1020,7 @@
                 
                 <div class="section">
                     <h2 class="section-title attention">⚠️ 特別注意</h2>
-                    <p style="color: #718096; margin-bottom: 5px; font-size: 1.0em;">同時出現在買超與賣超前20</p>
+                    <p style="color: #718096; margin-bottom: 5px; font-size: 1.1em;">同時出現在買超與賣超前20</p>
                     <div class="table-container">
                         <table>
                             <thead class="attention">
@@ -1028,10 +1028,8 @@
                                     <th>代號</th>
                                     <th>名稱</th>
                                     <th>領域</th>
-                                    <th>買超次</th>
                                     <th>買超日期</th>
                                     <th>買超和</th>
-                                    <th>賣超次</th>
                                     <th>賣超日期</th>
                                     <th>賣超和</th>
                                     <th>淨值</th>
@@ -1043,11 +1041,9 @@
                                     <td class="stock-code">1303</td>
                                     <td class="stock-name" title="南亞            ">南亞            </td>
                                     <td>塑膠工業</td>
-                                    <td>3</td>
-                                    <td style="font-size: 0.8em;">11/27, 12/02, 12/03</td>
+                                    <td style="font-size: 0.8em;">27, 02, 03</td>
                                     <td class="volume-positive">100,505</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">11/28, 12/01</td>
+                                    <td style="font-size: 0.8em;">28, 01</td>
                                     <td class="volume-negative">-19,163</td>
                                     <td class="volume-positive">81,342</td>
                                 </tr>
@@ -1056,11 +1052,9 @@
                                     <td class="stock-code">2882</td>
                                     <td class="stock-name" title="國泰金          ">國泰金          </td>
                                     <td>金融保險業</td>
-                                    <td>3</td>
-                                    <td style="font-size: 0.8em;">12/01, 12/02, 12/03</td>
+                                    <td style="font-size: 0.8em;">01, 02, 03</td>
                                     <td class="volume-positive">53,305</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/28</td>
+                                    <td style="font-size: 0.8em;">28</td>
                                     <td class="volume-negative">-18,732</td>
                                     <td class="volume-positive">34,573</td>
                                 </tr>
@@ -1069,11 +1063,9 @@
                                     <td class="stock-code">3231</td>
                                     <td class="stock-name" title="緯創            ">緯創            </td>
                                     <td>電腦及週邊設備業</td>
-                                    <td>3</td>
-                                    <td style="font-size: 0.8em;">11/27, 12/02, 12/03</td>
+                                    <td style="font-size: 0.8em;">27, 02, 03</td>
                                     <td class="volume-positive">41,454</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/28</td>
+                                    <td style="font-size: 0.8em;">28</td>
                                     <td class="volume-negative">-10,844</td>
                                     <td class="volume-positive">30,610</td>
                                 </tr>
@@ -1082,11 +1074,9 @@
                                     <td class="stock-code">2887</td>
                                     <td class="stock-name" title="台新新光金      ">台新新光金      </td>
                                     <td>金融保險業</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">12/01, 12/02</td>
+                                    <td style="font-size: 0.8em;">01, 02</td>
                                     <td class="volume-positive">70,757</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/28</td>
+                                    <td style="font-size: 0.8em;">28</td>
                                     <td class="volume-negative">-42,484</td>
                                     <td class="volume-positive">28,273</td>
                                 </tr>
@@ -1095,11 +1085,9 @@
                                     <td class="stock-code">2881</td>
                                     <td class="stock-name" title="富邦金          ">富邦金          </td>
                                     <td>金融保險業</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">11/27, 12/03</td>
+                                    <td style="font-size: 0.8em;">27, 03</td>
                                     <td class="volume-positive">20,932</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/28</td>
+                                    <td style="font-size: 0.8em;">28</td>
                                     <td class="volume-negative">-6,303</td>
                                     <td class="volume-positive">14,629</td>
                                 </tr>
@@ -1108,11 +1096,9 @@
                                     <td class="stock-code">00632R</td>
                                     <td class="stock-name" title="元大台灣50反1   ">元大台灣50反1   </td>
                                     <td>ETF</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">11/28, 12/01</td>
+                                    <td style="font-size: 0.8em;">28, 01</td>
                                     <td class="volume-positive">24,767</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/27</td>
+                                    <td style="font-size: 0.8em;">27</td>
                                     <td class="volume-negative">-14,142</td>
                                     <td class="volume-positive">10,625</td>
                                 </tr>
@@ -1121,11 +1107,9 @@
                                     <td class="stock-code">2890</td>
                                     <td class="stock-name" title="永豐金          ">永豐金          </td>
                                     <td>金融保險業</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/02</td>
+                                    <td style="font-size: 0.8em;">02</td>
                                     <td class="volume-positive">13,661</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/03</td>
+                                    <td style="font-size: 0.8em;">03</td>
                                     <td class="volume-negative">-4,736</td>
                                     <td class="volume-positive">8,925</td>
                                 </tr>
@@ -1134,11 +1118,9 @@
                                     <td class="stock-code">2316</td>
                                     <td class="stock-name" title="楠梓電          ">楠梓電          </td>
                                     <td>電子零組件業</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/27</td>
+                                    <td style="font-size: 0.8em;">27</td>
                                     <td class="volume-positive">11,719</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/02</td>
+                                    <td style="font-size: 0.8em;">02</td>
                                     <td class="volume-negative">-3,942</td>
                                     <td class="volume-positive">7,777</td>
                                 </tr>
@@ -1147,11 +1129,9 @@
                                     <td class="stock-code">2884</td>
                                     <td class="stock-name" title="玉山金          ">玉山金          </td>
                                     <td>金融保險業</td>
-                                    <td>3</td>
-                                    <td style="font-size: 0.8em;">11/28, 12/01, 12/02</td>
+                                    <td style="font-size: 0.8em;">28, 01, 02</td>
                                     <td class="volume-positive">23,420</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/03</td>
+                                    <td style="font-size: 0.8em;">03</td>
                                     <td class="volume-negative">-15,766</td>
                                     <td class="volume-positive">7,654</td>
                                 </tr>
@@ -1160,11 +1140,9 @@
                                     <td class="stock-code">2356</td>
                                     <td class="stock-name" title="英業達          ">英業達          </td>
                                     <td>電腦及週邊設備業</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">12/01, 12/03</td>
+                                    <td style="font-size: 0.8em;">01, 03</td>
                                     <td class="volume-positive">14,727</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/28</td>
+                                    <td style="font-size: 0.8em;">28</td>
                                     <td class="volume-negative">-7,087</td>
                                     <td class="volume-positive">7,640</td>
                                 </tr>
@@ -1173,11 +1151,9 @@
                                     <td class="stock-code">1605</td>
                                     <td class="stock-name" title="華新            ">華新            </td>
                                     <td>電器電纜</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">11/27, 12/02</td>
+                                    <td style="font-size: 0.8em;">27, 02</td>
                                     <td class="volume-positive">20,414</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/01</td>
+                                    <td style="font-size: 0.8em;">01</td>
                                     <td class="volume-negative">-13,194</td>
                                     <td class="volume-positive">7,220</td>
                                 </tr>
@@ -1186,11 +1162,9 @@
                                     <td class="stock-code">1802</td>
                                     <td class="stock-name" title="台玻            ">台玻            </td>
                                     <td>玻璃陶瓷</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">11/28, 12/02</td>
+                                    <td style="font-size: 0.8em;">28, 02</td>
                                     <td class="volume-positive">58,085</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">12/01, 12/03</td>
+                                    <td style="font-size: 0.8em;">01, 03</td>
                                     <td class="volume-negative">-52,320</td>
                                     <td class="volume-positive">5,765</td>
                                 </tr>
@@ -1199,11 +1173,9 @@
                                     <td class="stock-code">8039</td>
                                     <td class="stock-name" title="台虹            ">台虹            </td>
                                     <td>電子零組件業</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/28</td>
+                                    <td style="font-size: 0.8em;">28</td>
                                     <td class="volume-positive">8,819</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/03</td>
+                                    <td style="font-size: 0.8em;">03</td>
                                     <td class="volume-negative">-5,149</td>
                                     <td class="volume-positive">3,670</td>
                                 </tr>
@@ -1212,11 +1184,9 @@
                                     <td class="stock-code">2027</td>
                                     <td class="stock-name" title="大成鋼          ">大成鋼          </td>
                                     <td>鋼鐵工業</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/01</td>
+                                    <td style="font-size: 0.8em;">01</td>
                                     <td class="volume-positive">14,297</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/28</td>
+                                    <td style="font-size: 0.8em;">28</td>
                                     <td class="volume-negative">-12,413</td>
                                     <td class="volume-positive">1,884</td>
                                 </tr>
@@ -1225,11 +1195,9 @@
                                     <td class="stock-code">6191</td>
                                     <td class="stock-name" title="精成科          ">精成科          </td>
                                     <td>電子零組件業</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/28</td>
+                                    <td style="font-size: 0.8em;">28</td>
                                     <td class="volume-positive">5,235</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/27</td>
+                                    <td style="font-size: 0.8em;">27</td>
                                     <td class="volume-negative">-5,188</td>
                                     <td class="volume-positive">47</td>
                                 </tr>
@@ -1238,11 +1206,9 @@
                                     <td class="stock-code">2327</td>
                                     <td class="stock-name" title="國巨*           ">國巨*           </td>
                                     <td>電子零組件業</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/03</td>
+                                    <td style="font-size: 0.8em;">03</td>
                                     <td class="volume-positive">9,912</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/28</td>
+                                    <td style="font-size: 0.8em;">28</td>
                                     <td class="volume-negative">-10,096</td>
                                     <td class="volume-negative">-184</td>
                                 </tr>
@@ -1251,11 +1217,9 @@
                                     <td class="stock-code">1304</td>
                                     <td class="stock-name" title="台聚            ">台聚            </td>
                                     <td>塑膠工業</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/01</td>
+                                    <td style="font-size: 0.8em;">01</td>
                                     <td class="volume-positive">3,553</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/03</td>
+                                    <td style="font-size: 0.8em;">03</td>
                                     <td class="volume-negative">-5,510</td>
                                     <td class="volume-negative">-1,957</td>
                                 </tr>
@@ -1264,11 +1228,9 @@
                                     <td class="stock-code">5469</td>
                                     <td class="stock-name" title="瀚宇博          ">瀚宇博          </td>
                                     <td>電子零組件業</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/28</td>
+                                    <td style="font-size: 0.8em;">28</td>
                                     <td class="volume-positive">6,275</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/02</td>
+                                    <td style="font-size: 0.8em;">02</td>
                                     <td class="volume-negative">-8,395</td>
                                     <td class="volume-negative">-2,120</td>
                                 </tr>
@@ -1277,11 +1239,9 @@
                                     <td class="stock-code">00919</td>
                                     <td class="stock-name" title="群益台灣精選高息">群益台灣精選高息</td>
                                     <td>ETF</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/27</td>
+                                    <td style="font-size: 0.8em;">27</td>
                                     <td class="volume-positive">22,381</td>
-                                    <td>3</td>
-                                    <td style="font-size: 0.8em;">11/28, 12/02, 12/03</td>
+                                    <td style="font-size: 0.8em;">28, 02, 03</td>
                                     <td class="volume-negative">-26,614</td>
                                     <td class="volume-negative">-4,233</td>
                                 </tr>
@@ -1290,11 +1250,9 @@
                                     <td class="stock-code">2891</td>
                                     <td class="stock-name" title="中信金          ">中信金          </td>
                                     <td>金融保險業</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">11/27, 12/02</td>
+                                    <td style="font-size: 0.8em;">27, 02</td>
                                     <td class="volume-positive">24,120</td>
-                                    <td>3</td>
-                                    <td style="font-size: 0.8em;">11/28, 12/01, 12/03</td>
+                                    <td style="font-size: 0.8em;">28, 01, 03</td>
                                     <td class="volume-negative">-29,841</td>
                                     <td class="volume-negative">-5,721</td>
                                 </tr>
@@ -1303,11 +1261,9 @@
                                     <td class="stock-code">2344</td>
                                     <td class="stock-name" title="華邦電          ">華邦電          </td>
                                     <td>半導體業</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/27</td>
+                                    <td style="font-size: 0.8em;">27</td>
                                     <td class="volume-positive">17,776</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">11/28, 12/02</td>
+                                    <td style="font-size: 0.8em;">28, 02</td>
                                     <td class="volume-negative">-25,530</td>
                                     <td class="volume-negative">-7,754</td>
                                 </tr>
@@ -1316,11 +1272,9 @@
                                     <td class="stock-code">8422</td>
                                     <td class="stock-name" title="可寧衛*         ">可寧衛*         </td>
                                     <td>綠能環保</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">11/28</td>
+                                    <td style="font-size: 0.8em;">28</td>
                                     <td class="volume-positive">6,883</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">11/27, 12/01</td>
+                                    <td style="font-size: 0.8em;">27, 01</td>
                                     <td class="volume-negative">-20,044</td>
                                     <td class="volume-negative">-13,161</td>
                                 </tr>
@@ -1329,11 +1283,9 @@
                                     <td class="stock-code">2409</td>
                                     <td class="stock-name" title="友達            ">友達            </td>
                                     <td>光電業</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/03</td>
+                                    <td style="font-size: 0.8em;">03</td>
                                     <td class="volume-positive">10,917</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">12/01, 12/02</td>
+                                    <td style="font-size: 0.8em;">01, 02</td>
                                     <td class="volume-negative">-24,866</td>
                                     <td class="volume-negative">-13,949</td>
                                 </tr>
@@ -1342,11 +1294,9 @@
                                     <td class="stock-code">2408</td>
                                     <td class="stock-name" title="南亞科          ">南亞科          </td>
                                     <td>半導體業</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/01</td>
+                                    <td style="font-size: 0.8em;">01</td>
                                     <td class="volume-positive">5,429</td>
-                                    <td>3</td>
-                                    <td style="font-size: 0.8em;">11/28, 12/02, 12/03</td>
+                                    <td style="font-size: 0.8em;">28, 02, 03</td>
                                     <td class="volume-negative">-30,601</td>
                                     <td class="volume-negative">-25,172</td>
                                 </tr>
@@ -1355,11 +1305,9 @@
                                     <td class="stock-code">2317</td>
                                     <td class="stock-name" title="鴻海            ">鴻海            </td>
                                     <td>其他電子業</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/03</td>
+                                    <td style="font-size: 0.8em;">03</td>
                                     <td class="volume-positive">11,161</td>
-                                    <td>3</td>
-                                    <td style="font-size: 0.8em;">11/27, 11/28, 12/01</td>
+                                    <td style="font-size: 0.8em;">27, 28, 01</td>
                                     <td class="volume-negative">-39,574</td>
                                     <td class="volume-negative">-28,413</td>
                                 </tr>
@@ -1368,11 +1316,9 @@
                                     <td class="stock-code">0050</td>
                                     <td class="stock-name" title="元大台灣50      ">元大台灣50      </td>
                                     <td>ETF</td>
-                                    <td>3</td>
-                                    <td style="font-size: 0.8em;">11/27, 11/28, 12/03</td>
+                                    <td style="font-size: 0.8em;">27, 28, 03</td>
                                     <td class="volume-positive">31,826</td>
-                                    <td>1</td>
-                                    <td style="font-size: 0.8em;">12/01</td>
+                                    <td style="font-size: 0.8em;">01</td>
                                     <td class="volume-negative">-67,539</td>
                                     <td class="volume-negative">-35,713</td>
                                 </tr>
@@ -1381,11 +1327,9 @@
                                     <td class="stock-code">6770</td>
                                     <td class="stock-name" title="力積電          ">力積電          </td>
                                     <td>半導體業</td>
-                                    <td>2</td>
-                                    <td style="font-size: 0.8em;">11/27, 11/28</td>
+                                    <td style="font-size: 0.8em;">27, 28</td>
                                     <td class="volume-positive">54,540</td>
-                                    <td>3</td>
-                                    <td style="font-size: 0.8em;">12/01, 12/02, 12/03</td>
+                                    <td style="font-size: 0.8em;">01, 02, 03</td>
                                     <td class="volume-negative">-101,205</td>
                                     <td class="volume-negative">-46,665</td>
                                 </tr>
