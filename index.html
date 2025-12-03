@@ -1058,6 +1058,7 @@
             
             // 根據當前的分類決定要載入什麼
             if (currentCategory === 'latest') {
+                showTableView();
                 const data = market === 'TSE' ? tseData : otcData;
                 if (data) {
                     updateDisplay(data);
