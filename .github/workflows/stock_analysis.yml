@@ -66,5 +66,5 @@ jobs:
         TAIWAN_TIME=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add StockInfo/*.html
+        git add StockInfo/*.html StockInfo/*.json
         git diff --quiet && git diff --staged --quiet || (git commit -m "📊 Update stock analysis - ${TAIWAN_TIME}" && git pull --rebase origin main && git push)
