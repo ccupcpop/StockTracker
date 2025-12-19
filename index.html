@@ -159,6 +159,10 @@
             flex-wrap: wrap;
         }
 
+        .category-tabs.hidden {
+            display: none;
+        }
+
         @media (min-width: 768px) {
             .category-tabs {
                 gap: 12px;
@@ -198,6 +202,49 @@
             border: 2px solid #667eea;
         }
 
+        /* 概念股按鈕容器 */
+        .concept-buttons {
+            display: none;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        .concept-buttons.active {
+            display: flex;
+        }
+
+        .concept-btn {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #495057;
+            border: 2px solid transparent;
+            padding: 10px 24px;
+            border-radius: 980px;
+            font-size: 0.9em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (min-width: 768px) {
+            .concept-btn {
+                padding: 12px 32px;
+                font-size: 1em;
+            }
+        }
+
+        .concept-btn.active {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.35);
+        }
+
+        .concept-btn:hover:not(.active) {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            transform: translateY(-2px);
+            border: 2px solid #28a745;
+        }
+
         .stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -224,175 +271,159 @@
 
         @media (min-width: 768px) {
             .stat-box {
-                padding: 24px;
+                padding: 20px;
                 border-radius: 16px;
-            }
-
-            .stat-box:hover {
-                transform: translateY(-6px) scale(1.02);
-                box-shadow: 0 12px 32px rgba(102, 126, 234, 0.3);
             }
         }
 
-        .stat-box .label {
-            font-size: 0.75em;
-            opacity: 0.85;
+        .stat-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-label {
+            font-size: 0.85em;
             margin-bottom: 6px;
-            font-weight: 400;
+            opacity: 0.95;
         }
 
         @media (min-width: 768px) {
-            .stat-box .label {
-                font-size: 0.88em;
+            .stat-label {
+                font-size: 0.95em;
                 margin-bottom: 8px;
             }
         }
 
-        .stat-box .value {
+        .stat-value {
             font-size: 1.6em;
             font-weight: 700;
             letter-spacing: -0.5px;
         }
 
         @media (min-width: 768px) {
-            .stat-box .value {
-                font-size: 2.2em;
+            .stat-value {
+                font-size: 2em;
             }
         }
 
         .controls {
             background: white;
-            padding: 15px;
+            padding: 12px 15px;
             border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);
+            box-shadow: 0 4px 16px rgba(31, 38, 135, 0.06);
             margin-bottom: 10px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         @media (min-width: 768px) {
             .controls {
-                padding: 24px;
-                border-radius: 20px;
-                margin-bottom: 20px;
-                gap: 16px;
-            }
-        }
-
-        .sort-group {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex: 1;
-            min-width: 200px;
-        }
-
-        @media (min-width: 768px) {
-            .sort-group {
+                padding: 16px 20px;
+                border-radius: 16px;
+                margin-bottom: 16px;
                 gap: 12px;
             }
         }
 
-        .sort-label {
-            color: #7f8c8d;
-            font-size: 0.85em;
-            font-weight: 500;
-            white-space: nowrap;
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         @media (min-width: 768px) {
-            .sort-label {
-                font-size: 0.95em;
+            .control-group {
+                gap: 8px;
             }
         }
 
-        .sort-select {
-            flex: 1;
-            padding: 10px 12px;
+        select {
+            padding: 6px 10px;
             border: 2px solid #e9ecef;
-            border-radius: 12px;
-            font-size: 0.9em;
+            border-radius: 8px;
+            font-size: 0.85em;
             background: white;
-            color: #2c3e50;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 500;
+            color: #495057;
         }
 
         @media (min-width: 768px) {
-            .sort-select {
-                padding: 12px 16px;
-                border-radius: 14px;
-                font-size: 1em;
+            select {
+                padding: 8px 12px;
+                font-size: 0.95em;
+                border-radius: 10px;
             }
         }
 
-        .sort-select:focus {
+        select:hover {
+            border-color: #667eea;
+        }
+
+        select:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .sort-toggle {
+        .sort-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 10px 16px;
-            border-radius: 12px;
-            font-size: 0.9em;
-            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+            font-size: 0.85em;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 6px;
-            white-space: nowrap;
+            gap: 4px;
         }
 
         @media (min-width: 768px) {
-            .sort-toggle {
-                padding: 12px 20px;
-                border-radius: 14px;
-                font-size: 1em;
-                gap: 8px;
+            .sort-btn {
+                padding: 8px 16px;
+                border-radius: 10px;
+                font-size: 0.95em;
+                gap: 6px;
             }
         }
 
-        .sort-toggle:hover {
+        .sort-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
-        }
-
-        .sort-toggle:active {
-            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
         .table-container {
             background: white;
             border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);
-            overflow-x: auto;
-            overflow-y: hidden;
-            margin-bottom: 30px;
-            -webkit-overflow-scrolling: touch;
+            box-shadow: 0 4px 16px rgba(31, 38, 135, 0.06);
+            overflow: hidden;
+            margin-bottom: 20px;
         }
 
         @media (min-width: 768px) {
             .table-container {
                 border-radius: 20px;
-                margin-bottom: 40px;
             }
         }
 
         table {
             width: 100%;
-            min-width: 650px;
-            border-collapse: collapse;
-            display: table;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.85em;
+        }
+
+        @media (min-width: 768px) {
+            table {
+                font-size: 0.95em;
+            }
         }
 
         thead {
@@ -403,199 +434,96 @@
             z-index: 10;
         }
 
-        /* 排名欄 - 手機凍結 */
-        .col-rank {
-            width: 55px;
-            min-width: 55px;
-            text-align: center;
-            line-height: 1.2;
-        }
-
-        /* 手機版凍結排名欄 */
-        @media (max-width: 767px) {
-            th.col-rank,
-            td.col-rank {
-                position: sticky;
-                left: 0;
-                z-index: 3;
-            }
-            
-            thead th.col-rank {
-                z-index: 12;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            }
-            
-            tbody td.col-rank {
-                background: white;
-            }
-            
-            tbody tr:hover td.col-rank {
-                background: #f8f9ff;
-            }
-            
-            /* 凍結欄右邊陰影 */
-            td.col-rank::after {
-                content: '';
-                position: absolute;
-                right: 0;
-                top: 0;
-                bottom: 0;
-                width: 3px;
-                background: linear-gradient(90deg, rgba(0,0,0,0.06), transparent);
-                pointer-events: none;
-            }
-        }
-
-        /* 排名數字 */
-        .rank-num {
-            font-weight: 700;
-            font-size: 1em;
-            color: #2c3e50;
-        }
-
-        .rank-1 .rank-num { color: #e74c3c; }
-        .rank-2 .rank-num { color: #e67e22; }
-        .rank-3 .rank-num { color: #f1c40f; }
-
-        /* 代號（排名下方 - 手機版顯示） */
-        .rank-code {
-            font-size: 0.7em;
-            color: #667eea;
-            font-family: 'Courier New', monospace;
-            margin-top: 2px;
-        }
-
-        /* 股票名稱欄 */
-        .col-stock {
-            width: 110px;
-            min-width: 110px;
-            text-align: left;
-            padding-left: 8px !important;
-        }
-
-        th.col-stock {
-            color: white;  /* 表頭白色 */
-        }
-
-        .stock-name {
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 0.9em;
-            line-height: 1.3;
-            word-wrap: break-word;
-        }
-
-        .stock-code {
-            font-size: 0.7em;
-            color: #667eea;
-            font-family: 'Courier New', monospace;
-            margin-top: 2px;
-        }
-
-        /* 響應式顯示控制 */
-        .mobile-only {
-            display: block;
-        }
-        .desktop-only {
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            .mobile-only {
-                display: none;
-            }
-            .desktop-only {
-                display: block;
-            }
-        }
-
         th {
-            padding: 14px 6px;
+            padding: 12px 6px;
             text-align: center;
             font-weight: 600;
-            font-size: 0.8em;
-            letter-spacing: 0.3px;
-            white-space: nowrap;
+            font-size: 0.9em;
         }
 
         @media (min-width: 768px) {
             th {
-                padding: 18px 12px;
-                font-size: 0.95em;
+                padding: 16px 12px;
+                font-size: 1em;
             }
         }
 
+        tbody tr {
+            transition: all 0.3s;
+            border-bottom: 1px solid #f1f3f5;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+            transform: scale(1.01);
+        }
+
         td {
-            padding: 10px 4px;
+            padding: 12px 6px;
             text-align: center;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 0.85em;
-            transition: background 0.2s;
+            font-size: 0.9em;
         }
 
         @media (min-width: 768px) {
             td {
                 padding: 16px 12px;
-                font-size: 0.95em;
+                font-size: 1em;
             }
         }
 
-        tbody tr:hover {
-            background: linear-gradient(90deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%);
-        }
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .rank {
-            font-weight: 600;
-            color: #95a5a6;
-            font-size: 0.9em;
-        }
-
-        .rank-1 {
+        .col-rank {
             font-weight: 700;
-            color: #f39c12;
+            color: #495057;
+        }
+
+        .rank-num {
             font-size: 1.1em;
         }
 
+        @media (min-width: 768px) {
+            .rank-num {
+                font-size: 1.2em;
+            }
+        }
+
+        .rank-code {
+            font-size: 0.75em;
+            color: #6c757d;
+            margin-top: 2px;
+        }
+
+        .rank-1 {
+            background: linear-gradient(135deg, #ffd70033 0%, #ffed4e33 100%);
+        }
+
         .rank-2 {
-            font-weight: 700;
-            color: #95a5a6;
-            font-size: 1.05em;
+            background: linear-gradient(135deg, #c0c0c033 0%, #e8e8e833 100%);
         }
 
         .rank-3 {
-            font-weight: 700;
-            color: #cd7f32;
-            font-size: 1em;
+            background: linear-gradient(135deg, #cd7f3233 0%, #ffa50033 100%);
         }
 
-        .badge {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.7em;
+        .col-stock {
+            text-align: left;
+            max-width: 120px;
+        }
+
+        @media (min-width: 768px) {
+            .col-stock {
+                max-width: 200px;
+            }
+        }
+
+        .stock-name {
             font-weight: 600;
-            margin-left: 4px;
-            vertical-align: middle;
+            color: #2c3e50;
+            margin-bottom: 2px;
         }
 
-        .badge-hot {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            color: white;
-            animation: pulse 2s infinite;
-        }
-
-        .badge-warm {
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-            color: white;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
+        .stock-code {
+            font-size: 0.8em;
+            color: #7f8c8d;
         }
 
         .price-up {
@@ -610,559 +538,483 @@
 
         .price-neutral {
             color: #95a5a6;
+            font-weight: 500;
         }
 
-        /* 五檔分布長條圖樣式 */
         .volume-cell {
-            padding: 0 !important;
-            position: relative;
+            min-width: 80px;
+        }
+
+        @media (min-width: 768px) {
+            .volume-cell {
+                min-width: 120px;
+            }
         }
 
         .volume-wrapper {
             display: flex;
             align-items: center;
-            justify-content: center;  /* 數字置中 */
-            height: 100%;
-            padding: 8px 12px;
+            justify-content: center;
+            gap: 4px;
             position: relative;
-            min-height: 45px;
+        }
+
+        @media (min-width: 768px) {
+            .volume-wrapper {
+                gap: 6px;
+            }
+        }
+
+        .volume-bars {
+            display: flex;
+            gap: 1px;
+            height: 20px;
+            align-items: flex-end;
+        }
+
+        @media (min-width: 768px) {
+            .volume-bars {
+                gap: 2px;
+                height: 24px;
+            }
+        }
+
+        .volume-bar {
+            width: 3px;
+            border-radius: 2px 2px 0 0;
+            transition: all 0.3s;
+        }
+
+        @media (min-width: 768px) {
+            .volume-bar {
+                width: 4px;
+            }
+        }
+
+        .volume-bar.bid {
+            background: linear-gradient(to top, #e74c3c, #ff6b6b);
+        }
+
+        .volume-bar.ask {
+            background: linear-gradient(to top, #27ae60, #2ecc71);
         }
 
         .volume-text {
-            position: relative;
-            z-index: 2;
+            font-weight: 500;
+            min-width: 50px;
         }
 
-        .vol-bars-container {
-            position: absolute;
-            top: 4px;
-            bottom: 4px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 1px;
-        }
-
-        .bid-bars {
-            right: 0;
-            left: 0;
-        }
-
-        .ask-bars {
-            left: 0;
-            right: 0;
-        }
-
-        .vol-bar {
-            height: 5px;
-            border-radius: 2px;
-            min-width: 2px;
-        }
-
-        .bid-bar {
-            margin-left: auto;  /* 從右邊開始 */
-        }
-
-        .ask-bar {
-            margin-right: auto;  /* 從左邊開始 */
+        @media (min-width: 768px) {
+            .volume-text {
+                min-width: 60px;
+            }
         }
 
         .loading {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px 50px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-            display: none;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-text {
             text-align: center;
+            padding: 40px;
             color: #667eea;
-            font-weight: 600;
             font-size: 1.1em;
         }
 
-        @media (max-width: 767px) {
-            table {
-                font-size: 0.85em;
-            }
-            
-            th, td {
-                padding: 10px 4px;
-            }
-            
-            .stock-name {
-                max-width: 95px;
-                line-height: 1.2;
-                word-wrap: break-word;
+        @media (min-width: 768px) {
+            .loading {
+                padding: 60px;
+                font-size: 1.3em;
             }
         }
 
-        .message-box {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
-            z-index: 1000;
-            font-weight: 500;
-            animation: slideIn 0.3s ease-out;
+        .mobile-only {
+            display: block;
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
+        .desktop-only {
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-only {
+                display: none;
             }
-            to {
-                transform: translateX(0);
-                opacity: 1;
+
+            .desktop-only {
+                display: block;
             }
         }
 
-        @media (max-width: 767px) {
-            .message-box {
-                top: 10px;
-                right: 10px;
-                left: 10px;
-                padding: 12px 16px;
-                font-size: 0.9em;
-            }
-        }
-
-        /* iframe 容器響應式樣式 */
         .iframe-container {
             background: white;
             border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(31, 38, 135, 0.06);
             overflow: hidden;
-            position: relative;
-            width: 100%;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);
+            margin-bottom: 20px;
+            display: none;
+            height: calc(100vh - 280px);
+            min-height: 500px;
+        }
+
+        @media (min-width: 768px) {
+            .iframe-container {
+                border-radius: 20px;
+                height: calc(100vh - 320px);
+                min-height: 600px;
+            }
+        }
+
+        .iframe-container.active {
+            display: block;
         }
 
         .iframe-container iframe {
-            display: block;
             width: 100%;
-            height: calc(100vh - 280px);
-            min-height: 500px;
+            height: 100%;
             border: none;
-            border-radius: 16px;
-        }
-
-        @media (max-width: 767px) {
-            /* 手機版關鍵修復：固定外層，讓滾動只發生在 iframe 內部 */
-            html, body {
-                overflow-x: hidden !important;
-                overscroll-behavior-x: none;
-            }
-            
-            .iframe-container {
-                border-radius: 12px;
-                margin: 0;
-                width: 100%;
-                overflow: hidden;
-                /* 使用 clip 確保內容不會溢出 */
-                overflow: clip;
-            }
-
-            .iframe-container iframe {
-                border-radius: 12px;
-                height: calc(100vh - 300px);
-                min-height: 450px;
-                width: 100%;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="version">v2.2A</div>
-            <h1>台股機構投資人買賣分析</h1>
-            <div class="subtitle">即時追蹤三大法人買賣超數據</div>
-            
-            <!-- 市場選擇（上市/上櫃）-->
+            <div class="version">v2.3.0</div>
+            <h1>台股每日三大法人買賣超 > 今日大戶 > 買賣超趨勢統計</h1>
+            <div class="subtitle">即時掌握機構投資人動向</div>
+
+            <!-- 市場選擇按鈕（上市/上櫃/概念股） -->
             <div class="market-selector">
                 <button class="market-btn active" id="btnTSE" onclick="switchMarket('TSE')">上市</button>
                 <button class="market-btn" id="btnOTC" onclick="switchMarket('OTC')">上櫃</button>
-                <button class="market-btn" id="btnConcept" onclick="showConceptStocks()">概念股</button>
+                <button class="market-btn" id="btnConcept" onclick="switchMarket('CONCEPT')">概念股</button>
             </div>
-            
-            <div class="info-bar" style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; font-size: 0.9em;">
-                <div class="info-item" style="display: flex; align-items: center; gap: 4px;">
-                    <span class="info-icon">🕐</span>
-                    <span class="info-text" id="updateTime">--:--:--</span>
-                </div>
-                <div class="info-divider" style="width: 1px; height: 16px; background: #ddd;"></div>
-                <div class="info-item" style="display: flex; align-items: center; gap: 4px;">
-                    <span class="info-label">買超</span>
-                    <span class="info-value" style="color: #e74c3c; font-weight: 600;" id="buyCount">0</span>
-                </div>
-                <div class="info-divider" style="width: 1px; height: 16px; background: #ddd;"></div>
-                <div class="info-item" style="display: flex; align-items: center; gap: 4px;">
-                    <span class="info-label">賣超</span>
-                    <span class="info-value" style="color: #27ae60; font-weight: 600;" id="sellCount">0</span>
-                </div>
+
+            <!-- 分類選擇按鈕 -->
+            <div class="category-tabs" id="categoryTabs">
+                <button class="category-tab active" id="tabLatest" onclick="switchCategory('latest')">最新盤後</button>
+                <button class="category-tab" id="tabFiveDay" onclick="switchCategory('fiveday')">連續5日</button>
+                <button class="category-tab" id="tabSixtyDay" onclick="switchCategory('sixtyDay')">近60筆</button>
             </div>
-            
-            <!-- 中間三個分類 -->
-            <div class="category-tabs">
-                <button class="category-tab active" id="tabLatest" onclick="switchCategory('latest')">
-                    最新買賣比
-                </button>
-                <button class="category-tab" id="tabFiveDay" onclick="switchCategory('fiveday')">
-                    過去五日買賣超
-                </button>
-                <button class="category-tab" id="tabSixtyDay" onclick="switchCategory('sixtyDay')">
-                    歷史60天買賣
-                </button>
+
+            <!-- 概念股按鈕（只在概念股市場顯示） -->
+            <div class="concept-buttons" id="conceptButtons">
+                <button class="concept-btn active" id="btnConceptInfo" onclick="switchConceptView('info')">概念股說明</button>
+                <button class="concept-btn" id="btnConceptChart" onclick="switchConceptView('chart')">最新行情</button>
             </div>
         </div>
 
-        <div class="controls" id="controls">
-            <div class="sort-group">
-                <span class="sort-label">排序依據：</span>
-                <select class="sort-select" id="sortField">
-                    <option value="default">預設排序</option>
-                    <option value="change_value">漲跌</option>
-                    <option value="change">漲跌幅</option>
-                    <option value="buy_volume">買進(張)</option>
-                    <option value="sell_volume">賣出(張)</option>
-                    <option value="ratio">買賣比</option>
+        <!-- 統計資訊 -->
+        <div class="stats" id="statsSection">
+            <div class="stat-box">
+                <div class="stat-label">⏰ 更新時間</div>
+                <div class="stat-value" id="updateTime">--:--:--</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">📈 買超 <span id="buyCount">0</span></div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">📉 賣超 <span id="sellCount">0</span></div>
+            </div>
+        </div>
+
+        <!-- 控制區域 -->
+        <div class="controls" id="controlsSection">
+            <div class="control-group">
+                <label for="sortField" style="font-size: 0.9em; color: #495057; font-weight: 500;">排序：</label>
+                <select id="sortField">
+                    <option value="default">買超張數</option>
+                    <option value="buy_sell_ratio">買賣超比</option>
+                    <option value="change_percent">漲跌幅</option>
+                    <option value="close_price">收盤價</option>
                 </select>
             </div>
-            <button class="sort-toggle" onclick="toggleSort()">
+            <button class="sort-btn" id="sortToggle" onclick="toggleSort()">
                 <span id="sortIcon">↓</span>
                 <span id="sortText">高到低</span>
             </button>
         </div>
 
+        <!-- 表格容器 -->
         <div class="table-container" id="tableContainer">
-            <table id="dataTable">
+            <div class="loading" id="loading">載入資料中...</div>
+            <table id="dataTable" style="display: none;">
                 <thead>
                     <tr>
-                        <th class="col-rank">排名</th>
-                        <th class="col-stock">股票</th>
-                        <th style="width: 48px;">昨收</th>
-                        <th style="width: 95px;">買進(張)</th>
-                        <th style="width: 48px;">成交價</th>
-                        <th style="width: 95px;">賣出(張)</th>
-                        <th style="width: 43px;">漲跌</th>
-                        <th style="width: 51px;">漲跌幅</th>
-                        <th style="width: 60px;">買賣比</th>
+                        <th>排名</th>
+                        <th>股票</th>
+                        <th>買價</th>
+                        <th>買量</th>
+                        <th>賣價</th>
+                        <th>賣量</th>
+                        <th>漲跌</th>
+                        <th>%</th>
+                        <th>比</th>
                     </tr>
                 </thead>
-                <tbody id="tableBody">
-                    <tr>
-                        <td colspan="9" style="padding: 60px 20px; color: #95a5a6; font-size: 1.1em;">
-                            載入資料中...
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody id="tableBody"></tbody>
             </table>
         </div>
 
-        <!-- iframe 容器用於顯示外部頁面 -->
-        <div class="iframe-container" id="iframeContainer" style="display: none;">
-            <iframe id="externalFrame" scrolling="auto"></iframe>
+        <!-- iframe 容器 -->
+        <div class="iframe-container" id="iframeContainer">
+            <iframe id="externalFrame" src=""></iframe>
+        </div>
+
+        <!-- 概念股說明容器 -->
+        <div class="iframe-container" id="conceptInfoContainer">
+            <div style="padding: 40px; text-align: center; color: #495057;">
+                <h2 style="margin-bottom: 20px; color: #2c3e50;">📊 概念股說明</h2>
+                <p style="line-height: 1.8; font-size: 1.1em;">
+                    概念股功能彙整了所有具有特定概念股領域標籤的股票<br>
+                    包含上市與上櫃市場的熱門主題股票<br><br>
+                    點擊「最新行情」查看所有概念股的技術分析圖表
+                </p>
+            </div>
         </div>
     </div>
 
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <div class="loading-text">資料載入中...</div>
-    </div>
-
     <script>
-        // ========== 環境設定 ==========
-        const DATA_PATH = './StockInfo/';
-        
+        let tseData = null;
+        let otcData = null;
         let currentMarket = localStorage.getItem('currentMarket') || 'TSE';
         let currentCategory = localStorage.getItem('currentCategory') || 'latest';
+        let currentConceptView = 'info'; // 概念股的子視圖：'info' 或 'chart'
         let currentStocks = [];
         let currentSortField = 'default';
         let currentSortOrder = 'desc';
-        let tseData = null;
-        let otcData = null;
 
-        function toggleSort() {
-            currentSortOrder = currentSortOrder === 'desc' ? 'asc' : 'desc';
-            document.getElementById('sortIcon').textContent = currentSortOrder === 'desc' ? '↓' : '↑';
-            document.getElementById('sortText').textContent = currentSortOrder === 'desc' ? '高到低' : '低到高';
-            applySorting();
-        }
-
-        function applySorting() {
-            if (!currentStocks || currentStocks.length === 0) return;
-            
-            let sortedStocks = [...currentStocks];
-            
-            if (currentSortField === 'default') {
-                updateTable(sortedStocks);
-                return;
-            }
-
-            sortedStocks.sort((a, b) => {
-                let aVal, bVal;
-                
-                switch (currentSortField) {
-                    case 'code':
-                        aVal = a.code || '';
-                        bVal = b.code || '';
-                        return currentSortOrder === 'desc' ? 
-                            bVal.localeCompare(aVal) : aVal.localeCompare(bVal);
-                    
-                    case 'name':
-                        aVal = a.name || '';
-                        bVal = b.name || '';
-                        return currentSortOrder === 'desc' ? 
-                            bVal.localeCompare(aVal, 'zh-TW') : aVal.localeCompare(bVal, 'zh-TW');
-                    
-                    case 'price':
-                        aVal = parseFloat(a.current_price) || 0;
-                        bVal = parseFloat(b.current_price) || 0;
-                        break;
-                    
-                    case 'change_value':
-                        aVal = parseFloat(a.change) || 0;
-                        bVal = parseFloat(b.change) || 0;
-                        break;
-                    
-                    case 'change':
-                        aVal = parseFloat(a.change_percent) || 0;
-                        bVal = parseFloat(b.change_percent) || 0;
-                        break;
-                    
-                    case 'buy_volume':
-                        aVal = parseInt(a.buy_volume) || 0;
-                        bVal = parseInt(b.buy_volume) || 0;
-                        break;
-                    
-                    case 'sell_volume':
-                        aVal = parseInt(a.sell_volume) || 0;
-                        bVal = parseInt(b.sell_volume) || 0;
-                        break;
-                    
-                    case 'ratio':
-                        const buyA = parseInt(a.buy_volume) || 0;
-                        const sellA = parseInt(a.sell_volume) || 1;
-                        const buyB = parseInt(b.buy_volume) || 0;
-                        const sellB = parseInt(b.sell_volume) || 1;
-                        aVal = buyA / sellA;
-                        bVal = buyB / sellB;
-                        break;
-                    
-                    default:
-                        return 0;
-                }
-                
-                return currentSortOrder === 'desc' ? bVal - aVal : aVal - bVal;
-            });
-            
-            updateTable(sortedStocks);
-        }
-
-        function showMessage(text, type = 'info') {
-            const messageBox = document.createElement('div');
-            messageBox.className = 'message-box';
-            messageBox.textContent = text;
-            document.body.appendChild(messageBox);
-            
-            setTimeout(() => {
-                messageBox.innerHTML = '';
-            }, 4000);
-        }
-
-        function formatNumber(num) {
-            if (num === '無資料' || num === '-' || !num) return '-';
-            const n = parseInt(num);
-            if (isNaN(n)) return num;
-            return n.toLocaleString();
-        }
-
-        function getPriceClass(change) {
-            if (!change || change === '-' || change === '無資料') return 'price-neutral';
-            if (change.includes('+') || parseFloat(change) > 0) return 'price-up';
-            if (change.includes('-') || parseFloat(change) < 0) return 'price-down';
-            return 'price-neutral';
-        }
-
-        // 生成五檔分布長條圖
-        function generateVolumeBars(volumes, type) {
-            if (!volumes || !Array.isArray(volumes) || volumes.length === 0) {
-                return '';
-            }
-            
-            // 轉換為數字並找最大值
-            const nums = volumes.map(v => parseInt(v) || 0);
-            const maxVol = Math.max(...nums);
-            
-            if (maxVol === 0) return '';
-            
-            // 生成5個長條
-            const bars = nums.map((vol, i) => {
-                const percent = (vol / maxVol) * 100;
-                const color = type === 'bid' ? 'rgba(231, 76, 60, 0.3)' : 'rgba(39, 174, 96, 0.3)';
-                
-                if (type === 'bid') {
-                    // 委買：長條從右往左延伸
-                    return `<div class="vol-bar bid-bar" style="width: ${percent}%; background: ${color};"></div>`;
-                } else {
-                    // 委賣：長條從左往右延伸
-                    return `<div class="vol-bar ask-bar" style="width: ${percent}%; background: ${color};"></div>`;
-                }
-            }).join('');
-            
-            return `<div class="vol-bars-container ${type}-bars">${bars}</div>`;
-        }
+        const DATA_PATH = 'StockInfo/';
 
         function switchMarket(market) {
             currentMarket = market;
             localStorage.setItem('currentMarket', market);
-            
+
             document.getElementById('btnTSE').classList.remove('active');
             document.getElementById('btnOTC').classList.remove('active');
             document.getElementById('btnConcept').classList.remove('active');
-            
-            // 恢復分類按鈕顯示
-            document.querySelector('.category-tabs').style.display = 'flex';
-            
+
             if (market === 'TSE') {
                 document.getElementById('btnTSE').classList.add('active');
-            } else {
+                document.getElementById('conceptButtons').classList.remove('active');
+                document.getElementById('categoryTabs').classList.remove('hidden');
+                loadMarketData();
+            } else if (market === 'OTC') {
                 document.getElementById('btnOTC').classList.add('active');
+                document.getElementById('conceptButtons').classList.remove('active');
+                document.getElementById('categoryTabs').classList.remove('hidden');
+                loadMarketData();
+            } else if (market === 'CONCEPT') {
+                document.getElementById('btnConcept').classList.add('active');
+                document.getElementById('conceptButtons').classList.add('active');
+                document.getElementById('categoryTabs').classList.add('hidden');
+                
+                // 隱藏統計資訊和控制區域
+                document.getElementById('statsSection').style.display = 'none';
+                document.getElementById('controlsSection').style.display = 'none';
+                
+                // 切換到概念股視圖
+                switchConceptView(currentConceptView);
             }
+        }
+
+        function switchConceptView(view) {
+            currentConceptView = view;
             
-            // 根據當前的分類決定要載入什麼
+            document.getElementById('btnConceptInfo').classList.remove('active');
+            document.getElementById('btnConceptChart').classList.remove('active');
+            
+            if (view === 'info') {
+                document.getElementById('btnConceptInfo').classList.add('active');
+                document.getElementById('tableContainer').style.display = 'none';
+                document.getElementById('iframeContainer').classList.remove('active');
+                document.getElementById('conceptInfoContainer').classList.add('active');
+            } else if (view === 'chart') {
+                document.getElementById('btnConceptChart').classList.add('active');
+                document.getElementById('tableContainer').style.display = 'none';
+                document.getElementById('conceptInfoContainer').classList.remove('active');
+                document.getElementById('iframeContainer').classList.add('active');
+                
+                // 載入 Concept_ALL.html
+                const iframe = document.getElementById('externalFrame');
+                iframe.src = DATA_PATH + 'Concept_ALL.html?t=' + Date.now();
+            }
+        }
+
+        function loadMarketData() {
+            // 顯示統計資訊和控制區域
+            document.getElementById('statsSection').style.display = 'grid';
+            document.getElementById('controlsSection').style.display = 'flex';
+            document.getElementById('conceptInfoContainer').classList.remove('active');
+            document.getElementById('categoryTabs').classList.remove('hidden');
+            
+            const currentData = currentMarket === 'TSE' ? tseData : otcData;
+
+            if (!currentData) {
+                console.log('⚠️ 資料尚未載入');
+                return;
+            }
+
             if (currentCategory === 'latest') {
                 showTableView();
-                const data = market === 'TSE' ? tseData : otcData;
-                if (data) {
-                    updateDisplay(data);
-                }
+                updateDisplay(currentData);
             } else if (currentCategory === 'fiveday') {
-                loadExternalPage(market === 'TSE' ? 'tse_analysis_result_complete.html' : 'otc_analysis_result_complete.html');
-            } else if (currentCategory === 'sixtyDay') {
-                loadExternalPage(market === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
-            }
-        }
-
-        function showConceptStocks() {
-            // 移除所有市場按鈕的 active 狀態
-            document.getElementById('btnTSE').classList.remove('active');
-            document.getElementById('btnOTC').classList.remove('active');
-            document.getElementById('btnConcept').classList.add('active');
-            
-            // 隱藏分類按鈕（因為概念股不需要分類）
-            document.querySelector('.category-tabs').style.display = 'none';
-            
-            // 顯示 iframe 視圖
-            showIframeView();
-            
-            // 載入概念股頁面（DATA_PATH 已經包含 StockInfo/）
-            loadExternalPage('concept_stocks.html');
-        }
-
-        function switchCategory(category) {
-            currentCategory = category;
-            localStorage.setItem('currentCategory', category);
-            
-            document.getElementById('tabLatest').classList.remove('active');
-            document.getElementById('tabFiveDay').classList.remove('active');
-            document.getElementById('tabSixtyDay').classList.remove('active');
-            
-            if (category === 'latest') {
-                document.getElementById('tabLatest').classList.add('active');
-                showTableView();
-                loadCategoryData();
-            } else if (category === 'fiveday') {
-                document.getElementById('tabFiveDay').classList.add('active');
                 showIframeView();
                 loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_result_complete.html' : 'otc_analysis_result_complete.html');
-            } else if (category === 'sixtyDay') {
-                document.getElementById('tabSixtyDay').classList.add('active');
+            } else if (currentCategory === 'sixtyDay') {
                 showIframeView();
                 loadExternalPage(currentMarket === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
             }
         }
 
+        function switchCategory(category) {
+            currentCategory = category;
+            localStorage.setItem('currentCategory', category);
+
+            document.getElementById('tabLatest').classList.remove('active');
+            document.getElementById('tabFiveDay').classList.remove('active');
+            document.getElementById('tabSixtyDay').classList.remove('active');
+
+            if (category === 'latest') {
+                document.getElementById('tabLatest').classList.add('active');
+                showTableView();
+                if (currentMarket === 'CONCEPT') {
+                    switchConceptView('info');
+                } else {
+                    const currentData = currentMarket === 'TSE' ? tseData : otcData;
+                    if (currentData) updateDisplay(currentData);
+                }
+            } else if (category === 'fiveday') {
+                document.getElementById('tabFiveDay').classList.add('active');
+                showIframeView();
+                if (currentMarket === 'CONCEPT') {
+                    // 概念股沒有5日數據，顯示說明
+                    switchConceptView('info');
+                } else {
+                    loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_result_complete.html' : 'otc_analysis_result_complete.html');
+                }
+            } else if (category === 'sixtyDay') {
+                document.getElementById('tabSixtyDay').classList.add('active');
+                showIframeView();
+                if (currentMarket === 'CONCEPT') {
+                    switchConceptView('chart');
+                } else {
+                    loadExternalPage(currentMarket === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
+                }
+            }
+        }
+
         function showTableView() {
-            document.getElementById('controls').style.display = 'flex';
             document.getElementById('tableContainer').style.display = 'block';
-            document.getElementById('iframeContainer').style.display = 'none';
-            // 恢復頁面滾動
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
+            document.getElementById('iframeContainer').classList.remove('active');
+            document.getElementById('conceptInfoContainer').classList.remove('active');
+            document.getElementById('statsSection').style.display = 'grid';
+            document.getElementById('controlsSection').style.display = 'flex';
         }
 
         function showIframeView() {
-            document.getElementById('controls').style.display = 'none';
             document.getElementById('tableContainer').style.display = 'none';
-            document.getElementById('iframeContainer').style.display = 'block';
-            // 手機版時禁止頁面水平滾動
-            if (window.innerWidth < 768) {
-                document.body.style.overflowX = 'hidden';
-                document.documentElement.style.overflowX = 'hidden';
+            document.getElementById('conceptInfoContainer').classList.remove('active');
+            
+            if (currentMarket === 'CONCEPT') {
+                document.getElementById('statsSection').style.display = 'none';
+                document.getElementById('controlsSection').style.display = 'none';
+            } else {
+                document.getElementById('statsSection').style.display = 'grid';
+                document.getElementById('controlsSection').style.display = 'none';
             }
         }
 
         function loadExternalPage(filename) {
             const iframe = document.getElementById('externalFrame');
-            iframe.src = DATA_PATH + filename;
-            
-            // iframe 載入完成後嘗試調整
-            iframe.onload = function() {
-                try {
-                    // 嘗試注入 CSS（僅同源時有效）
-                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                    const style = iframeDoc.createElement('style');
-                    style.textContent = `
-                        html, body { 
-                            overflow-x: hidden !important; 
-                            max-width: 100vw !important;
-                        }
-                    `;
-                    iframeDoc.head.appendChild(style);
-                } catch(e) {
-                    // 跨域時會失敗，忽略錯誤
-                    console.log('Cannot inject CSS into iframe (cross-origin)');
-                }
-            };
+            iframe.src = DATA_PATH + filename + '?t=' + Date.now();
+            document.getElementById('iframeContainer').classList.add('active');
         }
 
-        function loadCategoryData() {
-            // 這裡可以根據不同的 category 載入不同的 JSON 檔案
-            // 目前先使用同一份資料
-            const data = currentMarket === 'TSE' ? tseData : otcData;
-            if (data) {
-                updateDisplay(data);
+        function toggleSort() {
+            currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+            
+            const sortIcon = document.getElementById('sortIcon');
+            const sortText = document.getElementById('sortText');
+            
+            if (currentSortOrder === 'asc') {
+                sortIcon.textContent = '↑';
+                sortText.textContent = '低到高';
+            } else {
+                sortIcon.textContent = '↓';
+                sortText.textContent = '高到低';
             }
+            
+            applySorting();
+        }
+
+        function applySorting() {
+            let sortedStocks = [...currentStocks];
+            
+            sortedStocks.sort((a, b) => {
+                let aVal, bVal;
+                
+                switch(currentSortField) {
+                    case 'default':
+                        aVal = parseInt(a.buy_volume) || 0;
+                        bVal = parseInt(b.buy_volume) || 0;
+                        break;
+                    case 'buy_sell_ratio':
+                        const aRatio = (parseInt(a.sell_volume) || 0) > 0 ? 
+                            (parseInt(a.buy_volume) || 0) / (parseInt(a.sell_volume) || 1) : 
+                            (parseInt(a.buy_volume) || 0) > 0 ? 999 : 0;
+                        const bRatio = (parseInt(b.sell_volume) || 0) > 0 ? 
+                            (parseInt(b.buy_volume) || 0) / (parseInt(b.sell_volume) || 1) : 
+                            (parseInt(b.buy_volume) || 0) > 0 ? 999 : 0;
+                        aVal = aRatio;
+                        bVal = bRatio;
+                        break;
+                    case 'change_percent':
+                        aVal = parseFloat(a.change_percent?.replace('%', '')) || 0;
+                        bVal = parseFloat(b.change_percent?.replace('%', '')) || 0;
+                        break;
+                    case 'close_price':
+                        aVal = parseFloat(a.close_price) || 0;
+                        bVal = parseFloat(b.close_price) || 0;
+                        break;
+                }
+                
+                return currentSortOrder === 'asc' ? aVal - bVal : bVal - aVal;
+            });
+            
+            updateTable(sortedStocks);
+        }
+
+        function formatNumber(num) {
+            if (!num) return '0';
+            const number = parseInt(num);
+            if (number >= 1000) {
+                return (number / 1000).toFixed(1) + 'K';
+            }
+            return number.toString();
+        }
+
+        function getPriceClass(value) {
+            if (!value) return 'price-neutral';
+            const numValue = parseFloat(value.toString().replace('%', ''));
+            if (numValue > 0) return 'price-up';
+            if (numValue < 0) return 'price-down';
+            return 'price-neutral';
+        }
+
+        function generateVolumeBars(volumes, type) {
+            if (!volumes || volumes.length === 0) return '';
+            
+            const maxVol = Math.max(...volumes.map(v => parseInt(v) || 0));
+            if (maxVol === 0) return '';
+            
+            return '<div class="volume-bars">' +
+                volumes.map(vol => {
+                    const height = ((parseInt(vol) || 0) / maxVol) * 100;
+                    return `<div class="volume-bar ${type}" style="height: ${height}%"></div>`;
+                }).join('') +
+                '</div>';
         }
 
         function updateDisplay(data) {
+            if (!data) return;
+
             currentStocks = data.stocks || [];
             
             const buyStocks = currentStocks.filter(stock => {
@@ -1294,47 +1146,52 @@
                 }
                 
                 // 恢復上次的市場和分類選擇
-                const currentData = currentMarket === 'TSE' ? tseData : otcData;
-                
-                if (!currentData) {
-                    if (currentMarket === 'TSE' && otcData) {
-                        switchMarket('OTC');
-                    } else if (currentMarket === 'OTC' && tseData) {
-                        switchMarket('TSE');
-                    } else {
-                        throw new Error('無法載入市場資料');
-                    }
+                if (currentMarket === 'CONCEPT') {
+                    switchMarket('CONCEPT');
                 } else {
-                    // 恢復按鈕狀態
-                    document.getElementById('btnTSE').classList.remove('active');
-                    document.getElementById('btnOTC').classList.remove('active');
+                    const currentData = currentMarket === 'TSE' ? tseData : otcData;
                     
-                    if (currentMarket === 'TSE') {
-                        document.getElementById('btnTSE').classList.add('active');
+                    if (!currentData) {
+                        if (currentMarket === 'TSE' && otcData) {
+                            switchMarket('OTC');
+                        } else if (currentMarket === 'OTC' && tseData) {
+                            switchMarket('TSE');
+                        } else {
+                            throw new Error('無法載入市場資料');
+                        }
                     } else {
-                        document.getElementById('btnOTC').classList.add('active');
+                        // 恢復按鈕狀態
+                        document.getElementById('btnTSE').classList.remove('active');
+                        document.getElementById('btnOTC').classList.remove('active');
+                        document.getElementById('btnConcept').classList.remove('active');
+                        
+                        if (currentMarket === 'TSE') {
+                            document.getElementById('btnTSE').classList.add('active');
+                        } else {
+                            document.getElementById('btnOTC').classList.add('active');
+                        }
+                        
+                        // 恢復分類按鈕狀態
+                        document.getElementById('tabLatest').classList.remove('active');
+                        document.getElementById('tabFiveDay').classList.remove('active');
+                        document.getElementById('tabSixtyDay').classList.remove('active');
+                        
+                        if (currentCategory === 'latest') {
+                            document.getElementById('tabLatest').classList.add('active');
+                            showTableView();
+                            updateDisplay(currentData);
+                        } else if (currentCategory === 'fiveday') {
+                            document.getElementById('tabFiveDay').classList.add('active');
+                            showIframeView();
+                            loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_result_complete.html' : 'otc_analysis_result_complete.html');
+                        } else if (currentCategory === 'sixtyDay') {
+                            document.getElementById('tabSixtyDay').classList.add('active');
+                            showIframeView();
+                            loadExternalPage(currentMarket === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
+                        }
+                        
+                        document.getElementById('dataTable').style.display = 'table';
                     }
-                    
-                    // 恢復分類按鈕狀態
-                    document.getElementById('tabLatest').classList.remove('active');
-                    document.getElementById('tabFiveDay').classList.remove('active');
-                    document.getElementById('tabSixtyDay').classList.remove('active');
-                    
-                    if (currentCategory === 'latest') {
-                        document.getElementById('tabLatest').classList.add('active');
-                        showTableView();
-                        updateDisplay(currentData);
-                    } else if (currentCategory === 'fiveday') {
-                        document.getElementById('tabFiveDay').classList.add('active');
-                        showIframeView();
-                        loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_result_complete.html' : 'otc_analysis_result_complete.html');
-                    } else if (currentCategory === 'sixtyDay') {
-                        document.getElementById('tabSixtyDay').classList.add('active');
-                        showIframeView();
-                        loadExternalPage(currentMarket === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
-                    }
-                    
-                    document.getElementById('dataTable').style.display = 'table';
                 }
                 
             } catch (error) {
