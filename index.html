@@ -804,10 +804,11 @@
             <h1>台股機構投資人買賣分析</h1>
             <div class="subtitle">即時追蹤三大法人買賣超數據</div>
             
-            <!-- 市場選擇（上市/上櫃）-->
+            <!-- 市場選擇（上市/上櫃/概念股）-->
             <div class="market-selector">
                 <button class="market-btn active" id="btnTSE" onclick="switchMarket('TSE')">上市</button>
                 <button class="market-btn" id="btnOTC" onclick="switchMarket('OTC')">上櫃</button>
+                <button class="market-btn" id="btnConcept" onclick="switchMarket('CONCEPT')">概念股</button>
             </div>
             
             <div class="info-bar" style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; font-size: 0.9em;">
@@ -827,8 +828,8 @@
                 </div>
             </div>
             
-            <!-- 中間三個分類 -->
-            <div class="category-tabs">
+            <!-- 上市/上櫃的分類按鈕 -->
+            <div class="category-tabs" id="stockCategoryTabs">
                 <button class="category-tab active" id="tabLatest" onclick="switchCategory('latest')">
                     最新買賣比
                 </button>
@@ -837,6 +838,16 @@
                 </button>
                 <button class="category-tab" id="tabSixtyDay" onclick="switchCategory('sixtyDay')">
                     歷史60天買賣
+                </button>
+            </div>
+
+            <!-- 概念股的分類按鈕 -->
+            <div class="category-tabs" id="conceptCategoryTabs" style="display: none;">
+                <button class="category-tab active" id="tabConceptDesc" onclick="switchCategory('conceptDesc')">
+                    概念股說明
+                </button>
+                <button class="category-tab" id="tabConceptQuote" onclick="switchCategory('conceptQuote')">
+                    概念股行情
                 </button>
             </div>
         </div>
@@ -1044,23 +1055,29 @@
             
             document.getElementById('btnTSE').classList.remove('active');
             document.getElementById('btnOTC').classList.remove('active');
+            document.getElementById('btnConcept').classList.remove('active');
             
             if (market === 'TSE') {
                 document.getElementById('btnTSE').classList.add('active');
-            } else {
+                // 顯示股票分類按鈕，隱藏概念股按鈕
+                document.getElementById('stockCategoryTabs').style.display = 'flex';
+                document.getElementById('conceptCategoryTabs').style.display = 'none';
+                // 直接跳到預設頁面：最新買賣比
+                switchCategory('latest');
+            } else if (market === 'OTC') {
                 document.getElementById('btnOTC').classList.add('active');
-            }
-            
-            // 根據當前的分類決定要載入什麼
-            if (currentCategory === 'latest') {
-                const data = market === 'TSE' ? tseData : otcData;
-                if (data) {
-                    updateDisplay(data);
-                }
-            } else if (currentCategory === 'fiveday') {
-                loadExternalPage(market === 'TSE' ? 'tse_analysis_result_complete.html' : 'otc_analysis_result_complete.html');
-            } else if (currentCategory === 'sixtyDay') {
-                loadExternalPage(market === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
+                // 顯示股票分類按鈕，隱藏概念股按鈕
+                document.getElementById('stockCategoryTabs').style.display = 'flex';
+                document.getElementById('conceptCategoryTabs').style.display = 'none';
+                // 直接跳到預設頁面：最新買賣比
+                switchCategory('latest');
+            } else if (market === 'CONCEPT') {
+                document.getElementById('btnConcept').classList.add('active');
+                // 隱藏股票分類按鈕，顯示概念股按鈕
+                document.getElementById('stockCategoryTabs').style.display = 'none';
+                document.getElementById('conceptCategoryTabs').style.display = 'flex';
+                // 直接跳到預設頁面：概念股說明
+                switchCategory('conceptDesc');
             }
         }
 
@@ -1068,9 +1085,12 @@
             currentCategory = category;
             localStorage.setItem('currentCategory', category);
             
+            // 清除所有按鈕的 active 狀態
             document.getElementById('tabLatest').classList.remove('active');
             document.getElementById('tabFiveDay').classList.remove('active');
             document.getElementById('tabSixtyDay').classList.remove('active');
+            document.getElementById('tabConceptDesc').classList.remove('active');
+            document.getElementById('tabConceptQuote').classList.remove('active');
             
             if (category === 'latest') {
                 document.getElementById('tabLatest').classList.add('active');
@@ -1084,6 +1104,14 @@
                 document.getElementById('tabSixtyDay').classList.add('active');
                 showIframeView();
                 loadExternalPage(currentMarket === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
+            } else if (category === 'conceptDesc') {
+                document.getElementById('tabConceptDesc').classList.add('active');
+                showIframeView();
+                loadExternalPage('Concept_Description.html');
+            } else if (category === 'conceptQuote') {
+                document.getElementById('tabConceptQuote').classList.add('active');
+                showIframeView();
+                loadExternalPage('Concept_ALL.html');
             }
         }
 
@@ -1283,20 +1311,31 @@
                         throw new Error('無法載入市場資料');
                     }
                 } else {
-                    // 恢復按鈕狀態
+                    // 恢復市場按鈕狀態
                     document.getElementById('btnTSE').classList.remove('active');
                     document.getElementById('btnOTC').classList.remove('active');
+                    document.getElementById('btnConcept').classList.remove('active');
                     
                     if (currentMarket === 'TSE') {
                         document.getElementById('btnTSE').classList.add('active');
-                    } else {
+                        document.getElementById('stockCategoryTabs').style.display = 'flex';
+                        document.getElementById('conceptCategoryTabs').style.display = 'none';
+                    } else if (currentMarket === 'OTC') {
                         document.getElementById('btnOTC').classList.add('active');
+                        document.getElementById('stockCategoryTabs').style.display = 'flex';
+                        document.getElementById('conceptCategoryTabs').style.display = 'none';
+                    } else if (currentMarket === 'CONCEPT') {
+                        document.getElementById('btnConcept').classList.add('active');
+                        document.getElementById('stockCategoryTabs').style.display = 'none';
+                        document.getElementById('conceptCategoryTabs').style.display = 'flex';
                     }
                     
                     // 恢復分類按鈕狀態
                     document.getElementById('tabLatest').classList.remove('active');
                     document.getElementById('tabFiveDay').classList.remove('active');
                     document.getElementById('tabSixtyDay').classList.remove('active');
+                    document.getElementById('tabConceptDesc').classList.remove('active');
+                    document.getElementById('tabConceptQuote').classList.remove('active');
                     
                     if (currentCategory === 'latest') {
                         document.getElementById('tabLatest').classList.add('active');
@@ -1310,6 +1349,14 @@
                         document.getElementById('tabSixtyDay').classList.add('active');
                         showIframeView();
                         loadExternalPage(currentMarket === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
+                    } else if (currentCategory === 'conceptDesc') {
+                        document.getElementById('tabConceptDesc').classList.add('active');
+                        showIframeView();
+                        loadExternalPage('Concept_Description.html');
+                    } else if (currentCategory === 'conceptQuote') {
+                        document.getElementById('tabConceptQuote').classList.add('active');
+                        showIframeView();
+                        loadExternalPage('Concept_ALL.html');
                     }
                     
                     document.getElementById('dataTable').style.display = 'table';
