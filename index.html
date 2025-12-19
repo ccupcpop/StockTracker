@@ -811,20 +811,10 @@
                 <button class="market-btn" id="btnConcept" onclick="switchMarket('CONCEPT')">概念股</button>
             </div>
             
-            <div class="info-bar" style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; font-size: 0.9em;">
+            <div class="info-bar" style="display: flex; justify-content: center; align-items: center; margin-bottom: 12px; font-size: 0.9em;">
                 <div class="info-item" style="display: flex; align-items: center; gap: 4px;">
                     <span class="info-icon">🕐</span>
                     <span class="info-text" id="updateTime">--:--:--</span>
-                </div>
-                <div class="info-divider" style="width: 1px; height: 16px; background: #ddd;"></div>
-                <div class="info-item" style="display: flex; align-items: center; gap: 4px;">
-                    <span class="info-label">買超</span>
-                    <span class="info-value" style="color: #e74c3c; font-weight: 600;" id="buyCount">0</span>
-                </div>
-                <div class="info-divider" style="width: 1px; height: 16px; background: #ddd;"></div>
-                <div class="info-item" style="display: flex; align-items: center; gap: 4px;">
-                    <span class="info-label">賣超</span>
-                    <span class="info-value" style="color: #27ae60; font-weight: 600;" id="sellCount">0</span>
                 </div>
             </div>
             
@@ -1171,22 +1161,8 @@
         function updateDisplay(data) {
             currentStocks = data.stocks || [];
             
-            const buyStocks = currentStocks.filter(stock => {
-                const buyVol = parseInt(stock.buy_volume) || 0;
-                const sellVol = parseInt(stock.sell_volume) || 0;
-                return buyVol > sellVol;
-            }).length;
-            
-            const sellStocks = currentStocks.filter(stock => {
-                const buyVol = parseInt(stock.buy_volume) || 0;
-                const sellVol = parseInt(stock.sell_volume) || 0;
-                return sellVol > buyVol;
-            }).length;
-            
             document.getElementById('updateTime').textContent = 
                 data.update_time ? (data.update_time.includes(' ') ? data.update_time.split(' ')[1] : data.update_time) : '--:--:--';
-            document.getElementById('buyCount').textContent = buyStocks;
-            document.getElementById('sellCount').textContent = sellStocks;
 
             currentSortField = 'default';
             currentSortOrder = 'desc';
