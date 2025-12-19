@@ -692,7 +692,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="version">v2.5.0</div>
+            <div class="version">v2.3.0</div>
             <h1>台股每日三大法人買賣超 > 今日大戶 > 買賣超趨勢統計</h1>
             <div class="subtitle">
                 即時掌握機構投資人動向 
@@ -801,11 +801,27 @@
                 document.getElementById('btnTSE').classList.add('active');
                 document.getElementById('conceptButtons').classList.remove('active');
                 document.getElementById('categoryTabs').classList.remove('hidden');
+                
+                // 重置到「最新盤後」
+                currentCategory = 'latest';
+                localStorage.setItem('currentCategory', 'latest');
+                document.getElementById('tabLatest').classList.add('active');
+                document.getElementById('tabFiveDay').classList.remove('active');
+                document.getElementById('tabSixtyDay').classList.remove('active');
+                
                 loadMarketData();
             } else if (market === 'OTC') {
                 document.getElementById('btnOTC').classList.add('active');
                 document.getElementById('conceptButtons').classList.remove('active');
                 document.getElementById('categoryTabs').classList.remove('hidden');
+                
+                // 重置到「最新盤後」
+                currentCategory = 'latest';
+                localStorage.setItem('currentCategory', 'latest');
+                document.getElementById('tabLatest').classList.add('active');
+                document.getElementById('tabFiveDay').classList.remove('active');
+                document.getElementById('tabSixtyDay').classList.remove('active');
+                
                 loadMarketData();
             } else if (market === 'CONCEPT') {
                 console.log('進入概念股模式');
@@ -837,24 +853,17 @@
             document.getElementById('btnConceptInfo').classList.remove('active');
             document.getElementById('btnConceptChart').classList.remove('active');
             
+            document.getElementById('tableContainer').style.display = 'none';
+            document.getElementById('iframeContainer').classList.add('active');
+            
+            const iframe = document.getElementById('externalFrame');
+            
             if (view === 'info') {
                 document.getElementById('btnConceptInfo').classList.add('active');
-                document.getElementById('tableContainer').style.display = 'none';
-                document.getElementById('conceptInfoContainer').classList.remove('active');
-                document.getElementById('iframeContainer').classList.add('active');
-                
-                // 載入 concept_stocks.html
-                const iframe = document.getElementById('externalFrame');
-                iframe.src = DATA_PATH + 'concept_stocks.html?t=' + Date.now();
+                iframe.src = 'StockInfo/concept_stocks.html?t=' + Date.now();
             } else if (view === 'chart') {
                 document.getElementById('btnConceptChart').classList.add('active');
-                document.getElementById('tableContainer').style.display = 'none';
-                document.getElementById('conceptInfoContainer').classList.remove('active');
-                document.getElementById('iframeContainer').classList.add('active');
-                
-                // 載入 Concept_ALL.html
-                const iframe = document.getElementById('externalFrame');
-                iframe.src = DATA_PATH + 'Concept_ALL.html?t=' + Date.now();
+                iframe.src = 'StockInfo/Concept_ALL.html?t=' + Date.now();
             }
         }
 
