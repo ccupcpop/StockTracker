@@ -97,7 +97,8 @@
             font-size: 0.85em;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
+            will-change: transform;
         }
 
         @media (min-width: 768px) {
@@ -193,8 +194,9 @@
             font-size: 0.9em;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
             border: 2px solid transparent;
+            will-change: transform;
         }
 
         @media (min-width: 768px) {
@@ -237,7 +239,8 @@
             font-size: 0.9em;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
+            will-change: transform;
         }
 
         @media (min-width: 768px) {
@@ -668,6 +671,25 @@
             display: none;
             height: calc(100vh - 280px);
             min-height: 500px;
+            position: relative;
+        }
+
+        .iframe-container::before {
+            content: '載入中...';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #667eea;
+            font-size: 1.2em;
+            font-weight: 500;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .iframe-container.loading::before {
+            opacity: 1;
         }
 
         @media (min-width: 768px) {
@@ -686,6 +708,8 @@
             width: 100%;
             height: 100%;
             border: none;
+            position: relative;
+            z-index: 2;
         }
     </style>
 </head>
@@ -789,7 +813,6 @@
         const DATA_PATH = 'StockInfo/';
 
         function switchMarket(market) {
-            console.log('切換市場到:', market);
             currentMarket = market;
             localStorage.setItem('currentMarket', market);
 
@@ -824,21 +847,11 @@
                 
                 loadMarketData();
             } else if (market === 'CONCEPT') {
-                console.log('進入概念股模式');
                 document.getElementById('btnConcept').classList.add('active');
                 document.getElementById('categoryTabs').classList.add('hidden');
-                
-                // 顯示概念股按鈕
-                const conceptButtons = document.getElementById('conceptButtons');
-                console.log('概念股按鈕元素:', conceptButtons);
-                conceptButtons.classList.add('active');
-                console.log('概念股按鈕class:', conceptButtons.className);
-                
-                // 隱藏統計資訊和控制區域
+                document.getElementById('conceptButtons').classList.add('active');
                 document.getElementById('statsSection').style.display = 'none';
                 document.getElementById('controlsSection').style.display = 'none';
-                
-                // 隱藏表格
                 document.getElementById('tableContainer').style.display = 'none';
                 
                 // 重置並顯示概念股說明
@@ -860,10 +873,15 @@
             
             if (view === 'info') {
                 document.getElementById('btnConceptInfo').classList.add('active');
-                iframe.src = 'StockInfo/concept_stocks.html?t=' + Date.now();
+                // 使用 requestAnimationFrame 延遲載入，避免阻塞 UI
+                requestAnimationFrame(() => {
+                    iframe.src = 'StockInfo/concept_stocks.html?t=' + Date.now();
+                });
             } else if (view === 'chart') {
                 document.getElementById('btnConceptChart').classList.add('active');
-                iframe.src = 'StockInfo/Concept_ALL.html?t=' + Date.now();
+                requestAnimationFrame(() => {
+                    iframe.src = 'StockInfo/Concept_ALL.html?t=' + Date.now();
+                });
             }
         }
 
@@ -950,7 +968,9 @@
 
         function loadExternalPage(filename) {
             const iframe = document.getElementById('externalFrame');
-            iframe.src = DATA_PATH + filename + '?t=' + Date.now();
+            requestAnimationFrame(() => {
+                iframe.src = DATA_PATH + filename + '?t=' + Date.now();
+            });
             document.getElementById('iframeContainer').classList.add('active');
         }
 
