@@ -783,6 +783,7 @@
         const DATA_PATH = 'StockInfo/';
 
         function switchMarket(market) {
+            console.log('切換市場到:', market);
             currentMarket = market;
             localStorage.setItem('currentMarket', market);
 
@@ -801,16 +802,26 @@
                 document.getElementById('categoryTabs').classList.remove('hidden');
                 loadMarketData();
             } else if (market === 'CONCEPT') {
+                console.log('進入概念股模式');
                 document.getElementById('btnConcept').classList.add('active');
-                document.getElementById('conceptButtons').classList.add('active');
                 document.getElementById('categoryTabs').classList.add('hidden');
+                
+                // 顯示概念股按鈕
+                const conceptButtons = document.getElementById('conceptButtons');
+                console.log('概念股按鈕元素:', conceptButtons);
+                conceptButtons.classList.add('active');
+                console.log('概念股按鈕class:', conceptButtons.className);
                 
                 // 隱藏統計資訊和控制區域
                 document.getElementById('statsSection').style.display = 'none';
                 document.getElementById('controlsSection').style.display = 'none';
                 
-                // 切換到概念股視圖
-                switchConceptView(currentConceptView);
+                // 隱藏表格
+                document.getElementById('tableContainer').style.display = 'none';
+                
+                // 重置並顯示概念股說明
+                currentConceptView = 'info';
+                switchConceptView('info');
             }
         }
 
@@ -1147,7 +1158,15 @@
                 
                 // 恢復上次的市場和分類選擇
                 if (currentMarket === 'CONCEPT') {
-                    switchMarket('CONCEPT');
+                    // 確保隱藏其他按鈕
+                    document.getElementById('btnTSE').classList.remove('active');
+                    document.getElementById('btnOTC').classList.remove('active');
+                    document.getElementById('btnConcept').classList.add('active');
+                    document.getElementById('categoryTabs').classList.add('hidden');
+                    document.getElementById('conceptButtons').classList.add('active');
+                    
+                    // 初始化概念股視圖
+                    switchConceptView('info');
                 } else {
                     const currentData = currentMarket === 'TSE' ? tseData : otcData;
                     
