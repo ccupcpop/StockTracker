@@ -135,6 +135,20 @@
             }
         }
 
+        .update-time-small {
+            font-size: 0.85em;
+            color: #95a5a6;
+            margin-left: 12px;
+            font-weight: 500;
+        }
+
+        @media (min-width: 768px) {
+            .update-time-small {
+                font-size: 0.9em;
+                margin-left: 16px;
+            }
+        }
+
         .subtitle {
             text-align: center;
             color: #7f8c8d;
@@ -234,15 +248,15 @@
         }
 
         .concept-btn.active {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.35);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.35);
         }
 
         .concept-btn:hover:not(.active) {
             background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
             transform: translateY(-2px);
-            border: 2px solid #28a745;
+            border: 2px solid #667eea;
         }
 
         .stats {
@@ -250,12 +264,15 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
             margin-top: 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         @media (min-width: 768px) {
             .stats {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
                 gap: 16px;
+                max-width: 700px;
             }
         }
 
@@ -675,9 +692,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="version">v2.3.0</div>
+            <div class="version">v2.5.0</div>
             <h1>台股每日三大法人買賣超 > 今日大戶 > 買賣超趨勢統計</h1>
-            <div class="subtitle">即時掌握機構投資人動向</div>
+            <div class="subtitle">
+                即時掌握機構投資人動向 
+                <span class="update-time-small" id="updateTimeSmall">⏰ --:--:--</span>
+            </div>
 
             <!-- 市場選擇按鈕（上市/上櫃/概念股） -->
             <div class="market-selector">
@@ -703,14 +723,12 @@
         <!-- 統計資訊 -->
         <div class="stats" id="statsSection">
             <div class="stat-box">
-                <div class="stat-label">⏰ 更新時間</div>
-                <div class="stat-value" id="updateTime">--:--:--</div>
+                <div class="stat-label">📈 買超</div>
+                <div class="stat-value" id="buyCount">0</div>
             </div>
             <div class="stat-box">
-                <div class="stat-label">📈 買超 <span id="buyCount">0</span></div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">📉 賣超 <span id="sellCount">0</span></div>
+                <div class="stat-label">📉 賣超</div>
+                <div class="stat-value" id="sellCount">0</div>
             </div>
         </div>
 
@@ -755,18 +773,6 @@
         <!-- iframe 容器 -->
         <div class="iframe-container" id="iframeContainer">
             <iframe id="externalFrame" src=""></iframe>
-        </div>
-
-        <!-- 概念股說明容器 -->
-        <div class="iframe-container" id="conceptInfoContainer">
-            <div style="padding: 40px; text-align: center; color: #495057;">
-                <h2 style="margin-bottom: 20px; color: #2c3e50;">📊 概念股說明</h2>
-                <p style="line-height: 1.8; font-size: 1.1em;">
-                    概念股功能彙整了所有具有特定概念股領域標籤的股票<br>
-                    包含上市與上櫃市場的熱門主題股票<br><br>
-                    點擊「最新行情」查看所有概念股的技術分析圖表
-                </p>
-            </div>
         </div>
     </div>
 
@@ -834,8 +840,12 @@
             if (view === 'info') {
                 document.getElementById('btnConceptInfo').classList.add('active');
                 document.getElementById('tableContainer').style.display = 'none';
-                document.getElementById('iframeContainer').classList.remove('active');
-                document.getElementById('conceptInfoContainer').classList.add('active');
+                document.getElementById('conceptInfoContainer').classList.remove('active');
+                document.getElementById('iframeContainer').classList.add('active');
+                
+                // 載入 concept_stocks.html
+                const iframe = document.getElementById('externalFrame');
+                iframe.src = DATA_PATH + 'concept_stocks.html?t=' + Date.now();
             } else if (view === 'chart') {
                 document.getElementById('btnConceptChart').classList.add('active');
                 document.getElementById('tableContainer').style.display = 'none';
@@ -852,7 +862,6 @@
             // 顯示統計資訊和控制區域
             document.getElementById('statsSection').style.display = 'grid';
             document.getElementById('controlsSection').style.display = 'flex';
-            document.getElementById('conceptInfoContainer').classList.remove('active');
             document.getElementById('categoryTabs').classList.remove('hidden');
             
             const currentData = currentMarket === 'TSE' ? tseData : otcData;
@@ -914,14 +923,12 @@
         function showTableView() {
             document.getElementById('tableContainer').style.display = 'block';
             document.getElementById('iframeContainer').classList.remove('active');
-            document.getElementById('conceptInfoContainer').classList.remove('active');
             document.getElementById('statsSection').style.display = 'grid';
             document.getElementById('controlsSection').style.display = 'flex';
         }
 
         function showIframeView() {
             document.getElementById('tableContainer').style.display = 'none';
-            document.getElementById('conceptInfoContainer').classList.remove('active');
             
             if (currentMarket === 'CONCEPT') {
                 document.getElementById('statsSection').style.display = 'none';
@@ -1040,8 +1047,8 @@
                 return sellVol > buyVol;
             }).length;
             
-            document.getElementById('updateTime').textContent = 
-                data.update_time ? (data.update_time.includes(' ') ? data.update_time.split(' ')[1] : data.update_time) : '--:--:--';
+            const timeText = data.update_time ? (data.update_time.includes(' ') ? data.update_time.split(' ')[1] : data.update_time) : '--:--:--';
+            document.getElementById('updateTimeSmall').textContent = '⏰ ' + timeText;
             document.getElementById('buyCount').textContent = buyStocks;
             document.getElementById('sellCount').textContent = sellStocks;
 
