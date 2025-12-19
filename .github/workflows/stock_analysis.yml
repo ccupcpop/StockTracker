@@ -19,14 +19,6 @@ on:
           - 'TSE'
           - 'OTC'
           - 'BOTH'
-      read_all:
-        description: '讀取模式 (True=每天第一次從CSV讀取, False=全部從ranking.txt讀取)'
-        required: true
-        default: 'True'
-        type: choice
-        options:
-          - 'True'
-          - 'False'
 
 jobs:
   update-stock-prices:
@@ -47,26 +39,23 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytz aiohttp
+        pip install pytz aiohttp pandas requests
     
-    - name: Verify StockInfo directory and HTML files
+    - name: Verify StockInfo directory and ranking files
       run: |
         echo "📁 Checking StockInfo directory..."
         if [ -d "StockInfo" ]; then
           echo "✅ StockInfo directory exists"
-          echo "📄 Listing HTML files:"
-          ls -lh StockInfo/*.html 2>/dev/null || echo "⚠️  No HTML files found"
           echo "📄 Listing ranking files:"
-          ls -lh StockInfo/*_buy_ranking.txt 2>/dev/null || echo "ℹ️  No ranking files yet (will be created on first run)"
+          ls -lh StockInfo/*_buy_ranking.txt 2>/dev/null || echo "❌ No ranking files found"
         else
           echo "❌ StockInfo directory not found"
           exit 1
         fi
     
-    - name: Run stock price update
+    - name: Run stock analysis
       env:
         PROCESS_MODE: ${{ github.event.inputs.process_mode || 'BOTH' }}
-        READ_ALL: ${{ github.event.inputs.read_all || 'True' }}
       run: |
         TAIWAN_TIME=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
         echo "🕐 Current Taiwan time: $TAIWAN_TIME"
@@ -77,6 +66,5 @@ jobs:
         TAIWAN_TIME=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        # 加入 JSON 和 ranking.txt 檔案
-        git add StockInfo/*.json StockInfo/*_buy_ranking.txt
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock prices - ${TAIWAN_TIME}" && git pull --rebase origin main && git push)
+        git add StockInfo/*.html
+        git diff --quiet && git diff --staged --quiet || (git commit -m "📊 Update stock analysis - ${TAIWAN_TIME}" && git pull --rebase origin main && git push)
