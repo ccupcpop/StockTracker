@@ -901,6 +901,19 @@
         
         let currentMarket = localStorage.getItem('currentMarket') || 'TSE';
         let currentCategory = localStorage.getItem('currentCategory') || 'latest';
+        
+        // 如果之前選擇的是概念股，重置為上市
+        if (currentMarket === 'CONCEPT') {
+            currentMarket = 'TSE';
+            localStorage.setItem('currentMarket', 'TSE');
+        }
+        
+        // 如果之前選擇的是概念股相關分類，重置為最新買賣比
+        if (currentCategory === 'conceptDesc' || currentCategory === 'conceptQuote') {
+            currentCategory = 'latest';
+            localStorage.setItem('currentCategory', 'latest');
+        }
+        
         let currentStocks = [];
         let currentSortField = 'default';
         let currentSortOrder = 'desc';
@@ -1044,29 +1057,19 @@
             
             document.getElementById('btnTSE').classList.remove('active');
             document.getElementById('btnOTC').classList.remove('active');
-            document.getElementById('btnConcept').classList.remove('active');
             
             if (market === 'TSE') {
                 document.getElementById('btnTSE').classList.add('active');
-                // 顯示股票分類按鈕，隱藏概念股按鈕
+                // 顯示股票分類按鈕
                 document.getElementById('stockCategoryTabs').style.display = 'flex';
-                document.getElementById('conceptCategoryTabs').style.display = 'none';
                 // 直接跳到預設頁面：最新買賣比
                 switchCategory('latest');
             } else if (market === 'OTC') {
                 document.getElementById('btnOTC').classList.add('active');
-                // 顯示股票分類按鈕，隱藏概念股按鈕
+                // 顯示股票分類按鈕
                 document.getElementById('stockCategoryTabs').style.display = 'flex';
-                document.getElementById('conceptCategoryTabs').style.display = 'none';
                 // 直接跳到預設頁面：最新買賣比
                 switchCategory('latest');
-            } else if (market === 'CONCEPT') {
-                document.getElementById('btnConcept').classList.add('active');
-                // 隱藏股票分類按鈕，顯示概念股按鈕
-                document.getElementById('stockCategoryTabs').style.display = 'none';
-                document.getElementById('conceptCategoryTabs').style.display = 'flex';
-                // 直接跳到預設頁面：概念股說明
-                switchCategory('conceptDesc');
             }
         }
 
@@ -1078,8 +1081,6 @@
             document.getElementById('tabLatest').classList.remove('active');
             document.getElementById('tabFiveDay').classList.remove('active');
             document.getElementById('tabSixtyDay').classList.remove('active');
-            document.getElementById('tabConceptDesc').classList.remove('active');
-            document.getElementById('tabConceptQuote').classList.remove('active');
             
             if (category === 'latest') {
                 document.getElementById('tabLatest').classList.add('active');
@@ -1093,14 +1094,6 @@
                 document.getElementById('tabSixtyDay').classList.add('active');
                 showIframeView();
                 loadExternalPage(currentMarket === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
-            } else if (category === 'conceptDesc') {
-                document.getElementById('tabConceptDesc').classList.add('active');
-                showIframeView();
-                loadExternalPage('concept_stocks.html');
-            } else if (category === 'conceptQuote') {
-                document.getElementById('tabConceptQuote').classList.add('active');
-                showIframeView();
-                loadExternalPage('Concept_ALL.html');
             }
         }
 
@@ -1289,28 +1282,19 @@
                     // 恢復市場按鈕狀態
                     document.getElementById('btnTSE').classList.remove('active');
                     document.getElementById('btnOTC').classList.remove('active');
-                    document.getElementById('btnConcept').classList.remove('active');
                     
                     if (currentMarket === 'TSE') {
                         document.getElementById('btnTSE').classList.add('active');
                         document.getElementById('stockCategoryTabs').style.display = 'flex';
-                        document.getElementById('conceptCategoryTabs').style.display = 'none';
                     } else if (currentMarket === 'OTC') {
                         document.getElementById('btnOTC').classList.add('active');
                         document.getElementById('stockCategoryTabs').style.display = 'flex';
-                        document.getElementById('conceptCategoryTabs').style.display = 'none';
-                    } else if (currentMarket === 'CONCEPT') {
-                        document.getElementById('btnConcept').classList.add('active');
-                        document.getElementById('stockCategoryTabs').style.display = 'none';
-                        document.getElementById('conceptCategoryTabs').style.display = 'flex';
                     }
                     
                     // 恢復分類按鈕狀態
                     document.getElementById('tabLatest').classList.remove('active');
                     document.getElementById('tabFiveDay').classList.remove('active');
                     document.getElementById('tabSixtyDay').classList.remove('active');
-                    document.getElementById('tabConceptDesc').classList.remove('active');
-                    document.getElementById('tabConceptQuote').classList.remove('active');
                     
                     if (currentCategory === 'latest') {
                         document.getElementById('tabLatest').classList.add('active');
@@ -1324,14 +1308,6 @@
                         document.getElementById('tabSixtyDay').classList.add('active');
                         showIframeView();
                         loadExternalPage(currentMarket === 'TSE' ? 'ALL_TSE.html' : 'ALL_OTC.html');
-                    } else if (currentCategory === 'conceptDesc') {
-                        document.getElementById('tabConceptDesc').classList.add('active');
-                        showIframeView();
-                        loadExternalPage('concept_stocks.html');
-                    } else if (currentCategory === 'conceptQuote') {
-                        document.getElementById('tabConceptQuote').classList.add('active');
-                        showIframeView();
-                        loadExternalPage('Concept_ALL.html');
                     }
                     
                     document.getElementById('dataTable').style.display = 'table';
