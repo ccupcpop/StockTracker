@@ -730,7 +730,7 @@
                     過去五日買賣超
                 </button>
                 <button class="category-tab" id="tabSixtyDay" onclick="switchCategory('sixtyDay')">
-                    歷史60天買賣
+                    歷史90天買賣
                 </button>
             </div>
         </div>
@@ -794,9 +794,25 @@
         </div>
 
         <div id="stockChartContainer" style="display: none; background: white; border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);">
-            <button id="backButton" style="margin-bottom: 20px; padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 500;">
-                ← 回到股票列表
-            </button>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 10px; flex-wrap: wrap;">
+                <button id="prevStockBtn" style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 500; flex-shrink: 0;">
+                    ← 上一筆
+                </button>
+                
+                <div style="display: flex; align-items: center; gap: 10px; flex: 1; justify-content: center; flex-wrap: wrap;">
+                    <select id="stockSelector" style="padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 0.95em; min-width: 200px; cursor: pointer;">
+                        <option value="">載入中...</option>
+                    </select>
+                    <label style="display: flex; align-items: center; gap: 5px; cursor: pointer; user-select: none; white-space: nowrap;">
+                        <input type="checkbox" id="reverseOrderCheckbox" style="cursor: pointer; width: 18px; height: 18px;">
+                        <span style="font-size: 0.9em; color: #2c3e50;">反向排序</span>
+                    </label>
+                </div>
+                
+                <button id="nextStockBtn" style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 500; flex-shrink: 0;">
+                    下一筆 →
+                </button>
+            </div>
             <div id="stockChartContent"></div>
         </div>
     </div>
@@ -831,6 +847,11 @@
         let currentSortOrder = 'desc';
         let tseData = null;
         let otcData = null;
+        
+        // 買賣超90天相關的全域變數
+        let allStocksList = [];  // 所有股票清單
+        let currentStockIndex = 0;  // 當前股票索引
+        let isReverseOrder = false;  // 是否反向排序
 
         function toggleSort() {
             currentSortOrder = currentSortOrder === 'desc' ? 'asc' : 'desc';
@@ -994,7 +1015,7 @@
                 loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_result_complete.html' : 'otc_analysis_result_complete.html');
             } else if (category === 'sixtyDay') {
                 document.getElementById('tabSixtyDay').classList.add('active');
-                showStockListView();
+                showStockChartView();
                 loadStockList();
             }
         }
@@ -1063,8 +1084,8 @@
         }
 
         async function loadStockList() {
-            const listContent = document.getElementById('stockListContent');
-            listContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">載入中...</div>';
+            const chartContent = document.getElementById('stockChartContent');
+            chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">載入中...</div>';
             
             try {
                 const SQL = await initSqlJs({
@@ -1075,51 +1096,121 @@
                     DATA_PATH + 'stock_tse.db' : 
                     DATA_PATH + 'stock_otc.db';
                 
-                // 使用 fetch 讀取資料庫文件
                 const response = await fetch(dbPath);
                 const dbBuffer = await response.arrayBuffer();
                 sqlDB = new SQL.Database(new Uint8Array(dbBuffer));
                 
-                const query = "SELECT DISTINCT 股票代碼, 股票名稱 FROM stock_data ORDER BY 股票代碼";
+                // 保持資料庫原有順序
+                const query = `
+                    SELECT 股票代碼, 股票名稱
+                    FROM stock_data
+                    WHERE ROWID IN (
+                        SELECT MIN(ROWID) 
+                        FROM stock_data 
+                        GROUP BY 股票代碼
+                    )
+                    ORDER BY ROWID
+                `;
                 const result = sqlDB.exec(query);
                 
                 if (result.length === 0 || result[0].values.length === 0) {
-                    listContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">無股票資料</div>';
+                    chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">無股票資料</div>';
                     return;
                 }
                 
-                const stocks = result[0].values;
-                let html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">';
+                // 儲存股票清單
+                allStocksList = result[0].values.map(([code, name]) => ({ code, name }));
                 
-                stocks.forEach(([code, name]) => {
-                    html += `
-                        <div class="stock-item" onclick="loadStockChart('${code}', '${name}')" 
-                            style="padding: 15px; background: #f8f9fa; border-radius: 8px; cursor: pointer; transition: all 0.3s; border: 2px solid transparent;">
-                            <div style="font-weight: 600; color: #667eea; font-size: 1.1em; margin-bottom: 5px;">${code}</div>
-                            <div style="color: #2c3e50; font-size: 0.9em;">${name}</div>
-                        </div>
-                    `;
-                });
+                // 填充下拉選單
+                updateStockSelector();
                 
-                html += '</div>';
-                listContent.innerHTML = html;
-                
-                document.getElementById('stockSearch').oninput = function(e) {
-                    const searchTerm = e.target.value.toLowerCase();
-                    const items = document.querySelectorAll('.stock-item');
-                    items.forEach(item => {
-                        const text = item.textContent.toLowerCase();
-                        item.style.display = text.includes(searchTerm) ? 'block' : 'none';
-                    });
-                };
+                // 載入第一個股票
+                currentStockIndex = 0;
+                const firstStock = getStockAtIndex(0);
+                if (firstStock) {
+                    await loadStockChart(firstStock.code, firstStock.name);
+                }
                 
             } catch (error) {
                 console.error('載入股票列表失敗:', error);
-                listContent.innerHTML = `
+                chartContent.innerHTML = `
                     <div style="text-align: center; padding: 40px; color: #e74c3c;">
                         載入失敗: ${error.message}
                     </div>
                 `;
+            }
+        }
+        
+        // 根據當前排序取得股票
+        function getStockAtIndex(index) {
+            const list = isReverseOrder ? [...allStocksList].reverse() : allStocksList;
+            if (index >= 0 && index < list.length) {
+                return list[index];
+            }
+            return null;
+        }
+        
+        // 更新下拉選單
+        function updateStockSelector() {
+            const selector = document.getElementById('stockSelector');
+            const list = isReverseOrder ? [...allStocksList].reverse() : allStocksList;
+            
+            selector.innerHTML = list.map((stock, idx) => 
+                `<option value="${idx}">${stock.code}_${stock.name}</option>`
+            ).join('');
+            
+            selector.value = currentStockIndex;
+        }
+        
+        // 載入上一筆股票
+        function loadPrevStock() {
+            if (currentStockIndex > 0) {
+                currentStockIndex--;
+                const stock = getStockAtIndex(currentStockIndex);
+                if (stock) {
+                    loadStockChart(stock.code, stock.name);
+                    document.getElementById('stockSelector').value = currentStockIndex;
+                }
+            }
+        }
+        
+        // 載入下一筆股票
+        function loadNextStock() {
+            const maxIndex = allStocksList.length - 1;
+            if (currentStockIndex < maxIndex) {
+                currentStockIndex++;
+                const stock = getStockAtIndex(currentStockIndex);
+                if (stock) {
+                    loadStockChart(stock.code, stock.name);
+                    document.getElementById('stockSelector').value = currentStockIndex;
+                }
+            }
+        }
+        
+        // 從下拉選單載入股票
+        function loadStockFromSelector() {
+            const selector = document.getElementById('stockSelector');
+            const selectedIndex = parseInt(selector.value);
+            if (!isNaN(selectedIndex)) {
+                currentStockIndex = selectedIndex;
+                const stock = getStockAtIndex(selectedIndex);
+                if (stock) {
+                    loadStockChart(stock.code, stock.name);
+                }
+            }
+        }
+        
+        // 切換反向排序
+        function toggleReverseOrder() {
+            isReverseOrder = !isReverseOrder;
+            updateStockSelector();
+            
+            // 直接跳到第一個股票
+            currentStockIndex = 0;
+            const firstStock = getStockAtIndex(0);
+            if (firstStock) {
+                loadStockChart(firstStock.code, firstStock.name);
+                document.getElementById('stockSelector').value = 0;
             }
         }
 
@@ -1147,9 +1238,18 @@
                     return obj;
                 });
                 
-                const chartData = data.slice(-60);
+                const chartData = data.slice(-90);
                 
-                const dates = chartData.map(d => d['日期']);
+                // 保存原始日期字符串用於判斷星期
+                const rawDates = chartData.map(d => d['日期']);
+                
+                // 格式化日期為 MM/DD
+                const dates = chartData.map(d => {
+                    const date = new Date(d['日期']);
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    return `${month}/${day}`;
+                });
                 const opens = chartData.map(d => parseFloat(String(d['開盤價']).replace(/,/g, '')) || 0);
                 const highs = chartData.map(d => parseFloat(String(d['最高價']).replace(/,/g, '')) || 0);
                 const lows = chartData.map(d => parseFloat(String(d['最低價']).replace(/,/g, '')) || 0);
@@ -1169,7 +1269,7 @@
                 
                 generatePlotlyChart(chartContent, {
                     stockCode, stockName,
-                    dates, opens, highs, lows, closes, volumes,
+                    dates, rawDates, opens, highs, lows, closes, volumes,
                     ma5, ma10,
                     foreign, trust, dealer,
                     foreignCum, trustCum, dealerCum
@@ -1209,13 +1309,28 @@
         function generatePlotlyChart(container, data) {
             const {
                 stockCode, stockName,
-                dates, opens, highs, lows, closes, volumes,
+                dates, rawDates, opens, highs, lows, closes, volumes,
                 ma5, ma10,
                 foreign, trust, dealer,
                 foreignCum, trustCum, dealerCum
             } = data;
             
             container.innerHTML = '<div id="plotlyChart" style="width: 100%; height: 1200px;"></div>';
+            
+            // 計算只顯示週一和最新日期的 tick 設定
+            const tickvals = [];
+            const ticktext = [];
+            
+            for (let i = 0; i < dates.length; i++) {
+                const fullDate = new Date(rawDates[i]);
+                const dayOfWeek = fullDate.getDay(); // 0=Sunday, 1=Monday, ...
+                
+                // 如果是週一（1）或最後一天
+                if (dayOfWeek === 1 || i === dates.length - 1) {
+                    tickvals.push(dates[i]);
+                    ticktext.push(dates[i]);
+                }
+            }
             
             const candlestick = {
                 x: dates,
@@ -1228,7 +1343,8 @@
                 increasing: {line: {color: '#FF5252'}, fillcolor: '#FF5252'},
                 decreasing: {line: {color: '#00C851'}, fillcolor: '#00C851'},
                 xaxis: 'x',
-                yaxis: 'y'
+                yaxis: 'y',
+                hovertemplate: '%{x}<br>K線:<br>open: %{open}<br>high: %{high}<br>low: %{low}<br>close: %{close}<extra></extra>'
             };
             
             const ma5Trace = {
@@ -1275,7 +1391,8 @@
                 name: '外資',
                 marker: {color: 'rgba(255, 82, 82, 0.75)'},
                 xaxis: 'x',
-                yaxis: 'y3'
+                yaxis: 'y3',
+                legendgroup: 'foreign'
             };
             
             const trustTrace = {
@@ -1285,7 +1402,8 @@
                 name: '投信',
                 marker: {color: 'rgba(0, 200, 81, 0.75)'},
                 xaxis: 'x',
-                yaxis: 'y3'
+                yaxis: 'y3',
+                legendgroup: 'trust'
             };
             
             const dealerTrace = {
@@ -1295,7 +1413,8 @@
                 name: '自營商',
                 marker: {color: 'rgba(0, 191, 255, 0.75)'},
                 xaxis: 'x',
-                yaxis: 'y3'
+                yaxis: 'y3',
+                legendgroup: 'dealer'
             };
             
             const foreignCumTrace = {
@@ -1304,9 +1423,10 @@
                 type: 'scatter',
                 mode: 'lines',
                 name: '外資累積',
-                line: {color: 'rgb(255, 82, 82)', width: 2.5},
+                line: {color: 'rgb(255, 82, 82)', width: 2.5, shape: 'spline', smoothing: 0.8},
                 xaxis: 'x',
-                yaxis: 'y4'
+                yaxis: 'y4',
+                legendgroup: 'foreign'
             };
             
             const trustCumTrace = {
@@ -1315,9 +1435,10 @@
                 type: 'scatter',
                 mode: 'lines',
                 name: '投信累積',
-                line: {color: 'rgb(0, 200, 81)', width: 2.5},
+                line: {color: 'rgb(0, 200, 81)', width: 2.5, shape: 'spline', smoothing: 0.8},
                 xaxis: 'x',
-                yaxis: 'y4'
+                yaxis: 'y4',
+                legendgroup: 'trust'
             };
             
             const dealerCumTrace = {
@@ -1326,9 +1447,10 @@
                 type: 'scatter',
                 mode: 'lines',
                 name: '自營商累積',
-                line: {color: 'rgb(0, 191, 255)', width: 2.5},
+                line: {color: 'rgb(0, 191, 255)', width: 2.5, shape: 'spline', smoothing: 0.8},
                 xaxis: 'x',
-                yaxis: 'y4'
+                yaxis: 'y4',
+                legendgroup: 'dealer'
             };
             
             const plotData = [
@@ -1339,10 +1461,15 @@
             ];
             
             const layout = {
-                title: `${stockCode} ${stockName} 技術分析圖表 (最近60筆)`,
+                title: `${stockCode} ${stockName} 技術分析圖表 (最近90筆)`,
                 xaxis: {
                     domain: [0, 1],
-                    rangeslider: {visible: false}
+                    rangeslider: {visible: false},
+                    type: 'category',
+                    tickangle: -45,
+                    tickmode: 'array',
+                    tickvals: tickvals,
+                    ticktext: ticktext
                 },
                 yaxis: {
                     domain: [0.55, 1],
@@ -1370,6 +1497,7 @@
                 },
                 hovermode: 'x unified',
                 template: 'plotly_white',
+                barmode: 'relative',
                 font: {family: 'Microsoft JhengHei, Arial, sans-serif'}
             };
             
@@ -1541,7 +1669,7 @@
                         loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_result_complete.html' : 'otc_analysis_result_complete.html');
                     } else if (currentCategory === 'sixtyDay') {
                         document.getElementById('tabSixtyDay').classList.add('active');
-                        showStockListView();
+                        showStockChartView();
                         loadStockList();
                     }
                     
@@ -1573,13 +1701,43 @@
                 });
             }
             
-            const backButton = document.getElementById('backButton');
-            if (backButton) {
-                backButton.addEventListener('click', () => {
-                    showStockListView();
-                    loadStockList();
-                });
+            // 買賣超90天導航按鈕
+            const prevStockBtn = document.getElementById('prevStockBtn');
+            if (prevStockBtn) {
+                prevStockBtn.addEventListener('click', loadPrevStock);
             }
+            
+            const nextStockBtn = document.getElementById('nextStockBtn');
+            if (nextStockBtn) {
+                nextStockBtn.addEventListener('click', loadNextStock);
+            }
+            
+            const stockSelector = document.getElementById('stockSelector');
+            if (stockSelector) {
+                stockSelector.addEventListener('change', loadStockFromSelector);
+            }
+            
+            const reverseOrderCheckbox = document.getElementById('reverseOrderCheckbox');
+            if (reverseOrderCheckbox) {
+                reverseOrderCheckbox.addEventListener('change', toggleReverseOrder);
+            }
+            
+            // 防止雙指縮放
+            document.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            document.addEventListener('gesturestart', (e) => {
+                e.preventDefault();
+            });
             
             let startX = 0;
             document.addEventListener('touchstart', (e) => {
