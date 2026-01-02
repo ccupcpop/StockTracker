@@ -10,6 +10,8 @@
             padding: 0;
             box-sizing: border-box;
             touch-action: pan-y;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
 
         html {
@@ -1482,22 +1484,22 @@
                     fixedrange: true
                 },
                 yaxis: {
-                    domain: [0.55, 1],
+                    domain: [0.71, 1],
                     title: '股價 (元)',
                     fixedrange: true
                 },
                 yaxis2: {
-                    domain: [0.4, 0.52],
+                    domain: [0.56, 0.68],
                     title: '成交量 (張)',
                     fixedrange: true
                 },
                 yaxis3: {
-                    domain: [0.22, 0.37],
+                    domain: [0.38, 0.53],
                     title: '當日買賣超 (張)',
                     fixedrange: true
                 },
                 yaxis4: {
-                    domain: [0, 0.15],
+                    domain: [0.20, 0.35],
                     title: '累積買賣超 (張)',
                     fixedrange: true
                 },
@@ -1505,7 +1507,7 @@
                 legend: {
                     orientation: 'h',
                     yanchor: 'bottom',
-                    y: 0.18, // 將圖例移動到累積買賣超圖表的上方，避免與主標題重疊
+                    y: 0.36,
                     xanchor: 'center',
                     x: 0.5
                 },
