@@ -1320,7 +1320,7 @@
                 foreignCum, trustCum, dealerCum
             } = data;
             
-            container.innerHTML = '<div id="plotlyChart" style="width: 100%; height: 1200px;"></div>';
+            container.innerHTML = '<div id="plotlyChart" style="width: 100%; height: 800px;"></div>';
             
             // 計算只顯示週一和最新日期的 tick 設定
             const tickvals = [];
@@ -1472,7 +1472,7 @@
                     text: `${stockCode} ${stockName} 技術分析圖表 (最近75筆)`,
                     y: 0.98
                 },
-                margin: { t: 80, b: 30, l: 60, r: 20 },
+                margin: { t: 80, b: 10, l: 60, r: 20 },
                 xaxis: {
                     domain: [0, 1],
                     rangeslider: {visible: false},
@@ -1489,17 +1489,17 @@
                     fixedrange: true
                 },
                 yaxis2: {
-                    domain: [0.56, 0.68],
+                    domain: [0.53, 0.71],
                     title: '成交量 (張)',
                     fixedrange: true
                 },
                 yaxis3: {
-                    domain: [0.38, 0.53],
+                    domain: [0.28, 0.505],
                     title: '當日買賣超 (張)',
                     fixedrange: true
                 },
                 yaxis4: {
-                    domain: [0.05, 0.35],
+                    domain: [0.03, 0.255],
                     title: '累積買賣超 (張)',
                     fixedrange: true
                 },
@@ -1507,7 +1507,7 @@
                 legend: {
                     orientation: 'h',
                     yanchor: 'bottom',
-                    y: 0.08,
+                    y: 0.26,
                     xanchor: 'center',
                     x: 0.5
                 },
