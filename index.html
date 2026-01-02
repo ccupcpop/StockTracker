@@ -9,12 +9,14 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            touch-action: pan-y;
         }
 
         html {
             overflow-x: hidden;
             width: 100%;
             position: relative;
+            touch-action: pan-y;
         }
 
         body {
@@ -25,6 +27,7 @@
             overflow-x: hidden;
             width: 100%;
             position: relative;
+            touch-action: pan-y;
         }
 
         @media (min-width: 768px) {
@@ -1238,7 +1241,7 @@
                     return obj;
                 });
                 
-                const chartData = data.slice(-90);
+                const chartData = data.slice(-75);
                 
                 // 保存原始日期字符串用於判斷星期
                 const rawDates = chartData.map(d => d['日期']);
@@ -1344,7 +1347,7 @@
                 decreasing: {line: {color: '#00C851'}, fillcolor: '#00C851'},
                 xaxis: 'x',
                 yaxis: 'y',
-                hovertemplate: '%{x}<br>K線:<br>open: %{open}<br>high: %{high}<br>low: %{low}<br>close: %{close}<extra></extra>'
+                hovertemplate: '%{x}<br>open: %{open}<br>high: %{high}<br>low: %{low}<br>close: %{close}<extra></extra>'
             };
             
             const ma5Trace = {
@@ -1461,7 +1464,7 @@
             ];
             
             const layout = {
-                title: `${stockCode} ${stockName} 技術分析圖表 (最近90筆)`,
+                title: `${stockCode} ${stockName} 技術分析圖表 (最近75筆)`,
                 xaxis: {
                     domain: [0, 1],
                     rangeslider: {visible: false},
@@ -1469,23 +1472,28 @@
                     tickangle: -45,
                     tickmode: 'array',
                     tickvals: tickvals,
-                    ticktext: ticktext
+                    ticktext: ticktext,
+                    fixedrange: true
                 },
                 yaxis: {
                     domain: [0.55, 1],
-                    title: '股價 (元)'
+                    title: '股價 (元)',
+                    fixedrange: true
                 },
                 yaxis2: {
                     domain: [0.4, 0.52],
-                    title: '成交量 (張)'
+                    title: '成交量 (張)',
+                    fixedrange: true
                 },
                 yaxis3: {
                     domain: [0.2, 0.37],
-                    title: '當日買賣超 (張)'
+                    title: '當日買賣超 (張)',
+                    fixedrange: true
                 },
                 yaxis4: {
                     domain: [0, 0.17],
-                    title: '累積買賣超 (張)'
+                    title: '累積買賣超 (張)',
+                    fixedrange: true
                 },
                 showlegend: true,
                 legend: {
@@ -1498,13 +1506,17 @@
                 hovermode: 'x unified',
                 template: 'plotly_white',
                 barmode: 'relative',
-                font: {family: 'Microsoft JhengHei, Arial, sans-serif'}
+                font: {family: 'Microsoft JhengHei, Arial, sans-serif'},
+                dragmode: false
             };
             
             const config = {
                 responsive: true,
                 displayModeBar: true,
-                displaylogo: false
+                displaylogo: false,
+                scrollZoom: false,
+                doubleClick: false,
+                modeBarButtonsToRemove: ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d']
             };
             
             Plotly.newPlot('plotlyChart', plotData, layout, config);
@@ -1735,9 +1747,35 @@
                 }
             }, { passive: false });
             
+            // 防止手勢縮放
             document.addEventListener('gesturestart', (e) => {
                 e.preventDefault();
             });
+            
+            document.addEventListener('gesturechange', (e) => {
+                e.preventDefault();
+            });
+            
+            document.addEventListener('gestureend', (e) => {
+                e.preventDefault();
+            });
+            
+            // 防止雙擊縮放
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', (e) => {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, { passive: false });
+            
+            // 防止 Ctrl+滾輪縮放
+            document.addEventListener('wheel', (e) => {
+                if (e.ctrlKey) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
             
             let startX = 0;
             document.addEventListener('touchstart', (e) => {
