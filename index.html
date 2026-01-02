@@ -709,7 +709,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="version">v2.2A</div>
+            <div class="version">v2.5</div>
             <h1>台股機構投資人買賣分析</h1>
             <div class="subtitle">即時追蹤三大法人買賣超數據</div>
             
@@ -1347,7 +1347,8 @@
                 decreasing: {line: {color: '#00C851'}, fillcolor: '#00C851'},
                 xaxis: 'x',
                 yaxis: 'y',
-                hovertemplate: '%{x}<br>open: %{open}<br>high: %{high}<br>low: %{low}<br>close: %{close}<extra></extra>'
+                hovertemplate: '%{x}<br>open: %{open}<br>high: %{high}<br>low: %{low}<br>close: %{close}<extra></extra>',
+                showlegend: false
             };
             
             const ma5Trace = {
@@ -1384,7 +1385,8 @@
                 name: '成交量',
                 marker: {color: volumeColors},
                 xaxis: 'x',
-                yaxis: 'y2'
+                yaxis: 'y2',
+                showlegend: false
             };
             
             const foreignTrace = {
@@ -1464,7 +1466,11 @@
             ];
             
             const layout = {
-                title: `${stockCode} ${stockName} 技術分析圖表 (最近75筆)`,
+                title: {
+                    text: `${stockCode} ${stockName} 技術分析圖表 (最近75筆)`,
+                    y: 0.98  // 向上移動標題
+                },
+                margin: { t: 80, b: 50 }, // 增加頂部邊距
                 xaxis: {
                     domain: [0, 1],
                     rangeslider: {visible: false},
@@ -1486,22 +1492,22 @@
                     fixedrange: true
                 },
                 yaxis3: {
-                    domain: [0.2, 0.37],
+                    domain: [0.22, 0.37],
                     title: '當日買賣超 (張)',
                     fixedrange: true
                 },
                 yaxis4: {
-                    domain: [0, 0.17],
+                    domain: [0, 0.15],
                     title: '累積買賣超 (張)',
                     fixedrange: true
                 },
                 showlegend: true,
                 legend: {
-                    orientation: 'v',
-                    yanchor: 'top',
-                    y: 0.98,
-                    xanchor: 'left',
-                    x: 0.01
+                    orientation: 'h',
+                    yanchor: 'bottom',
+                    y: 0.18, // 將圖例移動到累積買賣超圖表的上方，避免與主標題重疊
+                    xanchor: 'center',
+                    x: 0.5
                 },
                 hovermode: 'x unified',
                 template: 'plotly_white',
