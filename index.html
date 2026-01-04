@@ -718,6 +718,7 @@
             <div class="market-selector">
                 <button class="market-btn active" id="btnTSE" onclick="switchMarket('TSE')">上市</button>
                 <button class="market-btn" id="btnOTC" onclick="switchMarket('OTC')">上櫃</button>
+                <button class="market-btn" id="btnWATCHLIST" onclick="switchMarket('WATCHLIST')">追蹤股</button>
             </div>
             
             <div class="info-bar" style="display: flex; justify-content: center; align-items: center; margin-bottom: 12px; font-size: 0.9em;">
@@ -990,6 +991,7 @@
             
             document.getElementById('btnTSE').classList.remove('active');
             document.getElementById('btnOTC').classList.remove('active');
+            document.getElementById('btnWATCHLIST').classList.remove('active');
             
             if (market === 'TSE') {
                 document.getElementById('btnTSE').classList.add('active');
@@ -999,6 +1001,12 @@
                 document.getElementById('btnOTC').classList.add('active');
                 document.getElementById('stockCategoryTabs').style.display = 'flex';
                 switchCategory('latest');
+            } else if (market === 'WATCHLIST') {
+                document.getElementById('btnWATCHLIST').classList.add('active');
+                document.getElementById('stockCategoryTabs').style.display = 'none';
+                // 直接显示股票图表视图
+                showStockChartView();
+                loadWatchlistStocks();
             }
         }
 
@@ -1173,7 +1181,11 @@
                 currentStockIndex--;
                 const stock = getStockAtIndex(currentStockIndex);
                 if (stock) {
-                    loadStockChart(stock.code, stock.name);
+                    if (currentMarket === 'WATCHLIST') {
+                        loadWatchlistStockChart(stock.code, stock.name, stock.market);
+                    } else {
+                        loadStockChart(stock.code, stock.name);
+                    }
                     document.getElementById('stockSelector').value = currentStockIndex;
                 }
             }
@@ -1186,7 +1198,11 @@
                 currentStockIndex++;
                 const stock = getStockAtIndex(currentStockIndex);
                 if (stock) {
-                    loadStockChart(stock.code, stock.name);
+                    if (currentMarket === 'WATCHLIST') {
+                        loadWatchlistStockChart(stock.code, stock.name, stock.market);
+                    } else {
+                        loadStockChart(stock.code, stock.name);
+                    }
                     document.getElementById('stockSelector').value = currentStockIndex;
                 }
             }
@@ -1200,7 +1216,11 @@
                 currentStockIndex = selectedIndex;
                 const stock = getStockAtIndex(selectedIndex);
                 if (stock) {
-                    loadStockChart(stock.code, stock.name);
+                    if (currentMarket === 'WATCHLIST') {
+                        loadWatchlistStockChart(stock.code, stock.name, stock.market);
+                    } else {
+                        loadStockChart(stock.code, stock.name);
+                    }
                 }
             }
         }
@@ -1208,13 +1228,22 @@
         // 切換反向排序
         function toggleReverseOrder() {
             isReverseOrder = !isReverseOrder;
-            updateStockSelector();
+            
+            if (currentMarket === 'WATCHLIST') {
+                updateWatchlistSelector();
+            } else {
+                updateStockSelector();
+            }
             
             // 直接跳到第一個股票
             currentStockIndex = 0;
             const firstStock = getStockAtIndex(0);
             if (firstStock) {
-                loadStockChart(firstStock.code, firstStock.name);
+                if (currentMarket === 'WATCHLIST') {
+                    loadWatchlistStockChart(firstStock.code, firstStock.name, firstStock.market);
+                } else {
+                    loadStockChart(firstStock.code, firstStock.name);
+                }
                 document.getElementById('stockSelector').value = 0;
             }
         }
@@ -1309,6 +1338,172 @@
                 sum += val;
                 return sum;
             });
+        }
+
+        async function loadWatchlistStocks() {
+            const chartContent = document.getElementById('stockChartContent');
+            chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">載入追蹤股票...</div>';
+            
+            try {
+                const SQL = await initSqlJs({
+                    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
+                });
+                
+                // 載入追蹤股票數據庫
+                const hotDbPath = DATA_PATH + 'stock_hot.db';
+                const hotResponse = await fetch(hotDbPath);
+                const hotDbBuffer = await hotResponse.arrayBuffer();
+                const hotDB = new SQL.Database(new Uint8Array(hotDbBuffer));
+                
+                // 讀取追蹤股票清單
+                const hotQuery = `SELECT stock_code, stock_name FROM hot_stocks ORDER BY stock_code`;
+                const hotResult = hotDB.exec(hotQuery);
+                hotDB.close();
+                
+                if (hotResult.length === 0 || hotResult[0].values.length === 0) {
+                    chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">沒有追蹤的股票</div>';
+                    return;
+                }
+                
+                const watchlist = hotResult[0].values.map(([code, name]) => ({ code, name }));
+                
+                // 載入TSE和OTC數據庫來確定每支股票的市場
+                const tseResponse = await fetch(DATA_PATH + 'stock_tse.db');
+                const tseDbBuffer = await tseResponse.arrayBuffer();
+                const tseDB = new SQL.Database(new Uint8Array(tseDbBuffer));
+                
+                const otcResponse = await fetch(DATA_PATH + 'stock_otc.db');
+                const otcDbBuffer = await otcResponse.arrayBuffer();
+                const otcDB = new SQL.Database(new Uint8Array(otcDbBuffer));
+                
+                // 為每支股票確定市場
+                const stocksWithMarket = [];
+                for (const stock of watchlist) {
+                    // 先檢查TSE
+                    const tseCheck = tseDB.exec(`SELECT COUNT(*) FROM stock_data WHERE 股票代碼 = '${stock.code}' LIMIT 1`);
+                    if (tseCheck.length > 0 && tseCheck[0].values[0][0] > 0) {
+                        stocksWithMarket.push({ ...stock, market: 'TSE', db: tseDB });
+                    } else {
+                        // 檢查OTC
+                        const otcCheck = otcDB.exec(`SELECT COUNT(*) FROM stock_data WHERE 股票代碼 = '${stock.code}' LIMIT 1`);
+                        if (otcCheck.length > 0 && otcCheck[0].values[0][0] > 0) {
+                            stocksWithMarket.push({ ...stock, market: 'OTC', db: otcDB });
+                        }
+                    }
+                }
+                
+                if (stocksWithMarket.length === 0) {
+                    chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">追蹤股票中沒有可用的數據</div>';
+                    tseDB.close();
+                    otcDB.close();
+                    return;
+                }
+                
+                // 儲存股票清單和數據庫引用
+                allStocksList = stocksWithMarket;
+                sqlDB = { tse: tseDB, otc: otcDB };  // 保存兩個數據庫
+                
+                // 填充下拉選單
+                updateWatchlistSelector();
+                
+                // 載入第一個股票
+                currentStockIndex = 0;
+                const firstStock = allStocksList[0];
+                if (firstStock) {
+                    await loadWatchlistStockChart(firstStock.code, firstStock.name, firstStock.market);
+                }
+                
+            } catch (error) {
+                console.error('載入追蹤股票失敗:', error);
+                chartContent.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #e74c3c;">
+                        載入失敗: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        function updateWatchlistSelector() {
+            const selector = document.getElementById('stockSelector');
+            const list = isReverseOrder ? [...allStocksList].reverse() : allStocksList;
+            
+            selector.innerHTML = list.map((stock, idx) => 
+                `<option value="${idx}">${stock.code}_${stock.name} (${stock.market})</option>`
+            ).join('');
+            
+            selector.value = currentStockIndex;
+        }
+        
+        async function loadWatchlistStockChart(stockCode, stockName, market) {
+            showStockChartView();
+            const chartContent = document.getElementById('stockChartContent');
+            chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">生成圖表中...</div>';
+            
+            try {
+                const db = market === 'TSE' ? sqlDB.tse : sqlDB.otc;
+                const query = `SELECT * FROM stock_data WHERE 股票代碼 = '${stockCode}' ORDER BY 日期`;
+                const result = db.exec(query);
+                
+                if (result.length === 0 || result[0].values.length === 0) {
+                    chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #e74c3c;">無該股票資料</div>';
+                    return;
+                }
+                
+                const columns = result[0].columns;
+                const rows = result[0].values;
+                const data = rows.map(row => {
+                    const obj = {};
+                    columns.forEach((col, idx) => {
+                        obj[col] = row[idx];
+                    });
+                    return obj;
+                });
+                
+                const chartData = data.slice(-75);
+                
+                // 保存原始日期字符串用於判斷星期
+                const rawDates = chartData.map(d => d['日期']);
+                
+                // 格式化日期為 MM/DD
+                const dates = chartData.map(d => {
+                    const date = new Date(d['日期']);
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    return `${month}/${day}`;
+                });
+                const opens = chartData.map(d => parseFloat(String(d['開盤價']).replace(/,/g, '')) || 0);
+                const highs = chartData.map(d => parseFloat(String(d['最高價']).replace(/,/g, '')) || 0);
+                const lows = chartData.map(d => parseFloat(String(d['最低價']).replace(/,/g, '')) || 0);
+                const closes = chartData.map(d => parseFloat(String(d['收盤價']).replace(/,/g, '')) || 0);
+                const volumes = chartData.map(d => parseFloat(String(d['成交張數']).replace(/,/g, '')) || 0);
+                
+                const ma5 = calculateMA(closes, 5);
+                const ma10 = calculateMA(closes, 10);
+                
+                const foreign = chartData.map(d => parseFloat(String(d['外陸資買賣超張數'] || 0).replace(/,/g, '')) || 0);
+                const trust = chartData.map(d => parseFloat(String(d['投信買賣超張數'] || 0).replace(/,/g, '')) || 0);
+                const dealer = chartData.map(d => parseFloat(String(d['自營商買賣超張數'] || 0).replace(/,/g, '')) || 0);
+                
+                const foreignCum = cumsum(foreign);
+                const trustCum = cumsum(trust);
+                const dealerCum = cumsum(dealer);
+                
+                generatePlotlyChart(chartContent, {
+                    stockCode, stockName,
+                    dates, rawDates, opens, highs, lows, closes, volumes,
+                    ma5, ma10,
+                    foreign, trust, dealer,
+                    foreignCum, trustCum, dealerCum
+                });
+                
+            } catch (error) {
+                console.error('生成圖表失敗:', error);
+                chartContent.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #e74c3c;">
+                        生成失敗: ${error.message}
+                    </div>
+                `;
+            }
         }
 
         function generatePlotlyChart(container, data) {
@@ -1640,6 +1835,12 @@
             loading.style.display = 'block';
             
             try {
+                // 如果是追蹤股票模式,直接返回
+                if (currentMarket === 'WATCHLIST') {
+                    loading.style.display = 'none';
+                    return;
+                }
+                
                 const tseResponse = await fetch(DATA_PATH + 'TSE_hotstock_data.json?t=' + Date.now());
                 if (tseResponse.ok) {
                     tseData = await tseResponse.json();
@@ -1665,6 +1866,7 @@
                 } else {
                     document.getElementById('btnTSE').classList.remove('active');
                     document.getElementById('btnOTC').classList.remove('active');
+                    document.getElementById('btnWATCHLIST').classList.remove('active');
                     
                     if (currentMarket === 'TSE') {
                         document.getElementById('btnTSE').classList.add('active');
