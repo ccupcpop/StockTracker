@@ -1355,8 +1355,8 @@
                 const hotDbBuffer = await hotResponse.arrayBuffer();
                 const hotDB = new SQL.Database(new Uint8Array(hotDbBuffer));
                 
-                // 讀取追蹤股票清單
-                const hotQuery = `SELECT stock_code, stock_name FROM hot_stocks ORDER BY stock_code`;
+                // 讀取追蹤股票清單 (使用正確的中文欄位名稱)
+                const hotQuery = `SELECT 股票代碼, 股票名稱, 類型 FROM hot_stocks ORDER BY 股票代碼`;
                 const hotResult = hotDB.exec(hotQuery);
                 hotDB.close();
                 
@@ -1365,9 +1365,14 @@
                     return;
                 }
                 
-                const watchlist = hotResult[0].values.map(([code, name]) => ({ code, name }));
+                // 從資料庫讀取股票清單,類型欄位已經包含「上市」或「上櫃」資訊
+                const watchlist = hotResult[0].values.map(([code, name, type]) => ({ 
+                    code, 
+                    name, 
+                    market: type === '上市' ? 'TSE' : 'OTC'  // 直接使用資料庫中的類型欄位
+                }));
                 
-                // 載入TSE和OTC數據庫來確定每支股票的市場
+                // 載入TSE和OTC數據庫
                 const tseResponse = await fetch(DATA_PATH + 'stock_tse.db');
                 const tseDbBuffer = await tseResponse.arrayBuffer();
                 const tseDB = new SQL.Database(new Uint8Array(tseDbBuffer));
@@ -1376,31 +1381,8 @@
                 const otcDbBuffer = await otcResponse.arrayBuffer();
                 const otcDB = new SQL.Database(new Uint8Array(otcDbBuffer));
                 
-                // 為每支股票確定市場
-                const stocksWithMarket = [];
-                for (const stock of watchlist) {
-                    // 先檢查TSE
-                    const tseCheck = tseDB.exec(`SELECT COUNT(*) FROM stock_data WHERE 股票代碼 = '${stock.code}' LIMIT 1`);
-                    if (tseCheck.length > 0 && tseCheck[0].values[0][0] > 0) {
-                        stocksWithMarket.push({ ...stock, market: 'TSE', db: tseDB });
-                    } else {
-                        // 檢查OTC
-                        const otcCheck = otcDB.exec(`SELECT COUNT(*) FROM stock_data WHERE 股票代碼 = '${stock.code}' LIMIT 1`);
-                        if (otcCheck.length > 0 && otcCheck[0].values[0][0] > 0) {
-                            stocksWithMarket.push({ ...stock, market: 'OTC', db: otcDB });
-                        }
-                    }
-                }
-                
-                if (stocksWithMarket.length === 0) {
-                    chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">追蹤股票中沒有可用的數據</div>';
-                    tseDB.close();
-                    otcDB.close();
-                    return;
-                }
-                
                 // 儲存股票清單和數據庫引用
-                allStocksList = stocksWithMarket;
+                allStocksList = watchlist;
                 sqlDB = { tse: tseDB, otc: otcDB };  // 保存兩個數據庫
                 
                 // 填充下拉選單
