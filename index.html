@@ -738,9 +738,6 @@
                 <button class="category-tab" id="tabSixtyDay" onclick="switchCategory('sixtyDay')">
                     歷史90天買賣
                 </button>
-                <button class="category-tab" id="tabHotStock" onclick="switchCategory('hotstock')">
-                    熱門股分析
-                </button>
             </div>
         </div>
 
@@ -787,27 +784,6 @@
             </table>
         </div>
 
-        <div class="table-container" id="hotStockTableContainer" style="display: none;">
-            <table id="hotStockTable">
-                <thead>
-                    <tr>
-                        <th style="width: 50px;">排名</th>
-                        <th style="width: 120px;">股票</th>
-                        <th style="width: 60px;">類型</th>
-                        <th style="width: 150px;">產業分類</th>
-                        <th>分析資訊</th>
-                    </tr>
-                </thead>
-                <tbody id="hotStockTableBody">
-                    <tr>
-                        <td colspan="5" style="padding: 60px 20px; color: #95a5a6; font-size: 1.1em;">
-                            載入資料中...
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
         <div class="iframe-container" id="iframeContainer" style="display: none;">
             <iframe id="externalFrame" scrolling="auto"></iframe>
         </div>
@@ -844,6 +820,13 @@
                 </button>
             </div>
             <div id="stockChartContent"></div>
+            
+            <!-- 當前股票的分析卡片 -->
+            <div id="currentStockAnalysis" style="margin-top: 10px; display: none;">
+                <div id="stockAnalysisCard" style="background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <div style="text-align: center; padding: 20px; color: #95a5a6;">載入中...</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1035,35 +1018,25 @@
         }
 
         function switchCategory(category) {
-            console.log('🔀 切換分類:', category);
             currentCategory = category;
             localStorage.setItem('currentCategory', category);
             
             document.getElementById('tabLatest').classList.remove('active');
             document.getElementById('tabFiveDay').classList.remove('active');
             document.getElementById('tabSixtyDay').classList.remove('active');
-            document.getElementById('tabHotStock').classList.remove('active');
             
             if (category === 'latest') {
-                console.log('➡️ 切換到: 最新買賣比');
                 document.getElementById('tabLatest').classList.add('active');
                 showTableView();
                 loadCategoryData();
             } else if (category === 'fiveday') {
-                console.log('➡️ 切換到: 過去五日買賣超');
                 document.getElementById('tabFiveDay').classList.add('active');
                 showIframeView();
                 loadExternalPage(currentMarket === 'TSE' ? 'tse_analysis_result_complete.html' : 'otc_analysis_result_complete.html');
             } else if (category === 'sixtyDay') {
-                console.log('➡️ 切換到: 歷史90天買賣');
                 document.getElementById('tabSixtyDay').classList.add('active');
                 showStockChartView();
                 loadStockList();
-            } else if (category === 'hotstock') {
-                console.log('➡️ 切換到: 熱門股分析');
-                document.getElementById('tabHotStock').classList.add('active');
-                showHotStockView();
-                loadHotStockData();
             }
         }
 
@@ -1073,7 +1046,6 @@
             document.getElementById('iframeContainer').style.display = 'none';
             document.getElementById('stockListContainer').style.display = 'none';
             document.getElementById('stockChartContainer').style.display = 'none';
-            document.getElementById('hotStockTableContainer').style.display = 'none';
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
         }
@@ -1083,7 +1055,6 @@
             document.getElementById('tableContainer').style.display = 'none';
             document.getElementById('stockListContainer').style.display = 'none';
             document.getElementById('stockChartContainer').style.display = 'none';
-            document.getElementById('hotStockTableContainer').style.display = 'none';
             document.getElementById('iframeContainer').style.display = 'block';
             if (window.innerWidth < 768) {
                 document.body.style.overflowX = 'hidden';
@@ -1096,7 +1067,6 @@
             document.getElementById('tableContainer').style.display = 'none';
             document.getElementById('iframeContainer').style.display = 'none';
             document.getElementById('stockChartContainer').style.display = 'none';
-            document.getElementById('hotStockTableContainer').style.display = 'none';
             document.getElementById('stockListContainer').style.display = 'block';
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
@@ -1108,18 +1078,6 @@
             document.getElementById('iframeContainer').style.display = 'none';
             document.getElementById('stockListContainer').style.display = 'none';
             document.getElementById('stockChartContainer').style.display = 'block';
-            document.getElementById('hotStockTableContainer').style.display = 'none';
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
-        }
-
-        function showHotStockView() {
-            document.getElementById('controls').style.display = 'none';
-            document.getElementById('tableContainer').style.display = 'none';
-            document.getElementById('iframeContainer').style.display = 'none';
-            document.getElementById('stockListContainer').style.display = 'none';
-            document.getElementById('stockChartContainer').style.display = 'none';
-            document.getElementById('hotStockTableContainer').style.display = 'block';
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
         }
@@ -1143,137 +1101,6 @@
                     console.log('Cannot inject CSS into iframe (cross-origin)');
                 }
             };
-        }
-
-        async function loadHotStockData() {
-            console.log('🔄 開始載入熱門股資料...');
-            const tbody = document.getElementById('hotStockTableBody');
-            tbody.innerHTML = '<tr><td colspan="5" style="padding: 60px 20px; color: #95a5a6; font-size: 1.1em;">載入資料中...</td></tr>';
-            
-            try {
-                console.log('📚 初始化 SQL.js...');
-                const SQL = await initSqlJs({
-                    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
-                });
-                
-                const dbPath = DATA_PATH + 'stock_hot.db';
-                console.log('📂 資料庫路徑:', dbPath);
-                
-                const response = await fetch(dbPath);
-                console.log('📡 fetch 回應狀態:', response.status, response.statusText);
-                
-                if (!response.ok) {
-                    throw new Error(`無法載入資料庫: ${response.status} ${response.statusText}`);
-                }
-                
-                const dbBuffer = await response.arrayBuffer();
-                console.log('💾 資料庫大小:', dbBuffer.byteLength, 'bytes');
-                
-                const db = new SQL.Database(new Uint8Array(dbBuffer));
-                
-                // 查詢所有熱門股資料
-                const query = `SELECT * FROM hot_stocks ORDER BY 股票代碼`;
-                console.log('🔍 執行查詢:', query);
-                const result = db.exec(query);
-                console.log('✅ 查詢結果:', result.length > 0 ? result[0].values.length + ' 筆資料' : '無資料');
-                db.close();
-                
-                if (result.length === 0 || result[0].values.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="padding: 40px; color: #95a5a6;">沒有熱門股資料</td></tr>';
-                    return;
-                }
-                
-                const columns = result[0].columns;
-                const rows = result[0].values;
-                
-                // 將資料轉換為物件陣列
-                const stocks = rows.map(row => {
-                    const obj = {};
-                    columns.forEach((col, idx) => {
-                        obj[col] = row[idx];
-                    });
-                    return obj;
-                });
-                
-                // 顯示資料
-                tbody.innerHTML = '';
-                stocks.forEach((stock, index) => {
-                    const row = document.createElement('tr');
-                    
-                    // 解析信號列表（JSON 格式）
-                    let signalList = '';
-                    try {
-                        const signals = JSON.parse(stock['信號列表']);
-                        signalList = signals.join(', ');
-                    } catch (e) {
-                        signalList = stock['信號列表'] || '-';
-                    }
-                    
-                    // 設定風險等級顏色
-                    let riskColor = '#2c3e50';
-                    if (stock['風險等級'] === '高') {
-                        riskColor = '#e74c3c';
-                    } else if (stock['風險等級'] === '中') {
-                        riskColor = '#f39c12';
-                    } else if (stock['風險等級'] === '低') {
-                        riskColor = '#27ae60';
-                    }
-                    
-                    // 設定操作建議顏色
-                    let actionColor = '#2c3e50';
-                    if (stock['操作建議'] === '買進' || stock['操作建議'].includes('買')) {
-                        actionColor = '#27ae60';
-                    } else if (stock['操作建議'] === '賣出' || stock['操作建議'].includes('賣')) {
-                        actionColor = '#e74c3c';
-                    } else if (stock['操作建議'] === '觀望') {
-                        actionColor = '#95a5a6';
-                    }
-                    
-                    row.innerHTML = `
-                        <td style="text-align: center; font-weight: 600; color: #7f8c8d;">${index + 1}</td>
-                        <td>
-                            <div style="font-weight: 600; color: #2c3e50;">${stock['股票名稱']}</div>
-                            <div style="font-size: 0.85em; color: #7f8c8d;">${stock['股票代碼']}</div>
-                        </td>
-                        <td style="text-align: center; color: #7f8c8d;">${stock['類型']}</td>
-                        <td style="color: #7f8c8d; font-size: 0.9em;">${stock['產業分類'] || '-'}</td>
-                        <td>
-                            <div style="padding: 8px; background: #f8f9fa; border-radius: 8px;">
-                                <div style="margin-bottom: 8px;">
-                                    <span style="font-weight: 600; color: #495057;">走勢分析：</span>
-                                    <span style="color: #6c757d;">${stock['走勢分析'] || '-'}</span>
-                                </div>
-                                <div style="margin-bottom: 8px;">
-                                    <span style="font-weight: 600; color: #495057;">信號列表：</span>
-                                    <span style="color: #6c757d;">${signalList}</span>
-                                </div>
-                                <div style="margin-bottom: 8px;">
-                                    <span style="font-weight: 600; color: #495057;">操作建議：</span>
-                                    <span style="font-weight: 600; color: ${actionColor};">${stock['操作建議'] || '-'}</span>
-                                </div>
-                                <div style="margin-bottom: 8px;">
-                                    <span style="font-weight: 600; color: #495057;">風險等級：</span>
-                                    <span style="font-weight: 600; color: ${riskColor};">${stock['風險等級'] || '-'}</span>
-                                </div>
-                                <div>
-                                    <span style="font-weight: 600; color: #495057;">評分：</span>
-                                    <span style="color: #6c757d;">${stock['評分'] || '-'} 分</span>
-                                </div>
-                            </div>
-                        </td>
-                    `;
-                    
-                    tbody.appendChild(row);
-                });
-                
-            } catch (error) {
-                console.error('載入熱門股資料失敗:', error);
-                tbody.innerHTML = `
-                    <tr><td colspan="5" style="padding: 40px; color: #e74c3c;">
-                        載入失敗: ${error.message}
-                    </td></tr>
-                `;
-            }
         }
 
         async function loadStockList() {
@@ -1520,6 +1347,121 @@
             });
         }
 
+        async function loadCurrentStockAnalysis(stockCode) {
+            const analysisDiv = document.getElementById('currentStockAnalysis');
+            const cardDiv = document.getElementById('stockAnalysisCard');
+            
+            if (!stockCode) {
+                analysisDiv.style.display = 'none';
+                return;
+            }
+            
+            cardDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #95a5a6;">載入分析資料中...</div>';
+            
+            try {
+                const SQL = await initSqlJs({
+                    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
+                });
+                
+                const dbPath = DATA_PATH + 'stock_hot.db';
+                const response = await fetch(dbPath);
+                
+                if (!response.ok) {
+                    throw new Error(`無法載入資料庫: ${response.status}`);
+                }
+                
+                const dbBuffer = await response.arrayBuffer();
+                const db = new SQL.Database(new Uint8Array(dbBuffer));
+                
+                // 查詢特定股票的資料
+                const query = `SELECT * FROM hot_stocks WHERE 股票代碼 = '${stockCode}'`;
+                const result = db.exec(query);
+                db.close();
+                
+                if (result.length === 0 || result[0].values.length === 0) {
+                    analysisDiv.style.display = 'none';
+                    return;
+                }
+                
+                const columns = result[0].columns;
+                const row = result[0].values[0];
+                
+                // 將資料轉換為物件
+                const stock = {};
+                columns.forEach((col, idx) => {
+                    stock[col] = row[idx];
+                });
+                
+                // 顯示分析區塊
+                analysisDiv.style.display = 'block';
+                
+                // 解析信號列表（JSON 格式）
+                let signalList = '';
+                try {
+                    const signals = JSON.parse(stock['信號列表']);
+                    signalList = signals.join(', ');
+                } catch (e) {
+                    signalList = stock['信號列表'] || '-';
+                }
+                
+                // 設定風險等級顏色
+                let riskColor = '#2c3e50';
+                if (stock['風險等級'] === '高') {
+                    riskColor = '#e74c3c';
+                } else if (stock['風險等級'] === '中') {
+                    riskColor = '#f39c12';
+                } else if (stock['風險等級'] === '低') {
+                    riskColor = '#27ae60';
+                }
+                
+                // 設定操作建議顏色
+                let actionColor = '#ffffff';
+                let actionBg = '#6c757d';
+                if (stock['操作建議'] === '買進' || stock['操作建議'] === '上車') {
+                    actionBg = '#27ae60';
+                } else if (stock['操作建議'] === '賣出' || stock['操作建議'].includes('賣')) {
+                    actionBg = '#e74c3c';
+                } else if (stock['操作建議'] === '觀望') {
+                    actionBg = '#6c757d';
+                }
+                
+                // 顯示卡片內容
+                cardDiv.innerHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="padding: 10px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #2196f3;">
+                            <div style="font-weight: 600; color: #1976d2; font-size: 0.9em; margin-bottom: 3px;">走勢分析</div>
+                            <div style="color: #424242; font-size: 0.95em;">${stock['走勢分析'] || '-'}</div>
+                        </div>
+                        
+                        <div style="padding: 10px; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
+                            <div style="font-weight: 600; color: #856404; font-size: 0.9em; margin-bottom: 3px;">信號列表</div>
+                            <div style="color: #856404; font-size: 0.95em;">${signalList}</div>
+                        </div>
+                        
+                        <div style="padding: 12px; background: ${actionBg}; border-radius: 8px; text-align: center;">
+                            <div style="font-weight: 600; color: ${actionColor}; font-size: 1.05em;">建議：${stock['操作建議'] || '-'}</div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px;">
+                            <div style="flex: 1; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 2px solid #dee2e6; text-align: center;">
+                                <div style="font-weight: 600; color: #495057; font-size: 0.85em; margin-bottom: 3px;">風險等級</div>
+                                <div style="font-weight: 700; color: ${riskColor}; font-size: 1.15em;">${stock['風險等級'] || '-'}</div>
+                            </div>
+                            <div style="flex: 1; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 2px solid #dee2e6; text-align: center;">
+                                <div style="font-weight: 600; color: #495057; font-size: 0.85em; margin-bottom: 3px;">評分</div>
+                                <div style="font-weight: 700; color: #667eea; font-size: 1.15em;">${stock['評分'] !== null ? stock['評分'] : '-'} 分</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('載入分析資料失敗:', error);
+                // 如果沒有分析資料，就隱藏整個區塊
+                analysisDiv.style.display = 'none';
+            }
+        }
+
         async function loadWatchlistStocks() {
             const chartContent = document.getElementById('stockChartContent');
             chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">載入追蹤股票...</div>';
@@ -1657,6 +1599,9 @@
                     foreign, trust, dealer,
                     foreignCum, trustCum, dealerCum
                 });
+                
+                // 載入當前股票的熱門股分析資料
+                await loadCurrentStockAnalysis(stockCode);
                 
             } catch (error) {
                 console.error('生成圖表失敗:', error);
@@ -2041,7 +1986,6 @@
                     document.getElementById('tabLatest').classList.remove('active');
                     document.getElementById('tabFiveDay').classList.remove('active');
                     document.getElementById('tabSixtyDay').classList.remove('active');
-                    document.getElementById('tabHotStock').classList.remove('active');
                     
                     if (currentCategory === 'latest') {
                         document.getElementById('tabLatest').classList.add('active');
@@ -2055,10 +1999,6 @@
                         document.getElementById('tabSixtyDay').classList.add('active');
                         showStockChartView();
                         loadStockList();
-                    } else if (currentCategory === 'hotstock') {
-                        document.getElementById('tabHotStock').classList.add('active');
-                        showHotStockView();
-                        loadHotStockData();
                     }
                     
                     document.getElementById('dataTable').style.display = 'table';
