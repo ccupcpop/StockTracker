@@ -1388,8 +1388,13 @@
                 const dbBuffer = await response.arrayBuffer();
                 const db = new SQL.Database(new Uint8Array(dbBuffer));
                 
-                // 查詢特定股票的資料
-                const query = `SELECT * FROM hot_stocks WHERE 股票代碼 = '${stockCode}'`;
+                // 查詢特定股票的資料，只取有分析資料的最新記錄
+                const query = `SELECT * FROM hot_stocks 
+                              WHERE 股票代碼 = '${stockCode}' 
+                              AND 操作建議 != '' 
+                              AND 操作建議 IS NOT NULL
+                              ORDER BY 日期 DESC 
+                              LIMIT 1`;
                 const result = db.exec(query);
                 db.close();
                 
@@ -1414,9 +1419,14 @@
                 let signalList = '';
                 try {
                     const signals = JSON.parse(stock['信號列表']);
-                    signalList = signals.join(', ');
+                    if (Array.isArray(signals) && signals.length > 0) {
+                        signalList = signals.map(signal => `<div style="margin: 3px 0;">• ${signal}</div>`).join('');
+                    } else {
+                        signalList = '<div style="color: #999;">無信號</div>';
+                    }
                 } catch (e) {
-                    signalList = stock['信號列表'] || '-';
+                    // 如果不是有效的 JSON，顯示原始字串或預設值
+                    signalList = stock['信號列表'] ? `<div>${stock['信號列表']}</div>` : '<div style="color: #999;">無信號</div>';
                 }
                 
                 // 設定風險等級顏色
@@ -1443,28 +1453,32 @@
                 // 顯示卡片內容
                 cardDiv.innerHTML = `
                     <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="padding: 8px 10px; background: #f0f0f0; border-radius: 6px; text-align: center;">
+                            <span style="color: #666; font-size: 0.9em;">分析日期：${stock['日期'] || '-'}</span>
+                        </div>
+                        
                         <div style="padding: 10px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #2196f3;">
                             <div style="font-weight: 600; color: #1976d2; font-size: 0.9em; margin-bottom: 3px;">走勢分析</div>
-                            <div style="color: #424242; font-size: 0.95em;">${stock['走勢分析'] || '-'}</div>
+                            <div style="color: #424242; font-size: 0.95em;">${stock['走勢分析'] || '<span style="color: #999;">無分析資料</span>'}</div>
                         </div>
                         
                         <div style="padding: 10px; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
                             <div style="font-weight: 600; color: #856404; font-size: 0.9em; margin-bottom: 3px;">信號列表</div>
-                            <div style="color: #856404; font-size: 0.95em;">${signalList}</div>
+                            <div style="color: #856404; font-size: 0.9em;">${signalList}</div>
                         </div>
                         
                         <div style="padding: 12px; background: ${actionBg}; border-radius: 8px; text-align: center;">
-                            <div style="font-weight: 600; color: ${actionColor}; font-size: 1.05em;">建議：${stock['操作建議'] || '-'}</div>
+                            <div style="font-weight: 600; color: ${actionColor}; font-size: 1.05em;">建議：${stock['操作建議'] || '觀望'}</div>
                         </div>
                         
                         <div style="display: flex; gap: 10px;">
                             <div style="flex: 1; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 2px solid #dee2e6; text-align: center;">
                                 <div style="font-weight: 600; color: #495057; font-size: 0.85em; margin-bottom: 3px;">風險等級</div>
-                                <div style="font-weight: 700; color: ${riskColor}; font-size: 1.15em;">${stock['風險等級'] || '-'}</div>
+                                <div style="font-weight: 700; color: ${riskColor}; font-size: 1.15em;">${stock['風險等級'] || '中'}</div>
                             </div>
                             <div style="flex: 1; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 2px solid #dee2e6; text-align: center;">
                                 <div style="font-weight: 600; color: #495057; font-size: 0.85em; margin-bottom: 3px;">評分</div>
-                                <div style="font-weight: 700; color: #667eea; font-size: 1.15em;">${stock['評分'] !== null ? stock['評分'] : '-'} 分</div>
+                                <div style="font-weight: 700; color: #667eea; font-size: 1.15em;">${stock['評分'] != null ? stock['評分'] + ' 分' : '- 分'}</div>
                             </div>
                         </div>
                     </div>
