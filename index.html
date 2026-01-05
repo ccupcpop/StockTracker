@@ -1649,7 +1649,7 @@
                     ma5, ma10,
                     foreign, trust, dealer,
                     foreignCum, trustCum, dealerCum
-                });
+                }, isFocusStock);
                 
                 // 載入當前股票的熱門股分析資料
                 await loadCurrentStockAnalysis(stockCode);
@@ -1664,7 +1664,7 @@
             }
         }
 
-        function generatePlotlyChart(container, data) {
+        function generatePlotlyChart(container, data, isFocusStock = false) {
             const {
                 stockCode, stockName,
                 dates, rawDates, opens, highs, lows, closes, volumes,
