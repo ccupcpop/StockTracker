@@ -1508,7 +1508,12 @@
                 
                 // 讀取追蹤股票清單 (使用正確的中文欄位名稱)
                 // 使用 DISTINCT 去重,避免歷史資料重複
-                const hotQuery = `SELECT DISTINCT 股票代碼, 股票名稱, 類型 FROM hot_stocks ORDER BY 股票代碼`;
+                // 加入 IS_FOCUS 欄位來標記是否為追蹤股票
+                const hotQuery = `
+                    SELECT DISTINCT 股票代碼, 股票名稱, 類型, IS_FOCUS 
+                    FROM hot_stocks 
+                    ORDER BY 股票代碼
+                `;
                 const hotResult = hotDB.exec(hotQuery);
                 // 不要關閉資料庫,後續還需要使用
                 
@@ -1518,10 +1523,11 @@
                 }
                 
                 // 從資料庫讀取股票清單,類型欄位已經包含「上市」或「上櫃」資訊
-                const watchlist = hotResult[0].values.map(([code, name, type]) => ({ 
+                const watchlist = hotResult[0].values.map(([code, name, type, isFocus]) => ({ 
                     code, 
                     name, 
-                    market: type === '上市' ? 'TSE' : 'OTC'  // 直接使用資料庫中的類型欄位
+                    market: type === '上市' ? 'TSE' : 'OTC',  // 直接使用資料庫中的類型欄位
+                    isFocus: isFocus === 1  // 將 1 轉換為 true, 0 轉換為 false
                 }));
                 
                 // 追蹤股票模式：直接使用 stock_hot.db（已包含完整歷史資料）
@@ -1583,6 +1589,10 @@
             showStockChartView();
             const chartContent = document.getElementById('stockChartContent');
             chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">生成圖表中...</div>';
+            
+            // 獲取當前股票的isFocus狀態
+            const currentStock = allStocksList.find(s => s.code === stockCode);
+            const isFocusStock = currentStock && currentStock.isFocus;
             
             try {
                 // 追蹤股票模式：直接從 stock_hot.db 的 hot_stocks 表讀取
@@ -1812,7 +1822,7 @@
             
             const layout = {
                 title: {
-                    text: `${stockCode} ${stockName} 技術分析圖表 (最近75筆)`,
+                    text: `${isFocusStock ? '📌 ' : ''}${stockCode} ${stockName} 技術分析圖表 (最近75筆)`,
                     y: 0.98
                 },
                 margin: { t: 80, b: 10, l: 60, r: 20 },
