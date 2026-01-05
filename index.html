@@ -1011,19 +1011,6 @@
             } else if (market === 'WATCHLIST') {
                 document.getElementById('btnWATCHLIST').classList.add('active');
                 document.getElementById('stockCategoryTabs').style.display = 'none';
-                
-                console.log('🔄 切換到追蹤股模式');
-                
-                // 強制清空選單 (在載入追蹤股之前)
-                const selector = document.getElementById('stockSelector');
-                console.log('   - 清空前選單選項數:', selector.options.length);
-                selector.innerHTML = '';
-                selector.options.length = 0;
-                while (selector.firstChild) {
-                    selector.removeChild(selector.firstChild);
-                }
-                console.log('   - 清空後選單選項數:', selector.options.length);
-                
                 // 直接显示股票图表视图
                 showStockChartView();
                 loadWatchlistStocks();
@@ -1187,18 +1174,10 @@
         function updateStockSelector() {
             const selector = document.getElementById('stockSelector');
             
-            console.log(`🔄 updateStockSelector 被呼叫 (買賣超模式)`);
-            console.log(`   - allStocksList 長度: ${allStocksList ? allStocksList.length : 'undefined'}`);
-            console.log(`   - 當前選單選項數: ${selector.options.length}`);
-            
-            // 三重保險:確保完全清空現有選項
-            selector.innerHTML = '';           // 方法1: 清空 HTML
-            selector.options.length = 0;       // 方法2: 設置選項長度為 0
-            while (selector.firstChild) {      // 方法3: 移除所有子元素
+            // 確保完全清空現有選項
+            while (selector.firstChild) {
                 selector.removeChild(selector.firstChild);
             }
-            
-            console.log(`   - 清空後選單選項數: ${selector.options.length}`);
             
             const list = isReverseOrder ? [...allStocksList].reverse() : allStocksList;
             
@@ -1215,7 +1194,6 @@
             selector.appendChild(fragment);
             selector.value = currentStockIndex;
             
-            console.log(`   - 填充後選單選項數: ${selector.options.length}`);
             console.log(`✅ 買賣超下拉選單已更新: ${list.length} 個選項`);
         }
         
@@ -1396,98 +1374,24 @@
             cardDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #95a5a6;">載入分析資料中...</div>';
             
             try {
-                // 直接使用已經載入的 sqlDB (stock_hot.db),不需要重新載入
-                const query = `
-                    SELECT * FROM hot_stocks 
-                    WHERE 股票代碼 = '${stockCode}' 
-                    ORDER BY 日期 DESC 
-                    LIMIT 1
-                `;
-                const result = sqlDB.exec(query);
-                
-                if (result.length === 0 || result[0].values.length === 0) {
-                    analysisDiv.style.display = 'none';
-                    return;
-                }
-                
-                const columns = result[0].columns;
-                const row = result[0].values[0];
-                
-                // 將資料轉換為物件
-                const stock = {};
-                columns.forEach((col, idx) => {
-                    stock[col] = row[idx];
+                const SQL = await initSqlJs({
+                    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
                 });
                 
-                // 顯示分析區塊
-                analysisDiv.style.display = 'block';
+                const dbPath = DATA_PATH + 'stock_hot.db';
+                const response = await fetch(dbPath);
                 
-                // 解析信號列表（JSON 格式）
-                let signalList = '';
-                try {
-                    const signals = JSON.parse(stock['信號列表']);
-                    signalList = signals.join(', ');
-                } catch (e) {
-                    signalList = stock['信號列表'] || '-';
+                if (!response.ok) {
+                    throw new Error(`無法載入資料庫: ${response.status}`);
                 }
                 
-                // 設定風險等級顏色
-                let riskColor = '#2c3e50';
-                if (stock['風險等級'] === '高') {
-                    riskColor = '#e74c3c';
-                } else if (stock['風險等級'] === '中') {
-                    riskColor = '#f39c12';
-                } else if (stock['風險等級'] === '低') {
-                    riskColor = '#27ae60';
-                }
+                const dbBuffer = await response.arrayBuffer();
+                const db = new SQL.Database(new Uint8Array(dbBuffer));
                 
-                // 設定操作建議顏色
-                let actionColor = '#ffffff';
-                let actionBg = '#6c757d';
-                if (stock['操作建議'] === '買進' || stock['操作建議'] === '上車') {
-                    actionBg = '#27ae60';
-                } else if (stock['操作建議'] === '賣出' || stock['操作建議'].includes('賣')) {
-                    actionBg = '#e74c3c';
-                } else if (stock['操作建議'] === '觀望') {
-                    actionBg = '#6c757d';
-                }
-                
-                // 顯示卡片內容
-                cardDiv.innerHTML = `
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <div style="padding: 10px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #2196f3;">
-                            <div style="font-weight: 600; color: #1976d2; font-size: 0.9em; margin-bottom: 3px;">走勢分析</div>
-                            <div style="color: #424242; font-size: 0.95em;">${stock['走勢分析'] || '-'}</div>
-                        </div>
-                        
-                        <div style="padding: 10px; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
-                            <div style="font-weight: 600; color: #856404; font-size: 0.9em; margin-bottom: 3px;">信號列表</div>
-                            <div style="color: #856404; font-size: 0.95em;">${signalList}</div>
-                        </div>
-                        
-                        <div style="padding: 12px; background: ${actionBg}; border-radius: 8px; text-align: center;">
-                            <div style="font-weight: 600; color: ${actionColor}; font-size: 1.05em;">建議：${stock['操作建議'] || '-'}</div>
-                        </div>
-                        
-                        <div style="display: flex; gap: 10px;">
-                            <div style="flex: 1; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 2px solid #dee2e6; text-align: center;">
-                                <div style="font-weight: 600; color: #495057; font-size: 0.85em; margin-bottom: 3px;">風險等級</div>
-                                <div style="font-weight: 700; color: ${riskColor}; font-size: 1.15em;">${stock['風險等級'] || '-'}</div>
-                            </div>
-                            <div style="flex: 1; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 2px solid #dee2e6; text-align: center;">
-                                <div style="font-weight: 600; color: #495057; font-size: 0.85em; margin-bottom: 3px;">評分</div>
-                                <div style="font-weight: 700; color: #667eea; font-size: 1.15em;">${stock['評分'] !== null ? stock['評分'] : '-'} 分</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-            } catch (error) {
-                console.error('載入分析資料失敗:', error);
-                // 如果沒有分析資料，就隱藏整個區塊
-                analysisDiv.style.display = 'none';
-            }
-        }
+                // 查詢特定股票的資料
+                const query = `SELECT * FROM hot_stocks WHERE 股票代碼 = '${stockCode}'`;
+                const result = db.exec(query);
+                db.close();
                 
                 if (result.length === 0 || result[0].values.length === 0) {
                     analysisDiv.style.display = 'none';
@@ -1582,83 +1486,38 @@
                     locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
                 });
                 
-                // 只載入追蹤股票數據庫 stock_hot.db
+                // 載入追蹤股票數據庫
                 const hotDbPath = DATA_PATH + 'stock_hot.db';
                 const hotResponse = await fetch(hotDbPath);
                 const hotDbBuffer = await hotResponse.arrayBuffer();
                 const hotDB = new SQL.Database(new Uint8Array(hotDbBuffer));
                 
-                // 讀取所有追蹤股票資料(包含重複)
-                const hotQuery = `SELECT 股票代碼, 股票名稱, 類型 FROM hot_stocks ORDER BY 股票代碼`;
+                // 讀取追蹤股票清單 (使用正確的中文欄位名稱)
+                // 使用 DISTINCT 去重,避免歷史資料重複
+                const hotQuery = `SELECT DISTINCT 股票代碼, 股票名稱, 類型 FROM hot_stocks ORDER BY 股票代碼`;
                 const hotResult = hotDB.exec(hotQuery);
-                
-                console.log(`✅ SQL 查詢完成`);
+                // 不要關閉資料庫,後續還需要使用
                 
                 if (hotResult.length === 0 || hotResult[0].values.length === 0) {
-                    hotDB.close();
                     chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">沒有追蹤的股票</div>';
                     return;
                 }
                 
-                console.log(`   - 原始資料筆數: ${hotResult[0].values.length}`);
-                
-                // 使用 JavaScript 去重 (確保每個股票代碼只出現一次)
-                const stockMap = new Map();
-                hotResult[0].values.forEach(([code, name, type]) => {
-                    if (!stockMap.has(code)) {
-                        stockMap.set(code, { code, name, type });
-                    }
-                });
-                
-                // 轉換為陣列並按股票代碼排序
-                const uniqueStocks = Array.from(stockMap.values()).sort((a, b) => 
-                    a.code.localeCompare(b.code)
-                );
-                
-                console.log(`   - 去重後股票數: ${uniqueStocks.length}`);
-                console.log(`   - 前3筆:`, uniqueStocks.slice(0, 3).map(s => s.code));
-                
-                // 從去重後的資料建立股票清單
-                const watchlist = uniqueStocks.map(({ code, name, type }) => ({ 
+                // 從資料庫讀取股票清單,類型欄位已經包含「上市」或「上櫃」資訊
+                const watchlist = hotResult[0].values.map(([code, name, type]) => ({ 
                     code, 
                     name, 
-                    market: type === '上市' ? 'TSE' : 'OTC'
+                    market: type === '上市' ? 'TSE' : 'OTC'  // 直接使用資料庫中的類型欄位
                 }));
                 
-                console.log(`📊 watchlist 建立完成:`);
-                console.log(`   - watchlist 長度: ${watchlist.length}`);
-                console.log(`   - watchlist 前3筆:`, watchlist.slice(0, 3));
+                // 追蹤股票模式：直接使用 stock_hot.db（已包含完整歷史資料）
+                // 不需要再載入 stock_tse.db 和 stock_otc.db,因為:
+                // 1. stock_hot.db 已包含所有追蹤股票的完整交易歷史
+                // 2. stock_tse.db 和 stock_otc.db 檔案可能不存在
                 
-                console.log(`📝 準備設置 allStocksList...`);
-                console.log(`   - 設置前 allStocksList 長度: ${allStocksList ? allStocksList.length : 'undefined'}`);
-                
-                // 儲存股票清單和數據庫引用(只保存 hotDB)
+                // 儲存股票清單和數據庫引用
                 allStocksList = watchlist;
-                sqlDB = hotDB;  // 直接保存 hot 資料庫
-                
-                console.log(`   - 設置後 allStocksList 長度: ${allStocksList.length}`);
-                console.log(`   - 設置後 allStocksList 前3筆:`, allStocksList.slice(0, 3).map(s => s.code));
-                
-                // 🔒 最後保險:再次檢查並去重 allStocksList
-                const finalMap = new Map();
-                allStocksList.forEach(stock => {
-                    if (!finalMap.has(stock.code)) {
-                        finalMap.set(stock.code, stock);
-                    }
-                });
-                
-                const beforeDedup = allStocksList.length;
-                allStocksList = Array.from(finalMap.values()).sort((a, b) => 
-                    a.code.localeCompare(b.code)
-                );
-                const afterDedup = allStocksList.length;
-                
-                if (beforeDedup !== afterDedup) {
-                    console.warn(`⚠️ 發現並移除了 ${beforeDedup - afterDedup} 個重複項目`);
-                }
-                console.log(`✅ 最終 allStocksList 長度: ${allStocksList.length}`);
-                
-                console.log(`✅ 追蹤股票已載入: ${watchlist.length} 個股票`);
+                sqlDB = hotDB;  // 直接使用 stock_hot.db
                 
                 // 填充下拉選單
                 updateWatchlistSelector();
@@ -1683,49 +1542,17 @@
         function updateWatchlistSelector() {
             const selector = document.getElementById('stockSelector');
             
-            console.log(`🔄 updateWatchlistSelector 被呼叫`);
-            console.log(`   - allStocksList 長度: ${allStocksList ? allStocksList.length : 'undefined'}`);
-            console.log(`   - 當前選單選項數: ${selector.options.length}`);
-            
-            // 三重保險:確保完全清空現有選項
-            selector.innerHTML = '';           // 方法1: 清空 HTML
-            selector.options.length = 0;       // 方法2: 設置選項長度為 0
-            while (selector.firstChild) {      // 方法3: 移除所有子元素
+            // 確保完全清空現有選項
+            while (selector.firstChild) {
                 selector.removeChild(selector.firstChild);
-            }
-            
-            console.log(`   - 清空後選單選項數: ${selector.options.length}`);
-            
-            if (!allStocksList || allStocksList.length === 0) {
-                console.error('❌ allStocksList 是空的或未定義!');
-                return;
             }
             
             const list = isReverseOrder ? [...allStocksList].reverse() : allStocksList;
             
-            console.log(`   - 處理後 list 長度: ${list.length}`);
-            console.log(`   - 前3筆:`, list.slice(0, 3));
-            
-            // 🔒 雙重保險:再次去重 (以防萬一)
-            const dedupMap = new Map();
-            const dedupList = [];
-            list.forEach(stock => {
-                if (!dedupMap.has(stock.code)) {
-                    dedupMap.set(stock.code, true);
-                    dedupList.push(stock);
-                }
-            });
-            
-            if (list.length !== dedupList.length) {
-                console.warn(`⚠️ updateWatchlistSelector 中發現並移除了 ${list.length - dedupList.length} 個重複項目`);
-            }
-            
-            console.log(`   - 去重後 list 長度: ${dedupList.length}`);
-            
             // 使用 DocumentFragment 提高效能並確保不重複
             const fragment = document.createDocumentFragment();
             
-            dedupList.forEach((stock, idx) => {
+            list.forEach((stock, idx) => {
                 const option = document.createElement('option');
                 option.value = idx;
                 option.textContent = `${stock.code}_${stock.name} (${stock.market})`;
@@ -1735,8 +1562,7 @@
             selector.appendChild(fragment);
             selector.value = currentStockIndex;
             
-            console.log(`   - 填充後選單選項數: ${selector.options.length}`);
-            console.log(`✅ 追蹤股下拉選單已更新: ${dedupList.length} 個選項`);
+            console.log(`✅ 追蹤股下拉選單已更新: ${list.length} 個選項`);
         }
         
         async function loadWatchlistStockChart(stockCode, stockName, market) {
@@ -1745,7 +1571,7 @@
             chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">生成圖表中...</div>';
             
             try {
-                // 直接從 stock_hot.db 的 hot_stocks 資料表查詢
+                // 追蹤股票模式：直接從 stock_hot.db 的 hot_stocks 表讀取
                 const query = `SELECT * FROM hot_stocks WHERE 股票代碼 = '${stockCode}' ORDER BY 日期`;
                 const result = sqlDB.exec(query);
                 
@@ -1766,29 +1592,12 @@
                 
                 const chartData = data.slice(-75);
                 
-                console.log(`📊 追蹤股資料載入:`);
-                console.log(`   - 股票代碼: ${stockCode}`);
-                console.log(`   - 總筆數: ${data.length}`);
-                console.log(`   - 顯示筆數: ${chartData.length}`);
-                if (chartData.length > 0) {
-                    console.log(`   - 第一筆日期: ${chartData[0]['日期']}`);
-                    console.log(`   - 最後一筆日期: ${chartData[chartData.length-1]['日期']}`);
-                }
-                
                 // 保存原始日期字符串用於判斷星期
                 const rawDates = chartData.map(d => d['日期']);
                 
                 // 格式化日期為 MM/DD
-                // 重要:將 "2025.09.08" 格式轉換為 "2025/09/08" 以便 Date 物件正確解析
                 const dates = chartData.map(d => {
-                    const dateStr = String(d['日期']).replace(/\./g, '/');  // 將 . 替換為 /
-                    const date = new Date(dateStr);
-                    
-                    if (isNaN(date.getTime())) {
-                        console.error(`❌ 無效的日期: ${d['日期']}`);
-                        return d['日期'];  // 如果轉換失敗,返回原始字串
-                    }
-                    
+                    const date = new Date(d['日期']);
                     const month = String(date.getMonth() + 1).padStart(2, '0');
                     const day = String(date.getDate()).padStart(2, '0');
                     return `${month}/${day}`;
@@ -1797,8 +1606,7 @@
                 const highs = chartData.map(d => parseFloat(String(d['最高價']).replace(/,/g, '')) || 0);
                 const lows = chartData.map(d => parseFloat(String(d['最低價']).replace(/,/g, '')) || 0);
                 const closes = chartData.map(d => parseFloat(String(d['收盤價']).replace(/,/g, '')) || 0);
-                // 注意: hot_stocks 資料表中是「成交量」而非「成交張數」
-                const volumes = chartData.map(d => parseFloat(String(d['成交量'] || d['成交張數'] || 0).replace(/,/g, '')) || 0);
+                const volumes = chartData.map(d => parseFloat(String(d['成交量']).replace(/,/g, '')) || 0);
                 
                 const ma5 = calculateMA(closes, 5);
                 const ma10 = calculateMA(closes, 10);
@@ -1848,9 +1656,7 @@
             const ticktext = [];
             
             for (let i = 0; i < dates.length; i++) {
-                // 重要:將 "2025.09.08" 格式轉換為 "2025/09/08"
-                const dateStr = String(rawDates[i]).replace(/\./g, '/');
-                const fullDate = new Date(dateStr);
+                const fullDate = new Date(rawDates[i]);
                 const dayOfWeek = fullDate.getDay(); // 0=Sunday, 1=Monday, ...
                 
                 // 如果是週一（1）或最後一天
