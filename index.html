@@ -1294,6 +1294,14 @@
                     return obj;
                 });
                 
+                // 先用全部資料計算MA
+                const allCloses = data.map(d => parseFloat(String(d['收盤價']).replace(/,/g, '')) || 0);
+                const allMA5 = calculateMA(allCloses, 5);
+                const allMA10 = calculateMA(allCloses, 10);
+                const allMA20 = calculateMA(allCloses, 20);
+                const allMA60 = calculateMA(allCloses, 60);
+                
+                // 只取最後75筆來顯示
                 const chartData = data.slice(-75);
                 
                 // 保存原始日期字符串用於判斷星期
@@ -1312,8 +1320,11 @@
                 const closes = chartData.map(d => parseFloat(String(d['收盤價']).replace(/,/g, '')) || 0);
                 const volumes = chartData.map(d => parseFloat(String(d['成交張數']).replace(/,/g, '')) || 0);
                 
-                const ma5 = calculateMA(closes, 5);
-                const ma10 = calculateMA(closes, 10);
+                // 取最後75筆對應的MA值
+                const ma5 = allMA5.slice(-75);
+                const ma10 = allMA10.slice(-75);
+                const ma20 = allMA20.slice(-75);
+                const ma60 = allMA60.slice(-75);
                 
                 const foreign = chartData.map(d => parseFloat(String(d['外陸資買賣超張數'] || 0).replace(/,/g, '')) || 0);
                 const trust = chartData.map(d => parseFloat(String(d['投信買賣超張數'] || 0).replace(/,/g, '')) || 0);
@@ -1326,7 +1337,7 @@
                 generatePlotlyChart(chartContent, {
                     stockCode, stockName,
                     dates, rawDates, opens, highs, lows, closes, volumes,
-                    ma5, ma10,
+                    ma5, ma10, ma20, ma60,
                     foreign, trust, dealer,
                     foreignCum, trustCum, dealerCum
                 });
@@ -1614,6 +1625,14 @@
                     return obj;
                 });
                 
+                // 先用全部資料計算MA
+                const allCloses = data.map(d => parseFloat(String(d['收盤價']).replace(/,/g, '')) || 0);
+                const allMA5 = calculateMA(allCloses, 5);
+                const allMA10 = calculateMA(allCloses, 10);
+                const allMA20 = calculateMA(allCloses, 20);
+                const allMA60 = calculateMA(allCloses, 60);
+                
+                // 只取最後75筆來顯示
                 const chartData = data.slice(-75);
                 
                 // 保存原始日期字符串用於判斷星期
@@ -1632,8 +1651,11 @@
                 const closes = chartData.map(d => parseFloat(String(d['收盤價']).replace(/,/g, '')) || 0);
                 const volumes = chartData.map(d => parseFloat(String(d['成交量']).replace(/,/g, '')) || 0);
                 
-                const ma5 = calculateMA(closes, 5);
-                const ma10 = calculateMA(closes, 10);
+                // 取最後75筆對應的MA值
+                const ma5 = allMA5.slice(-75);
+                const ma10 = allMA10.slice(-75);
+                const ma20 = allMA20.slice(-75);
+                const ma60 = allMA60.slice(-75);
                 
                 const foreign = chartData.map(d => parseFloat(String(d['外陸資買賣超張數'] || 0).replace(/,/g, '')) || 0);
                 const trust = chartData.map(d => parseFloat(String(d['投信買賣超張數'] || 0).replace(/,/g, '')) || 0);
@@ -1646,7 +1668,7 @@
                 generatePlotlyChart(chartContent, {
                     stockCode, stockName,
                     dates, rawDates, opens, highs, lows, closes, volumes,
-                    ma5, ma10,
+                    ma5, ma10, ma20, ma60,
                     foreign, trust, dealer,
                     foreignCum, trustCum, dealerCum
                 }, isFocusStock);
@@ -1668,7 +1690,7 @@
             const {
                 stockCode, stockName,
                 dates, rawDates, opens, highs, lows, closes, volumes,
-                ma5, ma10,
+                ma5, ma10, ma20, ma60,
                 foreign, trust, dealer,
                 foreignCum, trustCum, dealerCum
             } = data;
@@ -1724,6 +1746,28 @@
                 mode: 'lines',
                 name: 'MA10',
                 line: {color: 'orange', width: 1.5},
+                xaxis: 'x',
+                yaxis: 'y'
+            };
+            
+            const ma20Trace = {
+                x: dates,
+                y: ma20,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'MA20',
+                line: {color: 'purple', width: 1.5},
+                xaxis: 'x',
+                yaxis: 'y'
+            };
+            
+            const ma60Trace = {
+                x: dates,
+                y: ma60,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'MA60',
+                line: {color: 'brown', width: 1.5},
                 xaxis: 'x',
                 yaxis: 'y'
             };
@@ -1814,7 +1858,7 @@
             };
             
             const plotData = [
-                candlestick, ma5Trace, ma10Trace,
+                candlestick, ma5Trace, ma10Trace, ma20Trace, ma60Trace,
                 volumeTrace,
                 foreignTrace, trustTrace, dealerTrace,
                 foreignCumTrace, trustCumTrace, dealerCumTrace

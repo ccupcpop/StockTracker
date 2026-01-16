@@ -1173,13 +1173,28 @@
         // 更新下拉選單
         function updateStockSelector() {
             const selector = document.getElementById('stockSelector');
+            
+            // 確保完全清空現有選項
+            while (selector.firstChild) {
+                selector.removeChild(selector.firstChild);
+            }
+            
             const list = isReverseOrder ? [...allStocksList].reverse() : allStocksList;
             
-            selector.innerHTML = list.map((stock, idx) => 
-                `<option value="${idx}">${stock.code}_${stock.name}</option>`
-            ).join('');
+            // 使用 DocumentFragment 提高效能並確保不重複
+            const fragment = document.createDocumentFragment();
             
+            list.forEach((stock, idx) => {
+                const option = document.createElement('option');
+                option.value = idx;
+                option.textContent = `${stock.code}_${stock.name}`;
+                fragment.appendChild(option);
+            });
+            
+            selector.appendChild(fragment);
             selector.value = currentStockIndex;
+            
+            console.log(`✅ 買賣超下拉選單已更新: ${list.length} 個選項`);
         }
         
         // 載入上一筆股票
@@ -1373,8 +1388,13 @@
                 const dbBuffer = await response.arrayBuffer();
                 const db = new SQL.Database(new Uint8Array(dbBuffer));
                 
-                // 查詢特定股票的資料
-                const query = `SELECT * FROM hot_stocks WHERE 股票代碼 = '${stockCode}'`;
+                // 查詢特定股票的資料，只取有分析資料的最新記錄
+                const query = `SELECT * FROM hot_stocks 
+                              WHERE 股票代碼 = '${stockCode}' 
+                              AND 操作建議 != '' 
+                              AND 操作建議 IS NOT NULL
+                              ORDER BY 日期 DESC 
+                              LIMIT 1`;
                 const result = db.exec(query);
                 db.close();
                 
@@ -1399,9 +1419,14 @@
                 let signalList = '';
                 try {
                     const signals = JSON.parse(stock['信號列表']);
-                    signalList = signals.join(', ');
+                    if (Array.isArray(signals) && signals.length > 0) {
+                        signalList = signals.map(signal => `<div style="margin: 3px 0;">• ${signal}</div>`).join('');
+                    } else {
+                        signalList = '<div style="color: #999;">無信號</div>';
+                    }
                 } catch (e) {
-                    signalList = stock['信號列表'] || '-';
+                    // 如果不是有效的 JSON，顯示原始字串或預設值
+                    signalList = stock['信號列表'] ? `<div>${stock['信號列表']}</div>` : '<div style="color: #999;">無信號</div>';
                 }
                 
                 // 設定風險等級顏色
@@ -1428,28 +1453,32 @@
                 // 顯示卡片內容
                 cardDiv.innerHTML = `
                     <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="padding: 8px 10px; background: #f0f0f0; border-radius: 6px; text-align: center;">
+                            <span style="color: #666; font-size: 0.9em;">分析日期：${stock['日期'] || '-'}</span>
+                        </div>
+                        
                         <div style="padding: 10px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #2196f3;">
                             <div style="font-weight: 600; color: #1976d2; font-size: 0.9em; margin-bottom: 3px;">走勢分析</div>
-                            <div style="color: #424242; font-size: 0.95em;">${stock['走勢分析'] || '-'}</div>
+                            <div style="color: #424242; font-size: 0.95em;">${stock['走勢分析'] || '<span style="color: #999;">無分析資料</span>'}</div>
                         </div>
                         
                         <div style="padding: 10px; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
                             <div style="font-weight: 600; color: #856404; font-size: 0.9em; margin-bottom: 3px;">信號列表</div>
-                            <div style="color: #856404; font-size: 0.95em;">${signalList}</div>
+                            <div style="color: #856404; font-size: 0.9em;">${signalList}</div>
                         </div>
                         
                         <div style="padding: 12px; background: ${actionBg}; border-radius: 8px; text-align: center;">
-                            <div style="font-weight: 600; color: ${actionColor}; font-size: 1.05em;">建議：${stock['操作建議'] || '-'}</div>
+                            <div style="font-weight: 600; color: ${actionColor}; font-size: 1.05em;">建議：${stock['操作建議'] || '觀望'}</div>
                         </div>
                         
                         <div style="display: flex; gap: 10px;">
                             <div style="flex: 1; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 2px solid #dee2e6; text-align: center;">
                                 <div style="font-weight: 600; color: #495057; font-size: 0.85em; margin-bottom: 3px;">風險等級</div>
-                                <div style="font-weight: 700; color: ${riskColor}; font-size: 1.15em;">${stock['風險等級'] || '-'}</div>
+                                <div style="font-weight: 700; color: ${riskColor}; font-size: 1.15em;">${stock['風險等級'] || '中'}</div>
                             </div>
                             <div style="flex: 1; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 2px solid #dee2e6; text-align: center;">
                                 <div style="font-weight: 600; color: #495057; font-size: 0.85em; margin-bottom: 3px;">評分</div>
-                                <div style="font-weight: 700; color: #667eea; font-size: 1.15em;">${stock['評分'] !== null ? stock['評分'] : '-'} 分</div>
+                                <div style="font-weight: 700; color: #667eea; font-size: 1.15em;">${stock['評分'] != null ? stock['評分'] + ' 分' : '- 分'}</div>
                             </div>
                         </div>
                     </div>
@@ -1478,9 +1507,15 @@
                 const hotDB = new SQL.Database(new Uint8Array(hotDbBuffer));
                 
                 // 讀取追蹤股票清單 (使用正確的中文欄位名稱)
-                const hotQuery = `SELECT 股票代碼, 股票名稱, 類型 FROM hot_stocks ORDER BY 股票代碼`;
+                // 使用 DISTINCT 去重,避免歷史資料重複
+                // 加入 IS_FOCUS 欄位來標記是否為追蹤股票
+                const hotQuery = `
+                    SELECT DISTINCT 股票代碼, 股票名稱, 類型, IS_FOCUS 
+                    FROM hot_stocks 
+                    ORDER BY 股票代碼
+                `;
                 const hotResult = hotDB.exec(hotQuery);
-                hotDB.close();
+                // 不要關閉資料庫,後續還需要使用
                 
                 if (hotResult.length === 0 || hotResult[0].values.length === 0) {
                     chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">沒有追蹤的股票</div>';
@@ -1488,24 +1523,21 @@
                 }
                 
                 // 從資料庫讀取股票清單,類型欄位已經包含「上市」或「上櫃」資訊
-                const watchlist = hotResult[0].values.map(([code, name, type]) => ({ 
+                const watchlist = hotResult[0].values.map(([code, name, type, isFocus]) => ({ 
                     code, 
                     name, 
-                    market: type === '上市' ? 'TSE' : 'OTC'  // 直接使用資料庫中的類型欄位
+                    market: type === '上市' ? 'TSE' : 'OTC',  // 直接使用資料庫中的類型欄位
+                    isFocus: isFocus === 1  // 將 1 轉換為 true, 0 轉換為 false
                 }));
                 
-                // 載入TSE和OTC數據庫
-                const tseResponse = await fetch(DATA_PATH + 'stock_tse.db');
-                const tseDbBuffer = await tseResponse.arrayBuffer();
-                const tseDB = new SQL.Database(new Uint8Array(tseDbBuffer));
-                
-                const otcResponse = await fetch(DATA_PATH + 'stock_otc.db');
-                const otcDbBuffer = await otcResponse.arrayBuffer();
-                const otcDB = new SQL.Database(new Uint8Array(otcDbBuffer));
+                // 追蹤股票模式：直接使用 stock_hot.db（已包含完整歷史資料）
+                // 不需要再載入 stock_tse.db 和 stock_otc.db,因為:
+                // 1. stock_hot.db 已包含所有追蹤股票的完整交易歷史
+                // 2. stock_tse.db 和 stock_otc.db 檔案可能不存在
                 
                 // 儲存股票清單和數據庫引用
                 allStocksList = watchlist;
-                sqlDB = { tse: tseDB, otc: otcDB };  // 保存兩個數據庫
+                sqlDB = hotDB;  // 直接使用 stock_hot.db
                 
                 // 填充下拉選單
                 updateWatchlistSelector();
@@ -1529,13 +1561,28 @@
         
         function updateWatchlistSelector() {
             const selector = document.getElementById('stockSelector');
+            
+            // 確保完全清空現有選項
+            while (selector.firstChild) {
+                selector.removeChild(selector.firstChild);
+            }
+            
             const list = isReverseOrder ? [...allStocksList].reverse() : allStocksList;
             
-            selector.innerHTML = list.map((stock, idx) => 
-                `<option value="${idx}">${stock.code}_${stock.name} (${stock.market})</option>`
-            ).join('');
+            // 使用 DocumentFragment 提高效能並確保不重複
+            const fragment = document.createDocumentFragment();
             
+            list.forEach((stock, idx) => {
+                const option = document.createElement('option');
+                option.value = idx;
+                option.textContent = `${stock.code}_${stock.name} (${stock.market})`;
+                fragment.appendChild(option);
+            });
+            
+            selector.appendChild(fragment);
             selector.value = currentStockIndex;
+            
+            console.log(`✅ 追蹤股下拉選單已更新: ${list.length} 個選項`);
         }
         
         async function loadWatchlistStockChart(stockCode, stockName, market) {
@@ -1543,10 +1590,14 @@
             const chartContent = document.getElementById('stockChartContent');
             chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #95a5a6;">生成圖表中...</div>';
             
+            // 獲取當前股票的isFocus狀態
+            const currentStock = allStocksList.find(s => s.code === stockCode);
+            const isFocusStock = currentStock && currentStock.isFocus;
+            
             try {
-                const db = market === 'TSE' ? sqlDB.tse : sqlDB.otc;
-                const query = `SELECT * FROM stock_data WHERE 股票代碼 = '${stockCode}' ORDER BY 日期`;
-                const result = db.exec(query);
+                // 追蹤股票模式：直接從 stock_hot.db 的 hot_stocks 表讀取
+                const query = `SELECT * FROM hot_stocks WHERE 股票代碼 = '${stockCode}' ORDER BY 日期`;
+                const result = sqlDB.exec(query);
                 
                 if (result.length === 0 || result[0].values.length === 0) {
                     chartContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #e74c3c;">無該股票資料</div>';
@@ -1579,7 +1630,7 @@
                 const highs = chartData.map(d => parseFloat(String(d['最高價']).replace(/,/g, '')) || 0);
                 const lows = chartData.map(d => parseFloat(String(d['最低價']).replace(/,/g, '')) || 0);
                 const closes = chartData.map(d => parseFloat(String(d['收盤價']).replace(/,/g, '')) || 0);
-                const volumes = chartData.map(d => parseFloat(String(d['成交張數']).replace(/,/g, '')) || 0);
+                const volumes = chartData.map(d => parseFloat(String(d['成交量']).replace(/,/g, '')) || 0);
                 
                 const ma5 = calculateMA(closes, 5);
                 const ma10 = calculateMA(closes, 10);
@@ -1598,7 +1649,7 @@
                     ma5, ma10,
                     foreign, trust, dealer,
                     foreignCum, trustCum, dealerCum
-                });
+                }, isFocusStock);
                 
                 // 載入當前股票的熱門股分析資料
                 await loadCurrentStockAnalysis(stockCode);
@@ -1613,7 +1664,7 @@
             }
         }
 
-        function generatePlotlyChart(container, data) {
+        function generatePlotlyChart(container, data, isFocusStock = false) {
             const {
                 stockCode, stockName,
                 dates, rawDates, opens, highs, lows, closes, volumes,
@@ -1771,7 +1822,7 @@
             
             const layout = {
                 title: {
-                    text: `${stockCode} ${stockName} 技術分析圖表 (最近75筆)`,
+                    text: `${isFocusStock ? '📌 ' : ''}${stockCode} ${stockName} 技術分析圖表 (最近75筆)`,
                     y: 0.98
                 },
                 margin: { t: 80, b: 10, l: 60, r: 20 },
