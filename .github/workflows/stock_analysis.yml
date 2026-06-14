@@ -6,7 +6,8 @@ on:
     - cron: '0,30 1-5 * * *'
     # 台灣時間 18:00 執行 (UTC 10:00)
     - cron: '0 10 * * *'
-
+    
+  # 允許手動觸發
   workflow_dispatch:
     inputs:
       process_mode:
@@ -19,62 +20,51 @@ on:
           - 'OTC'
           - 'BOTH'
 
-permissions:
-  contents: write
-
 jobs:
   update-stock-prices:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-          cache: 'pip'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytz aiohttp pandas requests
-
-      - name: Verify StockInfo directory and ranking files
-        run: |
-          echo "📁 Checking StockInfo directory..."
-          if [ -d "StockInfo" ]; then
-            echo "✅ StockInfo directory exists"
-            echo "📄 Listing ranking files:"
-            ls -lh StockInfo/*_buy_ranking.txt 2>/dev/null || echo "❌ No ranking files found"
-          else
-            echo "❌ StockInfo directory not found"
-            exit 1
-          fi
-
-      - name: Run stock analysis
-        env:
-          PROCESS_MODE: ${{ github.event.inputs.process_mode || 'BOTH' }}
-        run: |
-          TAIWAN_TIME=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
-          echo "🕐 Current Taiwan time: $TAIWAN_TIME"
-          python stock_analysis.py
-
-      - name: Commit and push changes
-        run: |
-          TAIWAN_TIME=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
-          git add StockInfo/*.html StockInfo/*.json
-
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "📊 Update stock analysis - ${TAIWAN_TIME}"
-            git pull --rebase origin main
-            git push
-          fi
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: true
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytz aiohttp pandas requests
+    
+    - name: Verify StockInfo directory and ranking files
+      run: |
+        echo "📁 Checking StockInfo directory..."
+        if [ -d "StockInfo" ]; then
+          echo "✅ StockInfo directory exists"
+          echo "📄 Listing ranking files:"
+          ls -lh StockInfo/*_buy_ranking.txt 2>/dev/null || echo "❌ No ranking files found"
+        else
+          echo "❌ StockInfo directory not found"
+          exit 1
+        fi
+    
+    - name: Run stock analysis
+      env:
+        PROCESS_MODE: ${{ github.event.inputs.process_mode || 'BOTH' }}
+      run: |
+        TAIWAN_TIME=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
+        echo "🕐 Current Taiwan time: $TAIWAN_TIME"
+        python stock_analysis.py
+    
+    - name: Commit and push changes
+      run: |
+        TAIWAN_TIME=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add StockInfo/*.html StockInfo/*.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "📊 Update stock analysis - ${TAIWAN_TIME}" && git pull --rebase origin main && git push)
