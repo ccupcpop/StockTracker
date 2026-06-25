@@ -93,7 +93,8 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: StockInfo
+          # index.html 在 repo 根目錄,所以部署整個 repo
+          path: '.'
 
       - name: Deploy to GitHub Pages
         id: deployment
