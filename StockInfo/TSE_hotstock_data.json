@@ -1,916 +1,32 @@
 {
-  "update_time": "2026-09-17 22:45:11",
+  "update_time": "2026-09-18 13:40:21",
   "market": "TSE",
   "stock_count": 150,
   "stocks": [
     {
-      "code": "1314",
-      "name": "中石化",
+      "code": "2449",
+      "name": "京元電子",
       "market": "TSE",
-      "yesterday_buy": 27311,
-      "close_price": "8.15",
-      "current_price": "8.96",
-      "change": "+0.81",
-      "change_percent": "+9.94%",
-      "buy_volume": "37989",
+      "yesterday_buy": 2565,
+      "close_price": "265.0",
+      "current_price": "291.5",
+      "change": "+26.50",
+      "change_percent": "+10.00%",
+      "buy_volume": "12484",
       "sell_volume": "0",
       "bid_volumes": [
-        "36759",
-        "437",
-        "258",
-        "305",
-        "230"
-      ],
-      "ask_volumes": [
-        "-",
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    {
-      "code": "6133",
-      "name": "金橋",
-      "market": "TSE",
-      "yesterday_buy": 3140,
-      "close_price": "23.70",
-      "current_price": "26.05",
-      "change": "+2.35",
-      "change_percent": "+9.92%",
-      "buy_volume": "428",
-      "sell_volume": "0",
-      "bid_volumes": [
-        "361",
-        "46",
-        "8",
-        "4",
-        "9"
-      ],
-      "ask_volumes": [
-        "-",
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    {
-      "code": "2305",
-      "name": "全友",
-      "market": "TSE",
-      "yesterday_buy": 1547,
-      "close_price": "49.40",
-      "current_price": "54.30",
-      "change": "+4.90",
-      "change_percent": "+9.92%",
-      "buy_volume": "7968",
-      "sell_volume": "0",
-      "bid_volumes": [
-        "7901",
-        "21",
-        "18",
-        "26",
-        "2"
-      ],
-      "ask_volumes": [
-        "-",
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    {
-      "code": "6226",
-      "name": "光鼎",
-      "market": "TSE",
-      "yesterday_buy": 4325,
-      "close_price": "39.90",
-      "current_price": "43.85",
-      "change": "+3.95",
-      "change_percent": "+9.90%",
-      "buy_volume": "9971",
-      "sell_volume": "0",
-      "bid_volumes": [
-        "9919",
-        "37",
-        "9",
-        "3",
-        "3"
-      ],
-      "ask_volumes": [
-        "-",
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    {
-      "code": "1727",
-      "name": "中華化",
-      "market": "TSE",
-      "yesterday_buy": 3573,
-      "close_price": "95.60",
-      "current_price": "105.0",
-      "change": "+9.40",
-      "change_percent": "+9.83%",
-      "buy_volume": "5345",
-      "sell_volume": "0",
-      "bid_volumes": [
-        "5284",
-        "37",
-        "9",
-        "5",
-        "10"
-      ],
-      "ask_volumes": [
-        "-",
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    {
-      "code": "6505",
-      "name": "台塑化",
-      "market": "TSE",
-      "yesterday_buy": 14769,
-      "close_price": "80.50",
-      "current_price": "86.20",
-      "change": "+5.70",
-      "change_percent": "+7.08%",
-      "buy_volume": "583",
-      "sell_volume": "349",
-      "bid_volumes": [
-        "245",
-        "51",
-        "67",
-        "125",
-        "95"
-      ],
-      "ask_volumes": [
-        "28",
-        "60",
-        "94",
-        "65",
-        "102"
-      ]
-    },
-    {
-      "code": "3036",
-      "name": "文曄",
-      "market": "TSE",
-      "yesterday_buy": 3457,
-      "close_price": "191.0",
-      "current_price": "204.0",
-      "change": "+13.00",
-      "change_percent": "+6.81%",
-      "buy_volume": "776",
-      "sell_volume": "1192",
-      "bid_volumes": [
-        "16",
-        "101",
-        "342",
-        "210",
-        "107"
-      ],
-      "ask_volumes": [
-        "75",
-        "193",
-        "333",
-        "280",
-        "311"
-      ]
-    },
-    {
-      "code": "1310",
-      "name": "台苯",
-      "market": "TSE",
-      "yesterday_buy": 2834,
-      "close_price": "8.49",
-      "current_price": "9.03",
-      "change": "+0.54",
-      "change_percent": "+6.36%",
-      "buy_volume": "92",
-      "sell_volume": "60",
-      "bid_volumes": [
-        "4",
-        "17",
-        "58",
-        "8",
-        "5"
-      ],
-      "ask_volumes": [
-        "11",
-        "13",
-        "8",
-        "21",
-        "7"
-      ]
-    },
-    {
-      "code": "4763",
-      "name": "材料*-KY",
-      "market": "TSE",
-      "yesterday_buy": 1745,
-      "close_price": "44.90",
-      "current_price": "47.70",
-      "change": "+2.80",
-      "change_percent": "+6.24%",
-      "buy_volume": "80",
-      "sell_volume": "153",
-      "bid_volumes": [
-        "5",
-        "1",
-        "5",
-        "1",
-        "68"
-      ],
-      "ask_volumes": [
-        "18",
-        "19",
-        "79",
-        "13",
-        "24"
-      ]
-    },
-    {
-      "code": "1710",
-      "name": "東聯",
-      "market": "TSE",
-      "yesterday_buy": 3699,
-      "close_price": "15.70",
-      "current_price": "16.65",
-      "change": "+0.95",
-      "change_percent": "+6.05%",
-      "buy_volume": "510",
-      "sell_volume": "577",
-      "bid_volumes": [
-        "56",
-        "24",
-        "42",
-        "70",
-        "318"
-      ],
-      "ask_volumes": [
-        "49",
-        "91",
-        "63",
-        "163",
-        "211"
-      ]
-    },
-    {
-      "code": "6257",
-      "name": "矽格",
-      "market": "TSE",
-      "yesterday_buy": 9014,
-      "close_price": "210.0",
-      "current_price": "222.5",
-      "change": "+12.50",
-      "change_percent": "+5.95%",
-      "buy_volume": "631",
-      "sell_volume": "366",
-      "bid_volumes": [
-        "122",
-        "102",
-        "102",
-        "194",
-        "111"
-      ],
-      "ask_volumes": [
-        "82",
-        "30",
-        "68",
-        "100",
-        "86"
-      ]
-    },
-    {
-      "code": "1303",
-      "name": "南亞",
-      "market": "TSE",
-      "yesterday_buy": 19072,
-      "close_price": "224.0",
-      "current_price": "236.0",
-      "change": "+12.00",
-      "change_percent": "+5.36%",
-      "buy_volume": "1938",
-      "sell_volume": "1991",
-      "bid_volumes": [
-        "443",
-        "230",
-        "412",
-        "378",
-        "475"
-      ],
-      "ask_volumes": [
-        "152",
-        "328",
-        "183",
-        "836",
-        "492"
-      ]
-    },
-    {
-      "code": "2371",
-      "name": "大同",
-      "market": "TSE",
-      "yesterday_buy": 14312,
-      "close_price": "28.25",
-      "current_price": "29.70",
-      "change": "+1.45",
-      "change_percent": "+5.13%",
-      "buy_volume": "757",
-      "sell_volume": "2357",
-      "bid_volumes": [
-        "99",
-        "57",
-        "116",
-        "236",
-        "249"
-      ],
-      "ask_volumes": [
-        "262",
-        "284",
-        "738",
-        "214",
-        "859"
-      ]
-    },
-    {
-      "code": "2103",
-      "name": "台橡",
-      "market": "TSE",
-      "yesterday_buy": 3638,
-      "close_price": "26.85",
-      "current_price": "28.20",
-      "change": "+1.35",
-      "change_percent": "+5.03%",
-      "buy_volume": "204",
-      "sell_volume": "446",
-      "bid_volumes": [
-        "4",
-        "42",
-        "91",
-        "27",
-        "40"
-      ],
-      "ask_volumes": [
-        "101",
-        "76",
-        "56",
-        "82",
-        "131"
-      ]
-    },
-    {
-      "code": "2615",
-      "name": "萬海",
-      "market": "TSE",
-      "yesterday_buy": 7026,
-      "close_price": "115.0",
-      "current_price": "120.5",
-      "change": "+5.50",
-      "change_percent": "+4.78%",
-      "buy_volume": "1132",
-      "sell_volume": "2586",
-      "bid_volumes": [
-        "96",
-        "87",
-        "122",
-        "461",
-        "366"
-      ],
-      "ask_volumes": [
-        "378",
-        "798",
-        "685",
-        "573",
-        "152"
-      ]
-    },
-    {
-      "code": "2489",
-      "name": "瑞軒",
-      "market": "TSE",
-      "yesterday_buy": 6921,
-      "close_price": "41.25",
-      "current_price": "43.20",
-      "change": "+1.95",
-      "change_percent": "+4.73%",
-      "buy_volume": "946",
-      "sell_volume": "189",
-      "bid_volumes": [
-        "107",
-        "152",
-        "164",
-        "162",
-        "361"
-      ],
-      "ask_volumes": [
-        "23",
-        "71",
-        "57",
-        "15",
-        "23"
-      ]
-    },
-    {
-      "code": "3702",
-      "name": "大聯大",
-      "market": "TSE",
-      "yesterday_buy": 6321,
-      "close_price": "106.0",
-      "current_price": "111.0",
-      "change": "+5.00",
-      "change_percent": "+4.72%",
-      "buy_volume": "1009",
-      "sell_volume": "1961",
-      "bid_volumes": [
-        "4",
-        "185",
-        "219",
-        "342",
-        "259"
-      ],
-      "ask_volumes": [
-        "399",
-        "542",
-        "401",
-        "447",
-        "172"
-      ]
-    },
-    {
-      "code": "1326",
-      "name": "台化",
-      "market": "TSE",
-      "yesterday_buy": 8650,
-      "close_price": "65.80",
-      "current_price": "68.60",
-      "change": "+2.80",
-      "change_percent": "+4.26%",
-      "buy_volume": "449",
-      "sell_volume": "1537",
-      "bid_volumes": [
-        "152",
-        "53",
-        "35",
-        "103",
-        "106"
-      ],
-      "ask_volumes": [
-        "118",
-        "225",
-        "300",
-        "432",
-        "462"
-      ]
-    },
-    {
-      "code": "2303",
-      "name": "聯電",
-      "market": "TSE",
-      "yesterday_buy": 40430,
-      "close_price": "142.0",
-      "current_price": "147.5",
-      "change": "+5.50",
-      "change_percent": "+3.87%",
-      "buy_volume": "17292",
-      "sell_volume": "12903",
-      "bid_volumes": [
-        "2152",
-        "3105",
-        "6479",
-        "3310",
-        "2246"
-      ],
-      "ask_volumes": [
-        "1739",
-        "1374",
-        "1841",
-        "4106",
-        "3843"
-      ]
-    },
-    {
-      "code": "1718",
-      "name": "中纖",
-      "market": "TSE",
-      "yesterday_buy": 12216,
-      "close_price": "10.50",
-      "current_price": "10.90",
-      "change": "+0.40",
-      "change_percent": "+3.81%",
-      "buy_volume": "2532",
-      "sell_volume": "3537",
-      "bid_volumes": [
-        "486",
-        "395",
-        "710",
-        "463",
-        "478"
-      ],
-      "ask_volumes": [
-        "106",
-        "317",
-        "2213",
-        "494",
-        "407"
-      ]
-    },
-    {
-      "code": "1708",
-      "name": "東鹼",
-      "market": "TSE",
-      "yesterday_buy": 1917,
-      "close_price": "49.30",
-      "current_price": "51.10",
-      "change": "+1.80",
-      "change_percent": "+3.65%",
-      "buy_volume": "163",
-      "sell_volume": "354",
-      "bid_volumes": [
-        "15",
-        "21",
-        "16",
-        "49",
-        "62"
-      ],
-      "ask_volumes": [
-        "2",
-        "65",
-        "56",
-        "58",
-        "173"
-      ]
-    },
-    {
-      "code": "2399",
-      "name": "映泰",
-      "market": "TSE",
-      "yesterday_buy": 4263,
-      "close_price": "47.30",
-      "current_price": "49.00",
-      "change": "+1.70",
-      "change_percent": "+3.59%",
-      "buy_volume": "187",
-      "sell_volume": "77",
-      "bid_volumes": [
-        "6",
-        "9",
-        "43",
-        "58",
-        "71"
-      ],
-      "ask_volumes": [
-        "21",
-        "9",
-        "8",
-        "13",
-        "26"
-      ]
-    },
-    {
-      "code": "1409",
-      "name": "新纖",
-      "market": "TSE",
-      "yesterday_buy": 5456,
-      "close_price": "23.95",
-      "current_price": "24.80",
-      "change": "+0.85",
-      "change_percent": "+3.55%",
-      "buy_volume": "785",
-      "sell_volume": "989",
-      "bid_volumes": [
-        "87",
-        "163",
-        "76",
-        "223",
-        "236"
-      ],
-      "ask_volumes": [
-        "32",
-        "33",
-        "214",
-        "199",
-        "511"
-      ]
-    },
-    {
-      "code": "1301",
-      "name": "台塑",
-      "market": "TSE",
-      "yesterday_buy": 9983,
-      "close_price": "62.40",
-      "current_price": "64.60",
-      "change": "+2.20",
-      "change_percent": "+3.53%",
-      "buy_volume": "512",
-      "sell_volume": "2289",
-      "bid_volumes": [
-        "69",
-        "119",
-        "47",
-        "85",
-        "192"
-      ],
-      "ask_volumes": [
-        "249",
-        "450",
-        "509",
-        "786",
-        "295"
-      ]
-    },
-    {
-      "code": "2915",
-      "name": "潤泰全",
-      "market": "TSE",
-      "yesterday_buy": 1296,
-      "close_price": "56.60",
-      "current_price": "58.60",
-      "change": "+2.00",
-      "change_percent": "+3.53%",
-      "buy_volume": "234",
-      "sell_volume": "197",
-      "bid_volumes": [
-        "16",
-        "8",
-        "38",
-        "65",
-        "107"
-      ],
-      "ask_volumes": [
-        "18",
-        "8",
-        "27",
-        "61",
-        "83"
-      ]
-    },
-    {
-      "code": "1304",
-      "name": "台聚",
-      "market": "TSE",
-      "yesterday_buy": 2089,
-      "close_price": "12.20",
-      "current_price": "12.60",
-      "change": "+0.40",
-      "change_percent": "+3.28%",
-      "buy_volume": "332",
-      "sell_volume": "672",
-      "bid_volumes": [
-        "11",
-        "45",
-        "56",
-        "56",
-        "164"
-      ],
-      "ask_volumes": [
-        "14",
-        "226",
-        "124",
-        "75",
-        "233"
-      ]
-    },
-    {
-      "code": "9945",
-      "name": "潤泰新",
-      "market": "TSE",
-      "yesterday_buy": 5282,
-      "close_price": "28.05",
-      "current_price": "28.95",
-      "change": "+0.90",
-      "change_percent": "+3.21%",
-      "buy_volume": "466",
-      "sell_volume": "962",
-      "bid_volumes": [
-        "89",
-        "27",
-        "37",
-        "97",
-        "216"
-      ],
-      "ask_volumes": [
-        "119",
-        "305",
-        "129",
-        "273",
-        "136"
-      ]
-    },
-    {
-      "code": "3035",
-      "name": "智原",
-      "market": "TSE",
-      "yesterday_buy": 1492,
-      "close_price": "173.5",
-      "current_price": "179.0",
-      "change": "+5.50",
-      "change_percent": "+3.17%",
-      "buy_volume": "233",
-      "sell_volume": "289",
-      "bid_volumes": [
-        "51",
-        "49",
-        "50",
-        "51",
-        "32"
-      ],
-      "ask_volumes": [
-        "13",
-        "16",
+        "12232",
+        "104",
+        "77",
         "29",
-        "78",
-        "153"
-      ]
-    },
-    {
-      "code": "2605",
-      "name": "新興",
-      "market": "TSE",
-      "yesterday_buy": 7393,
-      "close_price": "36.05",
-      "current_price": "37.15",
-      "change": "+1.10",
-      "change_percent": "+3.05%",
-      "buy_volume": "165",
-      "sell_volume": "611",
-      "bid_volumes": [
-        "41",
-        "15",
-        "76",
-        "16",
-        "17"
+        "42"
       ],
       "ask_volumes": [
-        "107",
-        "157",
-        "83",
-        "143",
-        "121"
-      ]
-    },
-    {
-      "code": "2834",
-      "name": "臺企銀",
-      "market": "TSE",
-      "yesterday_buy": 27385,
-      "close_price": "18.20",
-      "current_price": "18.75",
-      "change": "+0.55",
-      "change_percent": "+3.02%",
-      "buy_volume": "4985",
-      "sell_volume": "8021",
-      "bid_volumes": [
-        "40",
-        "923",
-        "1069",
-        "1490",
-        "1463"
-      ],
-      "ask_volumes": [
-        "2648",
-        "1103",
-        "1783",
-        "682",
-        "1805"
-      ]
-    },
-    {
-      "code": "2609",
-      "name": "陽明",
-      "market": "TSE",
-      "yesterday_buy": 23166,
-      "close_price": "60.20",
-      "current_price": "62.00",
-      "change": "+1.80",
-      "change_percent": "+2.99%",
-      "buy_volume": "1193",
-      "sell_volume": "6344",
-      "bid_volumes": [
-        "164",
-        "265",
-        "161",
-        "263",
-        "340"
-      ],
-      "ask_volumes": [
-        "2998",
-        "1091",
-        "826",
-        "768",
-        "661"
-      ]
-    },
-    {
-      "code": "1313",
-      "name": "聯成",
-      "market": "TSE",
-      "yesterday_buy": 2818,
-      "close_price": "11.95",
-      "current_price": "12.30",
-      "change": "+0.35",
-      "change_percent": "+2.93%",
-      "buy_volume": "339",
-      "sell_volume": "1748",
-      "bid_volumes": [
-        "34",
-        "78",
-        "97",
-        "56",
-        "74"
-      ],
-      "ask_volumes": [
-        "151",
-        "729",
-        "262",
-        "525",
-        "81"
-      ]
-    },
-    {
-      "code": "2369",
-      "name": "菱生",
-      "market": "TSE",
-      "yesterday_buy": -1749,
-      "close_price": "29.45",
-      "current_price": "30.30",
-      "change": "+0.85",
-      "change_percent": "+2.89%",
-      "buy_volume": "195",
-      "sell_volume": "178",
-      "bid_volumes": [
-        "29",
-        "52",
-        "35",
-        "54",
-        "25"
-      ],
-      "ask_volumes": [
-        "91",
-        "6",
-        "17",
-        "47",
-        "17"
-      ]
-    },
-    {
-      "code": "1714",
-      "name": "和桐",
-      "market": "TSE",
-      "yesterday_buy": 2506,
-      "close_price": "15.60",
-      "current_price": "16.05",
-      "change": "+0.45",
-      "change_percent": "+2.88%",
-      "buy_volume": "634",
-      "sell_volume": "810",
-      "bid_volumes": [
-        "9",
-        "182",
-        "140",
-        "105",
-        "198"
-      ],
-      "ask_volumes": [
-        "93",
-        "214",
-        "206",
-        "111",
-        "186"
-      ]
-    },
-    {
-      "code": "2104",
-      "name": "國際中橡",
-      "market": "TSE",
-      "yesterday_buy": 2389,
-      "close_price": "10.45",
-      "current_price": "10.75",
-      "change": "+0.30",
-      "change_percent": "+2.87%",
-      "buy_volume": "524",
-      "sell_volume": "995",
-      "bid_volumes": [
-        "70",
-        "60",
-        "73",
-        "72",
-        "249"
-      ],
-      "ask_volumes": [
-        "23",
-        "338",
-        "124",
-        "265",
-        "245"
+        "-",
+        "0",
+        "0",
+        "0",
+        "0"
       ]
     },
     {
@@ -918,597 +34,233 @@
       "name": "華東",
       "market": "TSE",
       "yesterday_buy": -1900,
-      "close_price": "41.90",
-      "current_price": "43.10",
-      "change": "+1.20",
-      "change_percent": "+2.86%",
-      "buy_volume": "114",
-      "sell_volume": "102",
+      "close_price": "43.10",
+      "current_price": "47.40",
+      "change": "+4.30",
+      "change_percent": "+9.98%",
+      "buy_volume": "7956",
+      "sell_volume": "0",
       "bid_volumes": [
-        "10",
-        "1",
-        "85",
-        "5",
-        "13"
-      ],
-      "ask_volumes": [
-        "14",
-        "24",
-        "20",
-        "36",
-        "8"
-      ]
-    },
-    {
-      "code": "3005",
-      "name": "神基",
-      "market": "TSE",
-      "yesterday_buy": 2176,
-      "close_price": "115.0",
-      "current_price": "118.0",
-      "change": "+3.00",
-      "change_percent": "+2.61%",
-      "buy_volume": "499",
-      "sell_volume": "1072",
-      "bid_volumes": [
-        "10",
-        "51",
-        "121",
-        "158",
-        "159"
-      ],
-      "ask_volumes": [
-        "296",
-        "305",
-        "207",
-        "207",
-        "57"
-      ]
-    },
-    {
-      "code": "1402",
-      "name": "遠東新",
-      "market": "TSE",
-      "yesterday_buy": 3693,
-      "close_price": "27.40",
-      "current_price": "28.10",
-      "change": "+0.70",
-      "change_percent": "+2.55%",
-      "buy_volume": "680",
-      "sell_volume": "1298",
-      "bid_volumes": [
-        "213",
-        "160",
-        "96",
-        "108",
-        "103"
-      ],
-      "ask_volumes": [
-        "6",
-        "265",
-        "419",
-        "183",
-        "425"
-      ]
-    },
-    {
-      "code": "2801",
-      "name": "彰銀",
-      "market": "TSE",
-      "yesterday_buy": 4399,
-      "close_price": "28.90",
-      "current_price": "29.60",
-      "change": "+0.70",
-      "change_percent": "+2.42%",
-      "buy_volume": "1251",
-      "sell_volume": "4950",
-      "bid_volumes": [
-        "4",
-        "65",
-        "198",
-        "389",
-        "595"
-      ],
-      "ask_volumes": [
-        "526",
-        "991",
-        "1648",
-        "984",
-        "801"
-      ]
-    },
-    {
-      "code": "00631L",
-      "name": "元大台灣50正2",
-      "market": "TSE",
-      "yesterday_buy": 66200,
-      "close_price": "35.56",
-      "current_price": "36.41",
-      "change": "+0.85",
-      "change_percent": "+2.39%",
-      "buy_volume": "1147",
-      "sell_volume": "2821",
-      "bid_volumes": [
-        "456",
-        "97",
-        "60",
-        "115",
-        "419"
-      ],
-      "ask_volumes": [
-        "640",
-        "305",
-        "399",
-        "902",
-        "575"
-      ]
-    },
-    {
-      "code": "8021",
-      "name": "尖點",
-      "market": "TSE",
-      "yesterday_buy": 1577,
-      "close_price": "440.0",
-      "current_price": "450.0",
-      "change": "+10.00",
-      "change_percent": "+2.27%",
-      "buy_volume": "133",
-      "sell_volume": "44",
-      "bid_volumes": [
-        "55",
-        "41",
-        "10",
-        "21",
+        "7895",
+        "12",
+        "18",
+        "25",
         "6"
       ],
       "ask_volumes": [
-        "26",
+        "-",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "code": "6257",
+      "name": "矽格",
+      "market": "TSE",
+      "yesterday_buy": 9014,
+      "close_price": "222.5",
+      "current_price": "244.5",
+      "change": "+22.00",
+      "change_percent": "+9.89%",
+      "buy_volume": "6162",
+      "sell_volume": "0",
+      "bid_volumes": [
+        "5576",
+        "461",
+        "36",
+        "68",
+        "21"
+      ],
+      "ask_volumes": [
+        "-",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "code": "2464",
+      "name": "盟立",
+      "market": "TSE",
+      "yesterday_buy": -1360,
+      "close_price": "179.5",
+      "current_price": "197.0",
+      "change": "+17.50",
+      "change_percent": "+9.75%",
+      "buy_volume": "1114",
+      "sell_volume": "0",
+      "bid_volumes": [
+        "1072",
+        "12",
         "3",
-        "4",
-        "4",
-        "7"
-      ]
-    },
-    {
-      "code": "2515",
-      "name": "中工",
-      "market": "TSE",
-      "yesterday_buy": 5845,
-      "close_price": "11.80",
-      "current_price": "12.05",
-      "change": "+0.25",
-      "change_percent": "+2.12%",
-      "buy_volume": "2351",
-      "sell_volume": "2661",
-      "bid_volumes": [
-        "629",
-        "329",
-        "662",
-        "349",
-        "382"
-      ],
-      "ask_volumes": [
-        "386",
-        "169",
-        "467",
-        "876",
-        "763"
-      ]
-    },
-    {
-      "code": "2542",
-      "name": "興富發",
-      "market": "TSE",
-      "yesterday_buy": 1796,
-      "close_price": "45.90",
-      "current_price": "46.85",
-      "change": "+0.95",
-      "change_percent": "+2.07%",
-      "buy_volume": "172",
-      "sell_volume": "1374",
-      "bid_volumes": [
-        "17",
-        "12",
-        "12",
-        "12",
-        "119"
-      ],
-      "ask_volumes": [
-        "80",
-        "120",
-        "332",
-        "694",
-        "148"
-      ]
-    },
-    {
-      "code": "2409",
-      "name": "友達",
-      "market": "TSE",
-      "yesterday_buy": 55524,
-      "close_price": "29.40",
-      "current_price": "30.00",
-      "change": "+0.60",
-      "change_percent": "+2.04%",
-      "buy_volume": "10243",
-      "sell_volume": "5506",
-      "bid_volumes": [
-        "537",
-        "3257",
-        "2915",
-        "1390",
-        "2144"
-      ],
-      "ask_volumes": [
-        "741",
-        "740",
-        "907",
-        "2234",
-        "884"
-      ]
-    },
-    {
-      "code": "2836",
-      "name": "高雄銀",
-      "market": "TSE",
-      "yesterday_buy": 1936,
-      "close_price": "12.25",
-      "current_price": "12.50",
-      "change": "+0.25",
-      "change_percent": "+2.04%",
-      "buy_volume": "1352",
-      "sell_volume": "784",
-      "bid_volumes": [
-        "194",
-        "103",
-        "332",
-        "276",
-        "447"
-      ],
-      "ask_volumes": [
-        "61",
-        "269",
-        "202",
-        "177",
-        "75"
-      ]
-    },
-    {
-      "code": "2610",
-      "name": "華航",
-      "market": "TSE",
-      "yesterday_buy": 7536,
-      "close_price": "19.95",
-      "current_price": "20.35",
-      "change": "+0.40",
-      "change_percent": "+2.01%",
-      "buy_volume": "1984",
-      "sell_volume": "5374",
-      "bid_volumes": [
-        "74",
-        "399",
-        "275",
-        "361",
-        "875"
-      ],
-      "ask_volumes": [
-        "281",
-        "1442",
-        "1227",
-        "1445",
-        "979"
-      ]
-    },
-    {
-      "code": "1434",
-      "name": "福懋",
-      "market": "TSE",
-      "yesterday_buy": 1393,
-      "close_price": "17.50",
-      "current_price": "17.85",
-      "change": "+0.35",
-      "change_percent": "+2.00%",
-      "buy_volume": "184",
-      "sell_volume": "311",
-      "bid_volumes": [
-        "11",
-        "21",
-        "62",
-        "42",
-        "48"
-      ],
-      "ask_volumes": [
-        "12",
         "7",
+        "20"
+      ],
+      "ask_volumes": [
+        "-",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "code": "8150",
+      "name": "南茂",
+      "market": "TSE",
+      "yesterday_buy": 1364,
+      "close_price": "86.70",
+      "current_price": "94.00",
+      "change": "+7.30",
+      "change_percent": "+8.42%",
+      "buy_volume": "776",
+      "sell_volume": "455",
+      "bid_volumes": [
+        "105",
+        "469",
+        "73",
         "61",
-        "198",
-        "33"
+        "68"
+      ],
+      "ask_volumes": [
+        "79",
+        "73",
+        "79",
+        "84",
+        "140"
       ]
     },
     {
-      "code": "2886",
-      "name": "兆豐金",
+      "code": "2305",
+      "name": "全友",
       "market": "TSE",
-      "yesterday_buy": 5936,
-      "close_price": "50.90",
-      "current_price": "51.90",
-      "change": "+1.00",
-      "change_percent": "+1.96%",
-      "buy_volume": "1588",
-      "sell_volume": "2309",
+      "yesterday_buy": 1547,
+      "close_price": "54.30",
+      "current_price": "58.70",
+      "change": "+4.40",
+      "change_percent": "+8.10%",
+      "buy_volume": "95",
+      "sell_volume": "189",
       "bid_volumes": [
-        "147",
-        "129",
-        "586",
-        "346",
-        "380"
-      ],
-      "ask_volumes": [
-        "288",
-        "836",
-        "421",
-        "392",
-        "372"
-      ]
-    },
-    {
-      "code": "3231",
-      "name": "緯創",
-      "market": "TSE",
-      "yesterday_buy": 11571,
-      "close_price": "183.0",
-      "current_price": "186.5",
-      "change": "+3.50",
-      "change_percent": "+1.91%",
-      "buy_volume": "4272",
-      "sell_volume": "3998",
-      "bid_volumes": [
-        "760",
-        "721",
-        "1162",
-        "812",
-        "817"
-      ],
-      "ask_volumes": [
-        "140",
-        "336",
-        "374",
-        "1646",
-        "1502"
-      ]
-    },
-    {
-      "code": "3706",
-      "name": "神達",
-      "market": "TSE",
-      "yesterday_buy": 2749,
-      "close_price": "79.00",
-      "current_price": "80.50",
-      "change": "+1.50",
-      "change_percent": "+1.90%",
-      "buy_volume": "283",
-      "sell_volume": "480",
-      "bid_volumes": [
-        "64",
-        "46",
-        "37",
-        "82",
-        "54"
-      ],
-      "ask_volumes": [
         "14",
-        "96",
+        "22",
+        "13",
+        "22",
+        "24"
+      ],
+      "ask_volumes": [
+        "25",
+        "13",
+        "130",
+        "12",
+        "9"
+      ]
+    },
+    {
+      "code": "3661",
+      "name": "世芯-KY",
+      "market": "TSE",
+      "yesterday_buy": -746,
+      "close_price": "3295",
+      "current_price": "3540",
+      "change": "+245.00",
+      "change_percent": "+7.44%",
+      "buy_volume": "305",
+      "sell_volume": "142",
+      "bid_volumes": [
+        "105",
+        "59",
         "69",
-        "148",
-        "153"
-      ]
-    },
-    {
-      "code": "2323",
-      "name": "中環",
-      "market": "TSE",
-      "yesterday_buy": 2235,
-      "close_price": "10.55",
-      "current_price": "10.75",
-      "change": "+0.20",
-      "change_percent": "+1.90%",
-      "buy_volume": "1809",
-      "sell_volume": "1459",
-      "bid_volumes": [
-        "110",
-        "379",
-        "268",
-        "464",
-        "588"
+        "36",
+        "36"
       ],
       "ask_volumes": [
-        "70",
-        "330",
-        "244",
-        "370",
-        "445"
+        "1",
+        "22",
+        "22",
+        "92",
+        "5"
       ]
     },
     {
-      "code": "2330",
-      "name": "台積電",
+      "code": "2368",
+      "name": "金像電",
       "market": "TSE",
-      "yesterday_buy": 5243,
-      "close_price": "2380",
-      "current_price": "2425",
-      "change": "+45.00",
-      "change_percent": "+1.89%",
-      "buy_volume": "2008",
-      "sell_volume": "4401",
+      "yesterday_buy": -3391,
+      "close_price": "950.0",
+      "current_price": "1020",
+      "change": "+70.00",
+      "change_percent": "+7.37%",
+      "buy_volume": "388",
+      "sell_volume": "957",
       "bid_volumes": [
-        "40",
-        "607",
-        "675",
-        "316",
-        "370"
-      ],
-      "ask_volumes": [
-        "851",
-        "624",
-        "936",
-        "981",
-        "1009"
-      ]
-    },
-    {
-      "code": "2892",
-      "name": "第一金",
-      "market": "TSE",
-      "yesterday_buy": 10917,
-      "close_price": "40.00",
-      "current_price": "40.75",
-      "change": "+0.75",
-      "change_percent": "+1.88%",
-      "buy_volume": "1000",
-      "sell_volume": "2994",
-      "bid_volumes": [
-        "86",
-        "229",
-        "109",
-        "170",
-        "406"
-      ],
-      "ask_volumes": [
-        "642",
-        "313",
-        "289",
-        "689",
-        "1061"
-      ]
-    },
-    {
-      "code": "3714",
-      "name": "富采",
-      "market": "TSE",
-      "yesterday_buy": -1079,
-      "close_price": "64.30",
-      "current_price": "65.50",
-      "change": "+1.20",
-      "change_percent": "+1.87%",
-      "buy_volume": "302",
-      "sell_volume": "593",
-      "bid_volumes": [
-        "6",
-        "83",
         "10",
-        "113",
-        "90"
+        "36",
+        "96",
+        "238",
+        "8"
       ],
       "ask_volumes": [
-        "106",
-        "156",
-        "141",
-        "117",
-        "73"
-      ]
-    },
-    {
-      "code": "6770",
-      "name": "力積電",
-      "market": "TSE",
-      "yesterday_buy": 36050,
-      "close_price": "69.90",
-      "current_price": "71.20",
-      "change": "+1.30",
-      "change_percent": "+1.86%",
-      "buy_volume": "3803",
-      "sell_volume": "2973",
-      "bid_volumes": [
-        "814",
-        "748",
-        "716",
-        "885",
-        "640"
-      ],
-      "ask_volumes": [
-        "120",
-        "646",
-        "811",
-        "546",
-        "850"
-      ]
-    },
-    {
-      "code": "2884",
-      "name": "玉山金",
-      "market": "TSE",
-      "yesterday_buy": 12662,
-      "close_price": "46.45",
-      "current_price": "47.30",
-      "change": "+0.85",
-      "change_percent": "+1.83%",
-      "buy_volume": "1612",
-      "sell_volume": "4110",
-      "bid_volumes": [
-        "2",
-        "745",
-        "357",
-        "3",
-        "505"
-      ],
-      "ask_volumes": [
-        "550",
-        "594",
-        "689",
-        "1034",
-        "1243"
-      ]
-    },
-    {
-      "code": "2618",
-      "name": "長榮航",
-      "market": "TSE",
-      "yesterday_buy": 6816,
-      "close_price": "41.30",
-      "current_price": "42.05",
-      "change": "+0.75",
-      "change_percent": "+1.82%",
-      "buy_volume": "685",
-      "sell_volume": "1486",
-      "bid_volumes": [
-        "170",
-        "177",
-        "57",
-        "97",
-        "184"
-      ],
-      "ask_volumes": [
-        "116",
+        "286",
+        "228",
         "206",
-        "202",
-        "599",
-        "363"
+        "83",
+        "154"
       ]
     },
     {
-      "code": "2855",
-      "name": "統一證",
+      "code": "3035",
+      "name": "智原",
       "market": "TSE",
-      "yesterday_buy": 1667,
-      "close_price": "51.60",
-      "current_price": "52.50",
-      "change": "+0.90",
-      "change_percent": "+1.74%",
-      "buy_volume": "179",
-      "sell_volume": "683",
+      "yesterday_buy": 1492,
+      "close_price": "179.0",
+      "current_price": "190.5",
+      "change": "+11.50",
+      "change_percent": "+6.42%",
+      "buy_volume": "354",
+      "sell_volume": "367",
       "bid_volumes": [
-        "7",
-        "14",
-        "11",
-        "33",
-        "114"
+        "68",
+        "47",
+        "101",
+        "72",
+        "66"
       ],
       "ask_volumes": [
-        "74",
-        "230",
-        "128",
-        "145",
-        "106"
+        "50",
+        "19",
+        "77",
+        "86",
+        "135"
+      ]
+    },
+    {
+      "code": "2426",
+      "name": "鼎元",
+      "market": "TSE",
+      "yesterday_buy": -2378,
+      "close_price": "96.00",
+      "current_price": "102.0",
+      "change": "+6.00",
+      "change_percent": "+6.25%",
+      "buy_volume": "1598",
+      "sell_volume": "3567",
+      "bid_volumes": [
+        "481",
+        "299",
+        "338",
+        "372",
+        "108"
+      ],
+      "ask_volumes": [
+        "1303",
+        "543",
+        "862",
+        "335",
+        "524"
       ]
     },
     {
@@ -1516,935 +268,77 @@
       "name": "東和鋼鐵",
       "market": "TSE",
       "yesterday_buy": 2290,
-      "close_price": "81.10",
-      "current_price": "82.50",
-      "change": "+1.40",
-      "change_percent": "+1.73%",
-      "buy_volume": "194",
-      "sell_volume": "118",
+      "close_price": "82.50",
+      "current_price": "87.60",
+      "change": "+5.10",
+      "change_percent": "+6.18%",
+      "buy_volume": "64",
+      "sell_volume": "191",
       "bid_volumes": [
-        "149",
-        "11",
-        "9",
-        "21",
-        "4"
-      ],
-      "ask_volumes": [
-        "6",
+        "3",
         "7",
-        "38",
-        "22",
-        "45"
-      ]
-    },
-    {
-      "code": "2363",
-      "name": "矽統",
-      "market": "TSE",
-      "yesterday_buy": 1591,
-      "close_price": "52.00",
-      "current_price": "52.90",
-      "change": "+0.90",
-      "change_percent": "+1.73%",
-      "buy_volume": "400",
-      "sell_volume": "251",
-      "bid_volumes": [
-        "30",
-        "105",
-        "83",
-        "101",
-        "81"
-      ],
-      "ask_volumes": [
-        "54",
-        "24",
-        "58",
-        "66",
-        "49"
-      ]
-    },
-    {
-      "code": "2441",
-      "name": "超豐",
-      "market": "TSE",
-      "yesterday_buy": 2313,
-      "close_price": "116.5",
-      "current_price": "118.5",
-      "change": "+2.00",
-      "change_percent": "+1.72%",
-      "buy_volume": "953",
-      "sell_volume": "1399",
-      "bid_volumes": [
-        "98",
-        "124",
-        "185",
-        "227",
-        "319"
-      ],
-      "ask_volumes": [
-        "71",
-        "104",
-        "422",
-        "243",
-        "559"
-      ]
-    },
-    {
-      "code": "2354",
-      "name": "鴻準",
-      "market": "TSE",
-      "yesterday_buy": 1593,
-      "close_price": "65.20",
-      "current_price": "66.30",
-      "change": "+1.10",
-      "change_percent": "+1.69%",
-      "buy_volume": "1031",
-      "sell_volume": "698",
-      "bid_volumes": [
-        "139",
-        "152",
-        "204",
-        "331",
-        "205"
-      ],
-      "ask_volumes": [
-        "44",
-        "71",
-        "217",
-        "185",
-        "181"
-      ]
-    },
-    {
-      "code": "1101",
-      "name": "台泥",
-      "market": "TSE",
-      "yesterday_buy": 12095,
-      "close_price": "24.05",
-      "current_price": "24.45",
-      "change": "+0.40",
-      "change_percent": "+1.66%",
-      "buy_volume": "2922",
-      "sell_volume": "2992",
-      "bid_volumes": [
-        "30",
-        "353",
-        "601",
-        "884",
-        "1054"
-      ],
-      "ask_volumes": [
-        "182",
-        "770",
-        "711",
-        "547",
-        "782"
-      ]
-    },
-    {
-      "code": "00918",
-      "name": "大華優利高填息30",
-      "market": "TSE",
-      "yesterday_buy": -135658,
-      "close_price": "35.68",
-      "current_price": "36.25",
-      "change": "+0.57",
-      "change_percent": "+1.60%",
-      "buy_volume": "4842",
-      "sell_volume": "2996",
-      "bid_volumes": [
-        "577",
-        "335",
-        "530",
-        "1249",
-        "2151"
-      ],
-      "ask_volumes": [
-        "1167",
-        "995",
-        "474",
-        "249",
-        "111"
-      ]
-    },
-    {
-      "code": "4938",
-      "name": "和碩",
-      "market": "TSE",
-      "yesterday_buy": 1576,
-      "close_price": "89.00",
-      "current_price": "90.40",
-      "change": "+1.40",
-      "change_percent": "+1.57%",
-      "buy_volume": "53",
-      "sell_volume": "463",
-      "bid_volumes": [
-        "8",
-        "7",
-        "1",
-        "7",
-        "30"
-      ],
-      "ask_volumes": [
-        "27",
-        "84",
-        "191",
-        "71",
-        "90"
-      ]
-    },
-    {
-      "code": "3711",
-      "name": "日月光投控",
-      "market": "TSE",
-      "yesterday_buy": 3055,
-      "close_price": "605.0",
-      "current_price": "614.0",
-      "change": "+9.00",
-      "change_percent": "+1.49%",
-      "buy_volume": "577",
-      "sell_volume": "290",
-      "bid_volumes": [
-        "11",
-        "155",
-        "112",
-        "133",
-        "166"
-      ],
-      "ask_volumes": [
-        "15",
-        "43",
-        "22",
-        "122",
-        "88"
-      ]
-    },
-    {
-      "code": "2603",
-      "name": "長榮",
-      "market": "TSE",
-      "yesterday_buy": 3142,
-      "close_price": "239.0",
-      "current_price": "242.5",
-      "change": "+3.50",
-      "change_percent": "+1.46%",
-      "buy_volume": "346",
-      "sell_volume": "1628",
-      "bid_volumes": [
-        "16",
-        "9",
-        "41",
-        "181",
-        "99"
-      ],
-      "ask_volumes": [
-        "370",
-        "409",
-        "310",
-        "224",
-        "315"
-      ]
-    },
-    {
-      "code": "2890",
-      "name": "永豐金",
-      "market": "TSE",
-      "yesterday_buy": 3166,
-      "close_price": "45.30",
-      "current_price": "45.95",
-      "change": "+0.65",
-      "change_percent": "+1.43%",
-      "buy_volume": "1115",
-      "sell_volume": "247",
-      "bid_volumes": [
-        "364",
-        "29",
-        "39",
-        "585",
-        "98"
+        "17",
+        "5",
+        "32"
       ],
       "ask_volumes": [
         "5",
-        "81",
-        "27",
-        "89",
-        "45"
-      ]
-    },
-    {
-      "code": "2851",
-      "name": "中再保",
-      "market": "TSE",
-      "yesterday_buy": 2041,
-      "close_price": "46.35",
-      "current_price": "47.00",
-      "change": "+0.65",
-      "change_percent": "+1.40%",
-      "buy_volume": "60",
-      "sell_volume": "68",
-      "bid_volumes": [
-        "1",
-        "1",
-        "18",
-        "18",
-        "22"
-      ],
-      "ask_volumes": [
-        "10",
+        "26",
+        "53",
         "13",
-        "10",
-        "20",
-        "15"
-      ]
-    },
-    {
-      "code": "0056",
-      "name": "元大高股息",
-      "market": "TSE",
-      "yesterday_buy": 13539,
-      "close_price": "55.55",
-      "current_price": "56.30",
-      "change": "+0.75",
-      "change_percent": "+1.35%",
-      "buy_volume": "470",
-      "sell_volume": "1416",
-      "bid_volumes": [
-        "89",
-        "85",
-        "69",
-        "38",
-        "189"
-      ],
-      "ask_volumes": [
-        "13",
-        "159",
-        "120",
-        "365",
-        "759"
-      ]
-    },
-    {
-      "code": "2449",
-      "name": "京元電子",
-      "market": "TSE",
-      "yesterday_buy": 2565,
-      "close_price": "261.5",
-      "current_price": "265.0",
-      "change": "+3.50",
-      "change_percent": "+1.34%",
-      "buy_volume": "715",
-      "sell_volume": "411",
-      "bid_volumes": [
-        "148",
-        "119",
-        "149",
-        "106",
-        "193"
-      ],
-      "ask_volumes": [
-        "23",
-        "62",
-        "38",
-        "100",
-        "188"
-      ]
-    },
-    {
-      "code": "1216",
-      "name": "統一",
-      "market": "TSE",
-      "yesterday_buy": 1998,
-      "close_price": "74.50",
-      "current_price": "75.50",
-      "change": "+1.00",
-      "change_percent": "+1.34%",
-      "buy_volume": "950",
-      "sell_volume": "889",
-      "bid_volumes": [
-        "104",
-        "42",
-        "59",
-        "232",
-        "513"
-      ],
-      "ask_volumes": [
-        "280",
-        "69",
-        "166",
-        "254",
-        "120"
-      ]
-    },
-    {
-      "code": "2883",
-      "name": "凱基金",
-      "market": "TSE",
-      "yesterday_buy": 11260,
-      "close_price": "39.15",
-      "current_price": "39.65",
-      "change": "+0.50",
-      "change_percent": "+1.28%",
-      "buy_volume": "2442",
-      "sell_volume": "758",
-      "bid_volumes": [
-        "575",
-        "254",
-        "471",
-        "717",
-        "425"
-      ],
-      "ask_volumes": [
-        "310",
-        "36",
-        "42",
-        "218",
-        "152"
-      ]
-    },
-    {
-      "code": "2353",
-      "name": "宏碁",
-      "market": "TSE",
-      "yesterday_buy": 8122,
-      "close_price": "32.00",
-      "current_price": "32.40",
-      "change": "+0.40",
-      "change_percent": "+1.25%",
-      "buy_volume": "351",
-      "sell_volume": "2619",
-      "bid_volumes": [
-        "30",
-        "64",
-        "123",
-        "24",
-        "110"
-      ],
-      "ask_volumes": [
-        "45",
-        "502",
-        "630",
-        "496",
-        "946"
-      ]
-    },
-    {
-      "code": "9904",
-      "name": "寶成",
-      "market": "TSE",
-      "yesterday_buy": 5464,
-      "close_price": "24.50",
-      "current_price": "24.80",
-      "change": "+0.30",
-      "change_percent": "+1.22%",
-      "buy_volume": "1342",
-      "sell_volume": "2452",
-      "bid_volumes": [
-        "119",
-        "77",
-        "350",
-        "363",
-        "433"
-      ],
-      "ask_volumes": [
-        "156",
-        "523",
-        "617",
-        "462",
-        "694"
-      ]
-    },
-    {
-      "code": "2027",
-      "name": "大成鋼",
-      "market": "TSE",
-      "yesterday_buy": 3700,
-      "close_price": "46.55",
-      "current_price": "47.10",
-      "change": "+0.55",
-      "change_percent": "+1.18%",
-      "buy_volume": "668",
-      "sell_volume": "189",
-      "bid_volumes": [
-        "142",
-        "47",
-        "231",
-        "125",
-        "123"
-      ],
-      "ask_volumes": [
-        "7",
-        "36",
-        "10",
-        "42",
         "94"
       ]
     },
     {
-      "code": "2880",
-      "name": "華南金",
+      "code": "4763",
+      "name": "材料*-KY",
       "market": "TSE",
-      "yesterday_buy": 3474,
-      "close_price": "47.35",
-      "current_price": "47.90",
-      "change": "+0.55",
-      "change_percent": "+1.16%",
-      "buy_volume": "371",
-      "sell_volume": "668",
+      "yesterday_buy": 1745,
+      "close_price": "47.70",
+      "current_price": "50.50",
+      "change": "+2.80",
+      "change_percent": "+5.87%",
+      "buy_volume": "122",
+      "sell_volume": "482",
       "bid_volumes": [
-        "6",
-        "5",
-        "197",
-        "30",
-        "133"
-      ],
-      "ask_volumes": [
-        "19",
-        "69",
-        "10",
-        "274",
-        "296"
-      ]
-    },
-    {
-      "code": "2845",
-      "name": "遠東銀",
-      "market": "TSE",
-      "yesterday_buy": 3815,
-      "close_price": "13.60",
-      "current_price": "13.75",
-      "change": "+0.15",
-      "change_percent": "+1.10%",
-      "buy_volume": "2710",
-      "sell_volume": "3388",
-      "bid_volumes": [
-        "175",
-        "164",
-        "684",
-        "359",
-        "1328"
-      ],
-      "ask_volumes": [
-        "93",
-        "1252",
-        "1018",
-        "730",
-        "295"
-      ]
-    },
-    {
-      "code": "1605",
-      "name": "華新",
-      "market": "TSE",
-      "yesterday_buy": 1648,
-      "close_price": "36.75",
-      "current_price": "37.15",
-      "change": "+0.40",
-      "change_percent": "+1.09%",
-      "buy_volume": "789",
-      "sell_volume": "1049",
-      "bid_volumes": [
-        "594",
-        "48",
-        "36",
-        "62",
-        "49"
-      ],
-      "ask_volumes": [
-        "257",
-        "166",
-        "244",
-        "246",
-        "136"
-      ]
-    },
-    {
-      "code": "0050",
-      "name": "元大台灣50",
-      "market": "TSE",
-      "yesterday_buy": 16136,
-      "close_price": "106.9",
-      "current_price": "108.0",
-      "change": "+1.15",
-      "change_percent": "+1.08%",
-      "buy_volume": "1738",
-      "sell_volume": "1087",
-      "bid_volumes": [
-        "988",
-        "288",
-        "187",
-        "91",
-        "184"
-      ],
-      "ask_volumes": [
-        "125",
-        "180",
-        "361",
-        "169",
-        "252"
-      ]
-    },
-    {
-      "code": "2412",
-      "name": "中華電",
-      "market": "TSE",
-      "yesterday_buy": 9509,
-      "close_price": "143.5",
-      "current_price": "145.0",
-      "change": "+1.50",
-      "change_percent": "+1.05%",
-      "buy_volume": "1936",
-      "sell_volume": "5086",
-      "bid_volumes": [
-        "443",
-        "203",
-        "756",
-        "435",
-        "99"
-      ],
-      "ask_volumes": [
-        "2039",
-        "876",
-        "1282",
-        "577",
-        "312"
-      ]
-    },
-    {
-      "code": "2812",
-      "name": "台中銀",
-      "market": "TSE",
-      "yesterday_buy": 2275,
-      "close_price": "19.30",
-      "current_price": "19.50",
-      "change": "+0.20",
-      "change_percent": "+1.04%",
-      "buy_volume": "3481",
-      "sell_volume": "4401",
-      "bid_volumes": [
-        "227",
-        "584",
-        "740",
-        "1575",
-        "355"
-      ],
-      "ask_volumes": [
-        "596",
-        "1258",
-        "956",
-        "808",
-        "783"
-      ]
-    },
-    {
-      "code": "2382",
-      "name": "廣達",
-      "market": "TSE",
-      "yesterday_buy": 7974,
-      "close_price": "340.5",
-      "current_price": "344.0",
-      "change": "+3.50",
-      "change_percent": "+1.03%",
-      "buy_volume": "483",
-      "sell_volume": "1674",
-      "bid_volumes": [
-        "57",
-        "22",
-        "164",
-        "118",
-        "122"
-      ],
-      "ask_volumes": [
-        "13",
-        "377",
-        "299",
-        "304",
-        "681"
-      ]
-    },
-    {
-      "code": "2317",
-      "name": "鴻海",
-      "market": "TSE",
-      "yesterday_buy": 9815,
-      "close_price": "248.0",
-      "current_price": "250.5",
-      "change": "+2.50",
-      "change_percent": "+1.01%",
-      "buy_volume": "3092",
-      "sell_volume": "2437",
-      "bid_volumes": [
-        "908",
-        "393",
-        "589",
-        "517",
-        "685"
-      ],
-      "ask_volumes": [
-        "1141",
-        "97",
-        "140",
-        "346",
-        "713"
-      ]
-    },
-    {
-      "code": "1312",
-      "name": "國喬",
-      "market": "TSE",
-      "yesterday_buy": 6626,
-      "close_price": "14.80",
-      "current_price": "14.95",
-      "change": "+0.15",
-      "change_percent": "+1.01%",
-      "buy_volume": "2362",
-      "sell_volume": "1804",
-      "bid_volumes": [
-        "330",
-        "301",
-        "551",
-        "359",
-        "821"
-      ],
-      "ask_volumes": [
-        "77",
-        "358",
-        "339",
-        "774",
-        "256"
-      ]
-    },
-    {
-      "code": "1102",
-      "name": "亞泥",
-      "market": "TSE",
-      "yesterday_buy": 3545,
-      "close_price": "34.95",
-      "current_price": "35.30",
-      "change": "+0.35",
-      "change_percent": "+1.00%",
-      "buy_volume": "323",
-      "sell_volume": "1264",
-      "bid_volumes": [
-        "71",
-        "19",
-        "56",
-        "60",
-        "117"
-      ],
-      "ask_volumes": [
-        "219",
-        "263",
-        "306",
-        "245",
-        "231"
-      ]
-    },
-    {
-      "code": "1609",
-      "name": "大亞",
-      "market": "TSE",
-      "yesterday_buy": 1280,
-      "close_price": "37.30",
-      "current_price": "37.65",
-      "change": "+0.35",
-      "change_percent": "+0.94%",
-      "buy_volume": "264",
-      "sell_volume": "445",
-      "bid_volumes": [
-        "25",
-        "26",
-        "87",
-        "74",
-        "52"
-      ],
-      "ask_volumes": [
-        "282",
-        "23",
-        "6",
-        "87",
-        "47"
-      ]
-    },
-    {
-      "code": "2897",
-      "name": "王道銀行",
-      "market": "TSE",
-      "yesterday_buy": 2502,
-      "close_price": "11.15",
-      "current_price": "11.25",
-      "change": "+0.10",
-      "change_percent": "+0.90%",
-      "buy_volume": "2443",
-      "sell_volume": "3289",
-      "bid_volumes": [
-        "143",
-        "319",
-        "445",
-        "862",
-        "674"
-      ],
-      "ask_volumes": [
-        "78",
-        "1074",
-        "1213",
-        "440",
-        "484"
-      ]
-    },
-    {
-      "code": "2820",
-      "name": "華票",
-      "market": "TSE",
-      "yesterday_buy": 2946,
-      "close_price": "17.30",
-      "current_price": "17.45",
-      "change": "+0.15",
-      "change_percent": "+0.87%",
-      "buy_volume": "907",
-      "sell_volume": "586",
-      "bid_volumes": [
-        "49",
-        "114",
-        "205",
-        "196",
-        "343"
-      ],
-      "ask_volumes": [
-        "55",
-        "51",
-        "120",
-        "280",
-        "80"
-      ]
-    },
-    {
-      "code": "00922",
-      "name": "國泰台灣領袖50",
-      "market": "TSE",
-      "yesterday_buy": -1885,
-      "close_price": "41.61",
-      "current_price": "41.96",
-      "change": "+0.35",
-      "change_percent": "+0.84%",
-      "buy_volume": "45",
-      "sell_volume": "308",
-      "bid_volumes": [
-        "22",
-        "18",
-        "2",
-        "2",
-        "1"
-      ],
-      "ask_volumes": [
-        "93",
-        "44",
-        "35",
-        "36",
-        "100"
-      ]
-    },
-    {
-      "code": "00940",
-      "name": "元大台灣價值高息",
-      "market": "TSE",
-      "yesterday_buy": 22482,
-      "close_price": "12.89",
-      "current_price": "12.99",
-      "change": "+0.10",
-      "change_percent": "+0.78%",
-      "buy_volume": "6222",
-      "sell_volume": "1686",
-      "bid_volumes": [
-        "153",
-        "1756",
-        "1540",
-        "1631",
-        "1142"
-      ],
-      "ask_volumes": [
-        "225",
-        "266",
-        "126",
-        "731",
-        "338"
-      ]
-    },
-    {
-      "code": "00878",
-      "name": "國泰永續高股息",
-      "market": "TSE",
-      "yesterday_buy": 10184,
-      "close_price": "34.47",
-      "current_price": "34.73",
-      "change": "+0.26",
-      "change_percent": "+0.75%",
-      "buy_volume": "1834",
-      "sell_volume": "846",
-      "bid_volumes": [
-        "64",
-        "17",
-        "503",
-        "620",
-        "630"
-      ],
-      "ask_volumes": [
-        "79",
-        "58",
-        "219",
-        "275",
-        "215"
-      ]
-    },
-    {
-      "code": "5880",
-      "name": "合庫金",
-      "market": "TSE",
-      "yesterday_buy": 7514,
-      "close_price": "27.35",
-      "current_price": "27.55",
-      "change": "+0.20",
-      "change_percent": "+0.73%",
-      "buy_volume": "1718",
-      "sell_volume": "4085",
-      "bid_volumes": [
-        "109",
-        "173",
-        "495",
-        "423",
-        "518"
-      ],
-      "ask_volumes": [
-        "96",
-        "1698",
-        "861",
-        "852",
-        "578"
-      ]
-    },
-    {
-      "code": "00900",
-      "name": "富邦特選高股息30",
-      "market": "TSE",
-      "yesterday_buy": 7154,
-      "close_price": "19.63",
-      "current_price": "19.77",
-      "change": "+0.14",
-      "change_percent": "+0.71%",
-      "buy_volume": "871",
-      "sell_volume": "266",
-      "bid_volumes": [
-        "412",
-        "422",
-        "13",
-        "11",
-        "13"
-      ],
-      "ask_volumes": [
-        "81",
-        "41",
-        "34",
         "8",
-        "102"
+        "27",
+        "1",
+        "2",
+        "84"
+      ],
+      "ask_volumes": [
+        "86",
+        "280",
+        "15",
+        "41",
+        "60"
+      ]
+    },
+    {
+      "code": "2303",
+      "name": "聯電",
+      "market": "TSE",
+      "yesterday_buy": 40430,
+      "close_price": "147.5",
+      "current_price": "156.0",
+      "change": "+8.50",
+      "change_percent": "+5.76%",
+      "buy_volume": "19592",
+      "sell_volume": "24544",
+      "bid_volumes": [
+        "2322",
+        "1729",
+        "5170",
+        "5610",
+        "4761"
+      ],
+      "ask_volumes": [
+        "5814",
+        "4172",
+        "7411",
+        "2366",
+        "4781"
       ]
     },
     {
@@ -2452,337 +346,337 @@
       "name": "華邦電",
       "market": "TSE",
       "yesterday_buy": -9238,
-      "close_price": "169.0",
-      "current_price": "170.0",
-      "change": "+1.00",
-      "change_percent": "+0.59%",
-      "buy_volume": "7226",
-      "sell_volume": "1845",
+      "close_price": "170.0",
+      "current_price": "179.5",
+      "change": "+9.50",
+      "change_percent": "+5.59%",
+      "buy_volume": "4589",
+      "sell_volume": "13636",
       "bid_volumes": [
-        "2647",
-        "909",
-        "1797",
-        "1020",
-        "853"
+        "347",
+        "771",
+        "1333",
+        "1092",
+        "1046"
       ],
       "ask_volumes": [
-        "159",
-        "189",
-        "330",
-        "770",
-        "397"
+        "7271",
+        "1706",
+        "1823",
+        "648",
+        "2188"
       ]
     },
     {
-      "code": "2891",
-      "name": "中信金",
+      "code": "6133",
+      "name": "金橋",
       "market": "TSE",
-      "yesterday_buy": 7261,
-      "close_price": "70.80",
-      "current_price": "71.20",
-      "change": "+0.40",
-      "change_percent": "+0.56%",
-      "buy_volume": "1027",
-      "sell_volume": "1971",
+      "yesterday_buy": 3140,
+      "close_price": "26.05",
+      "current_price": "27.45",
+      "change": "+1.40",
+      "change_percent": "+5.37%",
+      "buy_volume": "32",
+      "sell_volume": "407",
       "bid_volumes": [
-        "269",
-        "116",
-        "363",
-        "72",
-        "207"
-      ],
-      "ask_volumes": [
-        "355",
-        "259",
-        "343",
-        "539",
-        "475"
-      ]
-    },
-    {
-      "code": "00953B",
-      "name": "群益優選非投等債",
-      "market": "TSE",
-      "yesterday_buy": -6816,
-      "close_price": "9.54",
-      "current_price": "9.58",
-      "change": "+0.04",
-      "change_percent": "+0.42%",
-      "buy_volume": "25149",
-      "sell_volume": "27991",
-      "bid_volumes": [
-        "7129",
-        "6924",
-        "6980",
-        "3474",
-        "642"
-      ],
-      "ask_volumes": [
-        "1770",
-        "10093",
-        "11805",
-        "4152",
-        "171"
-      ]
-    },
-    {
-      "code": "5876",
-      "name": "上海商銀",
-      "market": "TSE",
-      "yesterday_buy": 2869,
-      "close_price": "49.75",
-      "current_price": "49.95",
-      "change": "+0.20",
-      "change_percent": "+0.40%",
-      "buy_volume": "272",
-      "sell_volume": "2722",
-      "bid_volumes": [
-        "28",
-        "11",
-        "73",
-        "107",
-        "53"
-      ],
-      "ask_volumes": [
-        "75",
-        "1745",
-        "302",
-        "381",
-        "219"
-      ]
-    },
-    {
-      "code": "00919",
-      "name": "群益台灣精選高息",
-      "market": "TSE",
-      "yesterday_buy": 2945,
-      "close_price": "31.99",
-      "current_price": "32.11",
-      "change": "+0.12",
-      "change_percent": "+0.38%",
-      "buy_volume": "1945",
-      "sell_volume": "2061",
-      "bid_volumes": [
-        "139",
-        "443",
-        "410",
-        "586",
-        "367"
-      ],
-      "ask_volumes": [
-        "708",
-        "714",
-        "138",
-        "181",
-        "320"
-      ]
-    },
-    {
-      "code": "8112",
-      "name": "至上",
-      "market": "TSE",
-      "yesterday_buy": -1453,
-      "close_price": "82.50",
-      "current_price": "82.80",
-      "change": "+0.30",
-      "change_percent": "+0.36%",
-      "buy_volume": "564",
-      "sell_volume": "78",
-      "bid_volumes": [
-        "87",
-        "118",
-        "199",
-        "109",
-        "51"
-      ],
-      "ask_volumes": [
+        "6",
+        "6",
+        "13",
         "4",
-        "4",
-        "24",
-        "29",
-        "17"
-      ]
-    },
-    {
-      "code": "00929",
-      "name": "復華台灣科技優息",
-      "market": "TSE",
-      "yesterday_buy": -6562,
-      "close_price": "28.46",
-      "current_price": "28.56",
-      "change": "+0.10",
-      "change_percent": "+0.35%",
-      "buy_volume": "1410",
-      "sell_volume": "4305",
-      "bid_volumes": [
-        "528",
-        "103",
-        "61",
-        "264",
-        "454"
+        "3"
       ],
       "ask_volumes": [
-        "1591",
-        "1032",
-        "21",
-        "1415",
-        "246"
-      ]
-    },
-    {
-      "code": "00881",
-      "name": "國泰台灣科技龍頭",
-      "market": "TSE",
-      "yesterday_buy": 1676,
-      "close_price": "49.65",
-      "current_price": "49.81",
-      "change": "+0.16",
-      "change_percent": "+0.32%",
-      "buy_volume": "588",
-      "sell_volume": "1075",
-      "bid_volumes": [
-        "77",
-        "34",
         "33",
-        "119",
-        "325"
-      ],
-      "ask_volumes": [
-        "337",
-        "33",
-        "31",
-        "246",
-        "428"
-      ]
-    },
-    {
-      "code": "2002",
-      "name": "中鋼",
-      "market": "TSE",
-      "yesterday_buy": -2169,
-      "close_price": "18.65",
-      "current_price": "18.70",
-      "change": "+0.05",
-      "change_percent": "+0.27%",
-      "buy_volume": "19980",
-      "sell_volume": "5611",
-      "bid_volumes": [
-        "1441",
-        "5641",
-        "6573",
-        "2331",
-        "3994"
-      ],
-      "ask_volumes": [
-        "864",
-        "1712",
-        "910",
-        "1049",
-        "1076"
-      ]
-    },
-    {
-      "code": "2413",
-      "name": "環科",
-      "market": "TSE",
-      "yesterday_buy": -809,
-      "close_price": "53.00",
-      "current_price": "53.10",
-      "change": "+0.10",
-      "change_percent": "+0.19%",
-      "buy_volume": "238",
-      "sell_volume": "218",
-      "bid_volumes": [
-        "19",
-        "11",
-        "179",
-        "7",
-        "22"
-      ],
-      "ask_volumes": [
-        "19",
-        "29",
-        "40",
-        "71",
-        "59"
-      ]
-    },
-    {
-      "code": "2312",
-      "name": "金寶",
-      "market": "TSE",
-      "yesterday_buy": 1351,
-      "close_price": "30.95",
-      "current_price": "31.00",
-      "change": "+0.05",
-      "change_percent": "+0.16%",
-      "buy_volume": "700",
-      "sell_volume": "383",
-      "bid_volumes": [
-        "180",
-        "104",
-        "120",
-        "194",
-        "102"
-      ],
-      "ask_volumes": [
+        "193",
         "18",
-        "5",
-        "50",
-        "83",
-        "227"
+        "123",
+        "40"
       ]
     },
     {
-      "code": "2324",
-      "name": "仁寶",
+      "code": "8039",
+      "name": "台虹",
       "market": "TSE",
-      "yesterday_buy": -1058,
-      "close_price": "37.35",
-      "current_price": "37.40",
-      "change": "+0.05",
-      "change_percent": "+0.13%",
-      "buy_volume": "1787",
-      "sell_volume": "964",
+      "yesterday_buy": -2296,
+      "close_price": "257.0",
+      "current_price": "269.5",
+      "change": "+12.50",
+      "change_percent": "+4.86%",
+      "buy_volume": "361",
+      "sell_volume": "524",
       "bid_volumes": [
-        "399",
-        "385",
-        "159",
-        "396",
-        "448"
+        "65",
+        "28",
+        "98",
+        "137",
+        "33"
       ],
       "ask_volumes": [
-        "61",
-        "62",
-        "264",
-        "52",
-        "525"
+        "196",
+        "54",
+        "59",
+        "165",
+        "50"
       ]
     },
     {
-      "code": "00712",
-      "name": "復華富時不動產",
+      "code": "2313",
+      "name": "華通",
       "market": "TSE",
-      "yesterday_buy": -101582,
-      "close_price": "8.01",
-      "current_price": "8.02",
-      "change": "+0.01",
-      "change_percent": "+0.12%",
-      "buy_volume": "48963",
-      "sell_volume": "15576",
+      "yesterday_buy": -7480,
+      "close_price": "218.5",
+      "current_price": "228.5",
+      "change": "+10.00",
+      "change_percent": "+4.58%",
+      "buy_volume": "51",
+      "sell_volume": "2175",
       "bid_volumes": [
-        "5520",
-        "14958",
-        "7129",
-        "11000",
-        "10356"
+        "4",
+        "18",
+        "3",
+        "1",
+        "25"
       ],
       "ask_volumes": [
-        "67",
-        "5530",
-        "2016",
-        "5279",
-        "2684"
+        "239",
+        "353",
+        "502",
+        "868",
+        "213"
+      ]
+    },
+    {
+      "code": "3006",
+      "name": "晶豪科",
+      "market": "TSE",
+      "yesterday_buy": -1348,
+      "close_price": "278.5",
+      "current_price": "291.0",
+      "change": "+12.50",
+      "change_percent": "+4.49%",
+      "buy_volume": "656",
+      "sell_volume": "659",
+      "bid_volumes": [
+        "140",
+        "165",
+        "111",
+        "126",
+        "114"
+      ],
+      "ask_volumes": [
+        "32",
+        "70",
+        "184",
+        "82",
+        "291"
+      ]
+    },
+    {
+      "code": "6226",
+      "name": "光鼎",
+      "market": "TSE",
+      "yesterday_buy": 4325,
+      "close_price": "43.85",
+      "current_price": "45.70",
+      "change": "+1.85",
+      "change_percent": "+4.22%",
+      "buy_volume": "466",
+      "sell_volume": "45",
+      "bid_volumes": [
+        "48",
+        "20",
+        "147",
+        "101",
+        "150"
+      ],
+      "ask_volumes": [
+        "1",
+        "12",
+        "2",
+        "25",
+        "5"
+      ]
+    },
+    {
+      "code": "2441",
+      "name": "超豐",
+      "market": "TSE",
+      "yesterday_buy": 2313,
+      "close_price": "118.5",
+      "current_price": "123.5",
+      "change": "+5.00",
+      "change_percent": "+4.22%",
+      "buy_volume": "630",
+      "sell_volume": "1744",
+      "bid_volumes": [
+        "7",
+        "100",
+        "121",
+        "224",
+        "178"
+      ],
+      "ask_volumes": [
+        "598",
+        "293",
+        "544",
+        "137",
+        "172"
+      ]
+    },
+    {
+      "code": "2492",
+      "name": "華新科",
+      "market": "TSE",
+      "yesterday_buy": -6175,
+      "close_price": "297.0",
+      "current_price": "309.5",
+      "change": "+12.50",
+      "change_percent": "+4.21%",
+      "buy_volume": "651",
+      "sell_volume": "1072",
+      "bid_volumes": [
+        "237",
+        "79",
+        "123",
+        "101",
+        "111"
+      ],
+      "ask_volumes": [
+        "257",
+        "415",
+        "88",
+        "262",
+        "50"
+      ]
+    },
+    {
+      "code": "2327",
+      "name": "國巨*",
+      "market": "TSE",
+      "yesterday_buy": -1767,
+      "close_price": "529.0",
+      "current_price": "550.0",
+      "change": "+21.00",
+      "change_percent": "+3.97%",
+      "buy_volume": "1337",
+      "sell_volume": "2736",
+      "bid_volumes": [
+        "64",
+        "265",
+        "242",
+        "292",
+        "474"
+      ],
+      "ask_volumes": [
+        "816",
+        "281",
+        "442",
+        "775",
+        "422"
+      ]
+    },
+    {
+      "code": "6770",
+      "name": "力積電",
+      "market": "TSE",
+      "yesterday_buy": 36050,
+      "close_price": "71.20",
+      "current_price": "74.00",
+      "change": "+2.80",
+      "change_percent": "+3.93%",
+      "buy_volume": "6304",
+      "sell_volume": "18104",
+      "bid_volumes": [
+        "968",
+        "2060",
+        "1058",
+        "984",
+        "1234"
+      ],
+      "ask_volumes": [
+        "11914",
+        "1671",
+        "2966",
+        "981",
+        "572"
+      ]
+    },
+    {
+      "code": "3711",
+      "name": "日月光投控",
+      "market": "TSE",
+      "yesterday_buy": 3055,
+      "close_price": "614.0",
+      "current_price": "638.0",
+      "change": "+24.00",
+      "change_percent": "+3.91%",
+      "buy_volume": "2341",
+      "sell_volume": "921",
+      "bid_volumes": [
+        "518",
+        "325",
+        "351",
+        "736",
+        "411"
+      ],
+      "ask_volumes": [
+        "346",
+        "179",
+        "88",
+        "99",
+        "209"
+      ]
+    },
+    {
+      "code": "2337",
+      "name": "旺宏",
+      "market": "TSE",
+      "yesterday_buy": -3519,
+      "close_price": "116.5",
+      "current_price": "121.0",
+      "change": "+4.50",
+      "change_percent": "+3.86%",
+      "buy_volume": "7351",
+      "sell_volume": "12340",
+      "bid_volumes": [
+        "1085",
+        "166",
+        "734",
+        "3246",
+        "2120"
+      ],
+      "ask_volumes": [
+        "800",
+        "3369",
+        "3432",
+        "2927",
+        "1812"
+      ]
+    },
+    {
+      "code": "2486",
+      "name": "一詮",
+      "market": "TSE",
+      "yesterday_buy": -705,
+      "close_price": "229.0",
+      "current_price": "237.5",
+      "change": "+8.50",
+      "change_percent": "+3.71%",
+      "buy_volume": "195",
+      "sell_volume": "453",
+      "bid_volumes": [
+        "24",
+        "18",
+        "34",
+        "25",
+        "94"
+      ],
+      "ask_volumes": [
+        "111",
+        "141",
+        "98",
+        "38",
+        "65"
       ]
     },
     {
@@ -2791,50 +685,908 @@
       "market": "TSE",
       "yesterday_buy": 1385,
       "close_price": "274.5",
-      "current_price": "274.5",
-      "change": "+0.00",
-      "change_percent": "+0.00%",
-      "buy_volume": "1653",
-      "sell_volume": "588",
+      "current_price": "284.0",
+      "change": "+9.50",
+      "change_percent": "+3.46%",
+      "buy_volume": "783",
+      "sell_volume": "1271",
       "bid_volumes": [
-        "622",
-        "401",
-        "147",
-        "326",
-        "157"
+        "27",
+        "105",
+        "230",
+        "252",
+        "169"
       ],
       "ask_volumes": [
-        "122",
-        "45",
-        "267",
-        "35",
-        "119"
+        "76",
+        "656",
+        "131",
+        "258",
+        "150"
       ]
     },
     {
-      "code": "2889",
-      "name": "國票金",
+      "code": "00631L",
+      "name": "元大台灣50正2",
       "market": "TSE",
-      "yesterday_buy": -1549,
-      "close_price": "17.30",
-      "current_price": "17.30",
-      "change": "+0.00",
-      "change_percent": "+0.00%",
-      "buy_volume": "2216",
-      "sell_volume": "6134",
+      "yesterday_buy": 66200,
+      "close_price": "36.41",
+      "current_price": "37.65",
+      "change": "+1.24",
+      "change_percent": "+3.41%",
+      "buy_volume": "678",
+      "sell_volume": "7902",
       "bid_volumes": [
-        "42",
-        "469",
-        "621",
-        "534",
-        "550"
+        "203",
+        "120",
+        "93",
+        "97",
+        "165"
       ],
       "ask_volumes": [
-        "392",
-        "1591",
-        "1817",
-        "1322",
-        "1012"
+        "2885",
+        "1425",
+        "1773",
+        "1140",
+        "679"
+      ]
+    },
+    {
+      "code": "2481",
+      "name": "強茂",
+      "market": "TSE",
+      "yesterday_buy": -10427,
+      "close_price": "163.0",
+      "current_price": "168.5",
+      "change": "+5.50",
+      "change_percent": "+3.37%",
+      "buy_volume": "1941",
+      "sell_volume": "3080",
+      "bid_volumes": [
+        "318",
+        "323",
+        "293",
+        "399",
+        "608"
+      ],
+      "ask_volumes": [
+        "483",
+        "479",
+        "937",
+        "325",
+        "856"
+      ]
+    },
+    {
+      "code": "3189",
+      "name": "景碩",
+      "market": "TSE",
+      "yesterday_buy": -3320,
+      "close_price": "805.0",
+      "current_price": "832.0",
+      "change": "+27.00",
+      "change_percent": "+3.35%",
+      "buy_volume": "47",
+      "sell_volume": "1546",
+      "bid_volumes": [
+        "1",
+        "4",
+        "21",
+        "4",
+        "17"
+      ],
+      "ask_volumes": [
+        "435",
+        "230",
+        "249",
+        "391",
+        "241"
+      ]
+    },
+    {
+      "code": "8046",
+      "name": "南電",
+      "market": "TSE",
+      "yesterday_buy": -1134,
+      "close_price": "1065",
+      "current_price": "1100",
+      "change": "+35.00",
+      "change_percent": "+3.29%",
+      "buy_volume": "446",
+      "sell_volume": "1653",
+      "bid_volumes": [
+        "4",
+        "5",
+        "49",
+        "46",
+        "342"
+      ],
+      "ask_volumes": [
+        "450",
+        "262",
+        "315",
+        "264",
+        "362"
+      ]
+    },
+    {
+      "code": "3702",
+      "name": "大聯大",
+      "market": "TSE",
+      "yesterday_buy": 6321,
+      "close_price": "111.0",
+      "current_price": "114.5",
+      "change": "+3.50",
+      "change_percent": "+3.15%",
+      "buy_volume": "2027",
+      "sell_volume": "3815",
+      "bid_volumes": [
+        "32",
+        "248",
+        "513",
+        "1046",
+        "188"
+      ],
+      "ask_volumes": [
+        "308",
+        "1473",
+        "732",
+        "751",
+        "551"
+      ]
+    },
+    {
+      "code": "6706",
+      "name": "惠特",
+      "market": "TSE",
+      "yesterday_buy": -934,
+      "close_price": "145.0",
+      "current_price": "149.5",
+      "change": "+4.50",
+      "change_percent": "+3.10%",
+      "buy_volume": "294",
+      "sell_volume": "192",
+      "bid_volumes": [
+        "79",
+        "32",
+        "23",
+        "52",
+        "108"
+      ],
+      "ask_volumes": [
+        "14",
+        "102",
+        "24",
+        "30",
+        "22"
+      ]
+    },
+    {
+      "code": "6209",
+      "name": "今國光",
+      "market": "TSE",
+      "yesterday_buy": -985,
+      "close_price": "78.00",
+      "current_price": "80.40",
+      "change": "+2.40",
+      "change_percent": "+3.08%",
+      "buy_volume": "170",
+      "sell_volume": "226",
+      "bid_volumes": [
+        "63",
+        "18",
+        "17",
+        "25",
+        "47"
+      ],
+      "ask_volumes": [
+        "44",
+        "106",
+        "31",
+        "30",
+        "15"
+      ]
+    },
+    {
+      "code": "2345",
+      "name": "智邦",
+      "market": "TSE",
+      "yesterday_buy": -694,
+      "close_price": "1800",
+      "current_price": "1855",
+      "change": "+55.00",
+      "change_percent": "+3.06%",
+      "buy_volume": "363",
+      "sell_volume": "248",
+      "bid_volumes": [
+        "34",
+        "97",
+        "98",
+        "84",
+        "50"
+      ],
+      "ask_volumes": [
+        "100",
+        "45",
+        "40",
+        "16",
+        "47"
+      ]
+    },
+    {
+      "code": "6672",
+      "name": "騰輝電子-KY",
+      "market": "TSE",
+      "yesterday_buy": -1498,
+      "close_price": "293.5",
+      "current_price": "302.0",
+      "change": "+8.50",
+      "change_percent": "+2.90%",
+      "buy_volume": "165",
+      "sell_volume": "312",
+      "bid_volumes": [
+        "42",
+        "17",
+        "35",
+        "19",
+        "52"
+      ],
+      "ask_volumes": [
+        "70",
+        "100",
+        "39",
+        "55",
+        "48"
+      ]
+    },
+    {
+      "code": "3714",
+      "name": "富采",
+      "market": "TSE",
+      "yesterday_buy": -1079,
+      "close_price": "65.50",
+      "current_price": "67.40",
+      "change": "+1.90",
+      "change_percent": "+2.90%",
+      "buy_volume": "990",
+      "sell_volume": "219",
+      "bid_volumes": [
+        "58",
+        "414",
+        "176",
+        "95",
+        "247"
+      ],
+      "ask_volumes": [
+        "8",
+        "1",
+        "20",
+        "5",
+        "185"
+      ]
+    },
+    {
+      "code": "8422",
+      "name": "可寧衛*",
+      "market": "TSE",
+      "yesterday_buy": -1731,
+      "close_price": "25.85",
+      "current_price": "26.55",
+      "change": "+0.70",
+      "change_percent": "+2.71%",
+      "buy_volume": "471",
+      "sell_volume": "497",
+      "bid_volumes": [
+        "71",
+        "212",
+        "36",
+        "55",
+        "97"
+      ],
+      "ask_volumes": [
+        "91",
+        "247",
+        "5",
+        "7",
+        "147"
+      ]
+    },
+    {
+      "code": "4915",
+      "name": "致伸",
+      "market": "TSE",
+      "yesterday_buy": -1509,
+      "close_price": "63.90",
+      "current_price": "65.50",
+      "change": "+1.60",
+      "change_percent": "+2.50%",
+      "buy_volume": "340",
+      "sell_volume": "448",
+      "bid_volumes": [
+        "56",
+        "92",
+        "51",
+        "59",
+        "82"
+      ],
+      "ask_volumes": [
+        "21",
+        "91",
+        "73",
+        "81",
+        "182"
+      ]
+    },
+    {
+      "code": "3450",
+      "name": "聯鈞",
+      "market": "TSE",
+      "yesterday_buy": -2431,
+      "close_price": "525.0",
+      "current_price": "538.0",
+      "change": "+13.00",
+      "change_percent": "+2.48%",
+      "buy_volume": "260",
+      "sell_volume": "231",
+      "bid_volumes": [
+        "19",
+        "43",
+        "141",
+        "29",
+        "28"
+      ],
+      "ask_volumes": [
+        "35",
+        "62",
+        "52",
+        "67",
+        "15"
+      ]
+    },
+    {
+      "code": "00881",
+      "name": "國泰台灣科技龍頭",
+      "market": "TSE",
+      "yesterday_buy": 1676,
+      "close_price": "49.81",
+      "current_price": "51.00",
+      "change": "+1.19",
+      "change_percent": "+2.39%",
+      "buy_volume": "3250",
+      "sell_volume": "1439",
+      "bid_volumes": [
+        "536",
+        "244",
+        "711",
+        "875",
+        "884"
+      ],
+      "ask_volumes": [
+        "32",
+        "333",
+        "379",
+        "275",
+        "420"
+      ]
+    },
+    {
+      "code": "2369",
+      "name": "菱生",
+      "market": "TSE",
+      "yesterday_buy": -1749,
+      "close_price": "30.30",
+      "current_price": "31.00",
+      "change": "+0.70",
+      "change_percent": "+2.31%",
+      "buy_volume": "561",
+      "sell_volume": "271",
+      "bid_volumes": [
+        "228",
+        "76",
+        "69",
+        "38",
+        "150"
+      ],
+      "ask_volumes": [
+        "18",
+        "128",
+        "16",
+        "46",
+        "63"
+      ]
+    },
+    {
+      "code": "8021",
+      "name": "尖點",
+      "market": "TSE",
+      "yesterday_buy": 1577,
+      "close_price": "450.0",
+      "current_price": "460.0",
+      "change": "+10.00",
+      "change_percent": "+2.22%",
+      "buy_volume": "18",
+      "sell_volume": "114",
+      "bid_volumes": [
+        "12",
+        "1",
+        "3",
+        "1",
+        "1"
+      ],
+      "ask_volumes": [
+        "38",
+        "43",
+        "11",
+        "1",
+        "21"
+      ]
+    },
+    {
+      "code": "2489",
+      "name": "瑞軒",
+      "market": "TSE",
+      "yesterday_buy": 6921,
+      "close_price": "43.20",
+      "current_price": "44.15",
+      "change": "+0.95",
+      "change_percent": "+2.20%",
+      "buy_volume": "1267",
+      "sell_volume": "1695",
+      "bid_volumes": [
+        "217",
+        "281",
+        "229",
+        "174",
+        "366"
+      ],
+      "ask_volumes": [
+        "227",
+        "651",
+        "137",
+        "571",
+        "109"
+      ]
+    },
+    {
+      "code": "2542",
+      "name": "興富發",
+      "market": "TSE",
+      "yesterday_buy": 1796,
+      "close_price": "46.85",
+      "current_price": "47.80",
+      "change": "+0.95",
+      "change_percent": "+2.03%",
+      "buy_volume": "111",
+      "sell_volume": "1808",
+      "bid_volumes": [
+        "16",
+        "23",
+        "5",
+        "23",
+        "44"
+      ],
+      "ask_volumes": [
+        "629",
+        "140",
+        "36",
+        "120",
+        "883"
+      ]
+    },
+    {
+      "code": "6213",
+      "name": "聯茂",
+      "market": "TSE",
+      "yesterday_buy": -11702,
+      "close_price": "495.0",
+      "current_price": "505.0",
+      "change": "+10.00",
+      "change_percent": "+2.02%",
+      "buy_volume": "735",
+      "sell_volume": "324",
+      "bid_volumes": [
+        "64",
+        "291",
+        "124",
+        "109",
+        "147"
+      ],
+      "ask_volumes": [
+        "35",
+        "173",
+        "17",
+        "37",
+        "62"
+      ]
+    },
+    {
+      "code": "00922",
+      "name": "國泰台灣領袖50",
+      "market": "TSE",
+      "yesterday_buy": -1885,
+      "close_price": "41.96",
+      "current_price": "42.70",
+      "change": "+0.74",
+      "change_percent": "+1.76%",
+      "buy_volume": "77",
+      "sell_volume": "84",
+      "bid_volumes": [
+        "44",
+        "19",
+        "5",
+        "7",
+        "2"
+      ],
+      "ask_volumes": [
+        "6",
+        "7",
+        "58",
+        "8",
+        "5"
+      ]
+    },
+    {
+      "code": "2379",
+      "name": "瑞昱",
+      "market": "TSE",
+      "yesterday_buy": 1442,
+      "close_price": "715.0",
+      "current_price": "727.0",
+      "change": "+12.00",
+      "change_percent": "+1.68%",
+      "buy_volume": "199",
+      "sell_volume": "360",
+      "bid_volumes": [
+        "4",
+        "15",
+        "26",
+        "87",
+        "67"
+      ],
+      "ask_volumes": [
+        "63",
+        "47",
+        "54",
+        "159",
+        "37"
+      ]
+    },
+    {
+      "code": "0050",
+      "name": "元大台灣50",
+      "market": "TSE",
+      "yesterday_buy": 16136,
+      "close_price": "108.0",
+      "current_price": "109.8",
+      "change": "+1.80",
+      "change_percent": "+1.67%",
+      "buy_volume": "1480",
+      "sell_volume": "9707",
+      "bid_volumes": [
+        "939",
+        "353",
+        "101",
+        "36",
+        "51"
+      ],
+      "ask_volumes": [
+        "556",
+        "1330",
+        "1167",
+        "6179",
+        "475"
+      ]
+    },
+    {
+      "code": "00929",
+      "name": "復華台灣科技優息",
+      "market": "TSE",
+      "yesterday_buy": -6562,
+      "close_price": "28.56",
+      "current_price": "29.03",
+      "change": "+0.47",
+      "change_percent": "+1.65%",
+      "buy_volume": "816",
+      "sell_volume": "1597",
+      "bid_volumes": [
+        "92",
+        "28",
+        "499",
+        "128",
+        "69"
+      ],
+      "ask_volumes": [
+        "314",
+        "475",
+        "399",
+        "168",
+        "241"
+      ]
+    },
+    {
+      "code": "2855",
+      "name": "統一證",
+      "market": "TSE",
+      "yesterday_buy": 1667,
+      "close_price": "52.50",
+      "current_price": "53.30",
+      "change": "+0.80",
+      "change_percent": "+1.52%",
+      "buy_volume": "347",
+      "sell_volume": "887",
+      "bid_volumes": [
+        "72",
+        "16",
+        "31",
+        "90",
+        "138"
+      ],
+      "ask_volumes": [
+        "29",
+        "233",
+        "387",
+        "72",
+        "166"
+      ]
+    },
+    {
+      "code": "2363",
+      "name": "矽統",
+      "market": "TSE",
+      "yesterday_buy": 1591,
+      "close_price": "52.90",
+      "current_price": "53.70",
+      "change": "+0.80",
+      "change_percent": "+1.51%",
+      "buy_volume": "790",
+      "sell_volume": "230",
+      "bid_volumes": [
+        "125",
+        "203",
+        "211",
+        "104",
+        "147"
+      ],
+      "ask_volumes": [
+        "2",
+        "112",
+        "46",
+        "47",
+        "23"
+      ]
+    },
+    {
+      "code": "2330",
+      "name": "台積電",
+      "market": "TSE",
+      "yesterday_buy": 5243,
+      "close_price": "2425",
+      "current_price": "2460",
+      "change": "+35.00",
+      "change_percent": "+1.44%",
+      "buy_volume": "2926",
+      "sell_volume": "5609",
+      "bid_volumes": [
+        "494",
+        "124",
+        "266",
+        "940",
+        "1102"
+      ],
+      "ask_volumes": [
+        "898",
+        "1242",
+        "1249",
+        "997",
+        "1223"
+      ]
+    },
+    {
+      "code": "2377",
+      "name": "微星",
+      "market": "TSE",
+      "yesterday_buy": 1668,
+      "close_price": "153.0",
+      "current_price": "155.0",
+      "change": "+2.00",
+      "change_percent": "+1.31%",
+      "buy_volume": "1322",
+      "sell_volume": "2103",
+      "bid_volumes": [
+        "2",
+        "31",
+        "90",
+        "574",
+        "625"
+      ],
+      "ask_volumes": [
+        "544",
+        "394",
+        "541",
+        "301",
+        "323"
+      ]
+    },
+    {
+      "code": "2409",
+      "name": "友達",
+      "market": "TSE",
+      "yesterday_buy": 55524,
+      "close_price": "30.00",
+      "current_price": "30.35",
+      "change": "+0.35",
+      "change_percent": "+1.17%",
+      "buy_volume": "10886",
+      "sell_volume": "12046",
+      "bid_volumes": [
+        "4371",
+        "1558",
+        "1621",
+        "1622",
+        "1714"
+      ],
+      "ask_volumes": [
+        "2499",
+        "2816",
+        "1336",
+        "4632",
+        "763"
+      ]
+    },
+    {
+      "code": "4977",
+      "name": "眾達-KY",
+      "market": "TSE",
+      "yesterday_buy": -1232,
+      "close_price": "173.0",
+      "current_price": "175.0",
+      "change": "+2.00",
+      "change_percent": "+1.16%",
+      "buy_volume": "224",
+      "sell_volume": "220",
+      "bid_volumes": [
+        "17",
+        "16",
+        "57",
+        "55",
+        "79"
+      ],
+      "ask_volumes": [
+        "56",
+        "56",
+        "17",
+        "47",
+        "44"
+      ]
+    },
+    {
+      "code": "2634",
+      "name": "漢翔",
+      "market": "TSE",
+      "yesterday_buy": -1011,
+      "close_price": "63.90",
+      "current_price": "64.60",
+      "change": "+0.70",
+      "change_percent": "+1.10%",
+      "buy_volume": "568",
+      "sell_volume": "576",
+      "bid_volumes": [
+        "134",
+        "71",
+        "118",
+        "65",
+        "180"
+      ],
+      "ask_volumes": [
+        "3",
+        "123",
+        "105",
+        "128",
+        "217"
+      ]
+    },
+    {
+      "code": "0056",
+      "name": "元大高股息",
+      "market": "TSE",
+      "yesterday_buy": 13539,
+      "close_price": "56.30",
+      "current_price": "56.85",
+      "change": "+0.55",
+      "change_percent": "+0.98%",
+      "buy_volume": "1043",
+      "sell_volume": "3441",
+      "bid_volumes": [
+        "256",
+        "349",
+        "134",
+        "122",
+        "182"
+      ],
+      "ask_volumes": [
+        "523",
+        "504",
+        "244",
+        "1963",
+        "207"
+      ]
+    },
+    {
+      "code": "1727",
+      "name": "中華化",
+      "market": "TSE",
+      "yesterday_buy": 3573,
+      "close_price": "105.0",
+      "current_price": "106.0",
+      "change": "+1.00",
+      "change_percent": "+0.95%",
+      "buy_volume": "749",
+      "sell_volume": "777",
+      "bid_volumes": [
+        "281",
+        "130",
+        "73",
+        "156",
+        "109"
+      ],
+      "ask_volumes": [
+        "287",
+        "100",
+        "162",
+        "103",
+        "125"
+      ]
+    },
+    {
+      "code": "1609",
+      "name": "大亞",
+      "market": "TSE",
+      "yesterday_buy": 1280,
+      "close_price": "37.65",
+      "current_price": "38.00",
+      "change": "+0.35",
+      "change_percent": "+0.93%",
+      "buy_volume": "125",
+      "sell_volume": "575",
+      "bid_volumes": [
+        "14",
+        "7",
+        "21",
+        "35",
+        "48"
+      ],
+      "ask_volumes": [
+        "114",
+        "136",
+        "93",
+        "133",
+        "99"
+      ]
+    },
+    {
+      "code": "00940",
+      "name": "元大台灣價值高息",
+      "market": "TSE",
+      "yesterday_buy": 22482,
+      "close_price": "12.99",
+      "current_price": "13.11",
+      "change": "+0.12",
+      "change_percent": "+0.92%",
+      "buy_volume": "3461",
+      "sell_volume": "4668",
+      "bid_volumes": [
+        "171",
+        "1404",
+        "1021",
+        "700",
+        "165"
+      ],
+      "ask_volumes": [
+        "1181",
+        "466",
+        "1477",
+        "1062",
+        "482"
       ]
     },
     {
@@ -2843,232 +1595,76 @@
       "market": "TSE",
       "yesterday_buy": -1342,
       "close_price": "115.5",
-      "current_price": "115.5",
-      "change": "+0.00",
-      "change_percent": "+0.00%",
-      "buy_volume": "456",
-      "sell_volume": "779",
+      "current_price": "116.5",
+      "change": "+1.00",
+      "change_percent": "+0.87%",
+      "buy_volume": "1216",
+      "sell_volume": "947",
       "bid_volumes": [
-        "90",
-        "23",
-        "56",
-        "87",
-        "200"
+        "109",
+        "205",
+        "216",
+        "400",
+        "286"
       ],
       "ask_volumes": [
-        "136",
-        "234",
-        "178",
-        "155",
-        "76"
+        "80",
+        "269",
+        "189",
+        "254",
+        "155"
       ]
     },
     {
-      "code": "2486",
-      "name": "一詮",
+      "code": "1303",
+      "name": "南亞",
       "market": "TSE",
-      "yesterday_buy": -705,
-      "close_price": "229.5",
-      "current_price": "229.0",
-      "change": "-0.50",
-      "change_percent": "-0.22%",
-      "buy_volume": "378",
-      "sell_volume": "189",
+      "yesterday_buy": 19072,
+      "close_price": "236.0",
+      "current_price": "238.0",
+      "change": "+2.00",
+      "change_percent": "+0.85%",
+      "buy_volume": "2847",
+      "sell_volume": "8978",
       "bid_volumes": [
-        "106",
-        "44",
-        "118",
-        "55",
-        "55"
+        "378",
+        "768",
+        "359",
+        "496",
+        "846"
       ],
       "ask_volumes": [
-        "3",
-        "68",
-        "27",
-        "36",
-        "55"
+        "1487",
+        "1481",
+        "1378",
+        "3688",
+        "944"
       ]
     },
     {
-      "code": "2377",
-      "name": "微星",
+      "code": "2324",
+      "name": "仁寶",
       "market": "TSE",
-      "yesterday_buy": 1668,
-      "close_price": "153.5",
-      "current_price": "153.0",
-      "change": "-0.50",
-      "change_percent": "-0.33%",
-      "buy_volume": "957",
-      "sell_volume": "720",
+      "yesterday_buy": -1058,
+      "close_price": "37.40",
+      "current_price": "37.70",
+      "change": "+0.30",
+      "change_percent": "+0.80%",
+      "buy_volume": "8693",
+      "sell_volume": "634",
       "bid_volumes": [
-        "12",
-        "206",
-        "251",
-        "241",
-        "247"
+        "972",
+        "2161",
+        "1396",
+        "2929",
+        "1235"
       ],
       "ask_volumes": [
-        "39",
-        "48",
-        "121",
-        "272",
-        "240"
-      ]
-    },
-    {
-      "code": "3481",
-      "name": "群創",
-      "market": "TSE",
-      "yesterday_buy": -4975,
-      "close_price": "48.70",
-      "current_price": "48.50",
-      "change": "-0.20",
-      "change_percent": "-0.41%",
-      "buy_volume": "2792",
-      "sell_volume": "718",
-      "bid_volumes": [
-        "736",
-        "794",
-        "247",
-        "285",
-        "730"
-      ],
-      "ask_volumes": [
-        "51",
-        "332",
-        "20",
-        "115",
-        "200"
-      ]
-    },
-    {
-      "code": "2882",
-      "name": "國泰金",
-      "market": "TSE",
-      "yesterday_buy": -1413,
-      "close_price": "112.5",
-      "current_price": "112.0",
-      "change": "-0.50",
-      "change_percent": "-0.44%",
-      "buy_volume": "3071",
-      "sell_volume": "4250",
-      "bid_volumes": [
-        "71",
-        "854",
-        "661",
-        "767",
-        "718"
-      ],
-      "ask_volumes": [
-        "570",
-        "990",
-        "1250",
-        "910",
-        "530"
-      ]
-    },
-    {
-      "code": "8150",
-      "name": "南茂",
-      "market": "TSE",
-      "yesterday_buy": 1364,
-      "close_price": "87.10",
-      "current_price": "86.70",
-      "change": "-0.40",
-      "change_percent": "-0.46%",
-      "buy_volume": "536",
-      "sell_volume": "157",
-      "bid_volumes": [
-        "96",
-        "120",
-        "124",
-        "66",
-        "130"
-      ],
-      "ask_volumes": [
-        "99",
-        "13",
-        "9",
-        "16",
-        "20"
-      ]
-    },
-    {
-      "code": "2352",
-      "name": "佳世達",
-      "market": "TSE",
-      "yesterday_buy": 1584,
-      "close_price": "29.15",
-      "current_price": "29.00",
-      "change": "-0.15",
-      "change_percent": "-0.51%",
-      "buy_volume": "440",
-      "sell_volume": "327",
-      "bid_volumes": [
-        "20",
-        "221",
-        "19",
-        "39",
-        "141"
-      ],
-      "ask_volumes": [
-        "8",
-        "23",
-        "67",
-        "113",
-        "116"
-      ]
-    },
-    {
-      "code": "8422",
-      "name": "可寧衛*",
-      "market": "TSE",
-      "yesterday_buy": -1731,
-      "close_price": "26.00",
-      "current_price": "25.85",
-      "change": "-0.15",
-      "change_percent": "-0.58%",
-      "buy_volume": "1081",
-      "sell_volume": "455",
-      "bid_volumes": [
         "18",
-        "177",
-        "101",
-        "534",
-        "251"
-      ],
-      "ask_volumes": [
-        "22",
-        "70",
-        "107",
-        "153",
-        "103"
-      ]
-    },
-    {
-      "code": "2379",
-      "name": "瑞昱",
-      "market": "TSE",
-      "yesterday_buy": 1442,
-      "close_price": "720.0",
-      "current_price": "715.0",
-      "change": "-5.00",
-      "change_percent": "-0.69%",
-      "buy_volume": "184",
-      "sell_volume": "44",
-      "bid_volumes": [
-        "34",
-        "34",
-        "22",
-        "72",
-        "22"
-      ],
-      "ask_volumes": [
-        "27",
-        "7",
-        "2",
-        "1",
-        "7"
+        "20",
+        "8",
+        "397",
+        "191"
       ]
     },
     {
@@ -3076,467 +1672,51 @@
       "name": "台新新光金",
       "market": "TSE",
       "yesterday_buy": -5405,
-      "close_price": "44.40",
-      "current_price": "44.05",
-      "change": "-0.35",
-      "change_percent": "-0.79%",
-      "buy_volume": "4250",
-      "sell_volume": "529",
+      "close_price": "44.05",
+      "current_price": "44.40",
+      "change": "+0.35",
+      "change_percent": "+0.79%",
+      "buy_volume": "1101",
+      "sell_volume": "3176",
       "bid_volumes": [
-        "995",
-        "1369",
-        "684",
-        "581",
-        "621"
-      ],
-      "ask_volumes": [
-        "98",
-        "298",
+        "1087",
+        "2",
         "7",
-        "25",
-        "101"
-      ]
-    },
-    {
-      "code": "3006",
-      "name": "晶豪科",
-      "market": "TSE",
-      "yesterday_buy": -1348,
-      "close_price": "281.0",
-      "current_price": "278.5",
-      "change": "-2.50",
-      "change_percent": "-0.89%",
-      "buy_volume": "273",
-      "sell_volume": "472",
-      "bid_volumes": [
-        "19",
-        "11",
-        "108",
-        "42",
-        "93"
-      ],
-      "ask_volumes": [
-        "79",
-        "88",
-        "80",
-        "162",
-        "63"
-      ]
-    },
-    {
-      "code": "00632R",
-      "name": "元大台灣50反1",
-      "market": "TSE",
-      "yesterday_buy": -25109,
-      "close_price": "9.95",
-      "current_price": "9.84",
-      "change": "-0.11",
-      "change_percent": "-1.11%",
-      "buy_volume": "57449",
-      "sell_volume": "37644",
-      "bid_volumes": [
-        "4488",
-        "13964",
-        "16165",
-        "11341",
-        "11491"
-      ],
-      "ask_volumes": [
-        "2452",
-        "1613",
-        "13113",
-        "11686",
-        "8780"
-      ]
-    },
-    {
-      "code": "2395",
-      "name": "研華",
-      "market": "TSE",
-      "yesterday_buy": 1299,
-      "close_price": "695.0",
-      "current_price": "686.0",
-      "change": "-9.00",
-      "change_percent": "-1.29%",
-      "buy_volume": "182",
-      "sell_volume": "91",
-      "bid_volumes": [
-        "23",
-        "23",
-        "38",
-        "45",
-        "53"
-      ],
-      "ask_volumes": [
-        "30",
-        "10",
-        "13",
-        "11",
-        "27"
-      ]
-    },
-    {
-      "code": "2327",
-      "name": "國巨*",
-      "market": "TSE",
-      "yesterday_buy": -1767,
-      "close_price": "536.0",
-      "current_price": "529.0",
-      "change": "-7.00",
-      "change_percent": "-1.31%",
-      "buy_volume": "1784",
-      "sell_volume": "220",
-      "bid_volumes": [
-        "144",
-        "339",
-        "357",
-        "502",
-        "442"
-      ],
-      "ask_volumes": [
-        "16",
-        "2",
-        "3",
-        "18",
-        "181"
-      ]
-    },
-    {
-      "code": "6706",
-      "name": "惠特",
-      "market": "TSE",
-      "yesterday_buy": -934,
-      "close_price": "147.0",
-      "current_price": "145.0",
-      "change": "-2.00",
-      "change_percent": "-1.36%",
-      "buy_volume": "149",
-      "sell_volume": "116",
-      "bid_volumes": [
-        "67",
-        "3",
-        "5",
-        "21",
-        "53"
-      ],
-      "ask_volumes": [
-        "17",
-        "8",
-        "40",
-        "18",
-        "33"
-      ]
-    },
-    {
-      "code": "6116",
-      "name": "彩晶",
-      "market": "TSE",
-      "yesterday_buy": -1137,
-      "close_price": "14.15",
-      "current_price": "13.95",
-      "change": "-0.20",
-      "change_percent": "-1.41%",
-      "buy_volume": "3958",
-      "sell_volume": "2001",
-      "bid_volumes": [
-        "584",
-        "850",
-        "601",
-        "1298",
-        "625"
-      ],
-      "ask_volumes": [
-        "195",
-        "117",
-        "481",
-        "407",
-        "801"
-      ]
-    },
-    {
-      "code": "3661",
-      "name": "世芯-KY",
-      "market": "TSE",
-      "yesterday_buy": -746,
-      "close_price": "3345",
-      "current_price": "3295",
-      "change": "-50.00",
-      "change_percent": "-1.49%",
-      "buy_volume": "79",
-      "sell_volume": "15",
-      "bid_volumes": [
-        "2",
-        "15",
-        "24",
-        "20",
-        "18"
-      ],
-      "ask_volumes": [
-        "1",
         "4",
-        "2",
-        "3",
-        "5"
+        "1"
+      ],
+      "ask_volumes": [
+        "1705",
+        "859",
+        "383",
+        "170",
+        "59"
       ]
     },
     {
-      "code": "2634",
-      "name": "漢翔",
+      "code": "3036",
+      "name": "文曄",
       "market": "TSE",
-      "yesterday_buy": -1011,
-      "close_price": "65.00",
-      "current_price": "63.90",
-      "change": "-1.10",
-      "change_percent": "-1.69%",
-      "buy_volume": "833",
-      "sell_volume": "125",
+      "yesterday_buy": 3457,
+      "close_price": "204.0",
+      "current_price": "205.5",
+      "change": "+1.50",
+      "change_percent": "+0.74%",
+      "buy_volume": "1776",
+      "sell_volume": "1328",
       "bid_volumes": [
-        "247",
-        "88",
-        "191",
-        "187",
-        "120"
+        "196",
+        "196",
+        "316",
+        "609",
+        "459"
       ],
       "ask_volumes": [
-        "13",
-        "16",
-        "19",
-        "46",
-        "31"
-      ]
-    },
-    {
-      "code": "3189",
-      "name": "景碩",
-      "market": "TSE",
-      "yesterday_buy": -3320,
-      "close_price": "820.0",
-      "current_price": "805.0",
-      "change": "-15.00",
-      "change_percent": "-1.83%",
-      "buy_volume": "227",
-      "sell_volume": "309",
-      "bid_volumes": [
-        "40",
-        "4",
-        "148",
-        "3",
-        "32"
-      ],
-      "ask_volumes": [
-        "36",
-        "50",
-        "67",
-        "65",
-        "91"
-      ]
-    },
-    {
-      "code": "2464",
-      "name": "盟立",
-      "market": "TSE",
-      "yesterday_buy": -1360,
-      "close_price": "183.0",
-      "current_price": "179.5",
-      "change": "-3.50",
-      "change_percent": "-1.91%",
-      "buy_volume": "602",
-      "sell_volume": "305",
-      "bid_volumes": [
-        "19",
-        "104",
-        "202",
-        "94",
-        "183"
-      ],
-      "ask_volumes": [
-        "3",
-        "106",
-        "75",
-        "76",
-        "45"
-      ]
-    },
-    {
-      "code": "4977",
-      "name": "眾達-KY",
-      "market": "TSE",
-      "yesterday_buy": -1232,
-      "close_price": "176.5",
-      "current_price": "173.0",
-      "change": "-3.50",
-      "change_percent": "-1.98%",
-      "buy_volume": "295",
-      "sell_volume": "55",
-      "bid_volumes": [
-        "8",
-        "68",
-        "37",
-        "107",
-        "75"
-      ],
-      "ask_volumes": [
-        "8",
-        "10",
-        "12",
-        "17",
-        "8"
-      ]
-    },
-    {
-      "code": "2337",
-      "name": "旺宏",
-      "market": "TSE",
-      "yesterday_buy": -3519,
-      "close_price": "119.0",
-      "current_price": "116.5",
-      "change": "-2.50",
-      "change_percent": "-2.10%",
-      "buy_volume": "4510",
-      "sell_volume": "1763",
-      "bid_volumes": [
-        "832",
-        "1437",
-        "824",
-        "1033",
-        "384"
-      ],
-      "ask_volumes": [
-        "32",
-        "69",
-        "313",
-        "607",
-        "742"
-      ]
-    },
-    {
-      "code": "2345",
-      "name": "智邦",
-      "market": "TSE",
-      "yesterday_buy": -694,
-      "close_price": "1840",
-      "current_price": "1800",
-      "change": "-40.00",
-      "change_percent": "-2.17%",
-      "buy_volume": "297",
-      "sell_volume": "164",
-      "bid_volumes": [
-        "61",
-        "37",
-        "64",
-        "49",
-        "86"
-      ],
-      "ask_volumes": [
-        "2",
-        "6",
-        "9",
-        "107",
-        "40"
-      ]
-    },
-    {
-      "code": "2388",
-      "name": "威盛",
-      "market": "TSE",
-      "yesterday_buy": -915,
-      "close_price": "71.30",
-      "current_price": "69.70",
-      "change": "-1.60",
-      "change_percent": "-2.24%",
-      "buy_volume": "185",
-      "sell_volume": "114",
-      "bid_volumes": [
-        "32",
-        "13",
-        "85",
-        "33",
-        "22"
-      ],
-      "ask_volumes": [
-        "12",
-        "25",
-        "24",
-        "37",
-        "16"
-      ]
-    },
-    {
-      "code": "5469",
-      "name": "瀚宇博",
-      "market": "TSE",
-      "yesterday_buy": -821,
-      "close_price": "74.70",
-      "current_price": "73.00",
-      "change": "-1.70",
-      "change_percent": "-2.28%",
-      "buy_volume": "155",
-      "sell_volume": "76",
-      "bid_volumes": [
-        "62",
-        "25",
-        "31",
-        "13",
-        "24"
-      ],
-      "ask_volumes": [
-        "20",
-        "5",
-        "17",
-        "6",
-        "28"
-      ]
-    },
-    {
-      "code": "6209",
-      "name": "今國光",
-      "market": "TSE",
-      "yesterday_buy": -985,
-      "close_price": "80.00",
-      "current_price": "78.00",
-      "change": "-2.00",
-      "change_percent": "-2.50%",
-      "buy_volume": "254",
-      "sell_volume": "21",
-      "bid_volumes": [
-        "75",
-        "12",
-        "22",
-        "42",
-        "103"
-      ],
-      "ask_volumes": [
-        "7",
-        "1",
-        "4",
-        "3",
-        "6"
-      ]
-    },
-    {
-      "code": "4915",
-      "name": "致伸",
-      "market": "TSE",
-      "yesterday_buy": -1509,
-      "close_price": "65.60",
-      "current_price": "63.90",
-      "change": "-1.70",
-      "change_percent": "-2.59%",
-      "buy_volume": "356",
-      "sell_volume": "103",
-      "bid_volumes": [
-        "51",
-        "63",
-        "75",
-        "90",
-        "77"
-      ],
-      "ask_volumes": [
-        "28",
-        "4",
-        "19",
-        "26",
-        "26"
+        "47",
+        "154",
+        "279",
+        "367",
+        "481"
       ]
     },
     {
@@ -3544,233 +1724,25 @@
       "name": "宇瞻",
       "market": "TSE",
       "yesterday_buy": -923,
-      "close_price": "210.0",
-      "current_price": "204.0",
-      "change": "-6.00",
-      "change_percent": "-2.86%",
-      "buy_volume": "201",
-      "sell_volume": "49",
+      "close_price": "204.0",
+      "current_price": "205.5",
+      "change": "+1.50",
+      "change_percent": "+0.74%",
+      "buy_volume": "328",
+      "sell_volume": "139",
       "bid_volumes": [
-        "37",
-        "33",
-        "60",
-        "21",
+        "81",
+        "49",
+        "83",
+        "65",
         "50"
       ],
       "ask_volumes": [
-        "5",
-        "1",
-        "1",
-        "16",
-        "26"
-      ]
-    },
-    {
-      "code": "2313",
-      "name": "華通",
-      "market": "TSE",
-      "yesterday_buy": -7480,
-      "close_price": "225.0",
-      "current_price": "218.5",
-      "change": "-6.50",
-      "change_percent": "-2.89%",
-      "buy_volume": "1736",
-      "sell_volume": "871",
-      "bid_volumes": [
-        "89",
-        "680",
-        "192",
-        "349",
-        "426"
-      ],
-      "ask_volumes": [
-        "78",
-        "128",
-        "235",
-        "278",
-        "152"
-      ]
-    },
-    {
-      "code": "3450",
-      "name": "聯鈞",
-      "market": "TSE",
-      "yesterday_buy": -2431,
-      "close_price": "541.0",
-      "current_price": "525.0",
-      "change": "-16.00",
-      "change_percent": "-2.96%",
-      "buy_volume": "213",
-      "sell_volume": "113",
-      "bid_volumes": [
-        "10",
-        "39",
-        "27",
-        "42",
-        "95"
-      ],
-      "ask_volumes": [
-        "15",
-        "18",
-        "5",
-        "27",
-        "48"
-      ]
-    },
-    {
-      "code": "2481",
-      "name": "強茂",
-      "market": "TSE",
-      "yesterday_buy": -10427,
-      "close_price": "168.5",
-      "current_price": "163.0",
-      "change": "-5.50",
-      "change_percent": "-3.26%",
-      "buy_volume": "3008",
-      "sell_volume": "1519",
-      "bid_volumes": [
-        "307",
-        "427",
-        "756",
-        "976",
-        "542"
-      ],
-      "ask_volumes": [
-        "78",
-        "225",
-        "450",
-        "366",
-        "400"
-      ]
-    },
-    {
-      "code": "2492",
-      "name": "華新科",
-      "market": "TSE",
-      "yesterday_buy": -6175,
-      "close_price": "307.5",
-      "current_price": "297.0",
-      "change": "-10.50",
-      "change_percent": "-3.41%",
-      "buy_volume": "726",
-      "sell_volume": "324",
-      "bid_volumes": [
-        "14",
-        "43",
-        "275",
-        "114",
-        "280"
-      ],
-      "ask_volumes": [
-        "14",
-        "21",
-        "136",
-        "90",
-        "63"
-      ]
-    },
-    {
-      "code": "6672",
-      "name": "騰輝電子-KY",
-      "market": "TSE",
-      "yesterday_buy": -1498,
-      "close_price": "304.0",
-      "current_price": "293.5",
-      "change": "-10.50",
-      "change_percent": "-3.45%",
-      "buy_volume": "106",
-      "sell_volume": "127",
-      "bid_volumes": [
-        "10",
-        "6",
-        "43",
-        "14",
-        "33"
-      ],
-      "ask_volumes": [
-        "27",
+        "4",
+        "13",
         "32",
-        "24",
-        "34",
-        "10"
-      ]
-    },
-    {
-      "code": "4958",
-      "name": "臻鼎-KY",
-      "market": "TSE",
-      "yesterday_buy": -7426,
-      "close_price": "493.5",
-      "current_price": "476.0",
-      "change": "-17.50",
-      "change_percent": "-3.55%",
-      "buy_volume": "737",
-      "sell_volume": "86",
-      "bid_volumes": [
-        "5",
-        "99",
-        "479",
-        "66",
-        "88"
-      ],
-      "ask_volumes": [
-        "3",
-        "2",
-        "38",
-        "29",
-        "14"
-      ]
-    },
-    {
-      "code": "8046",
-      "name": "南電",
-      "market": "TSE",
-      "yesterday_buy": -1134,
-      "close_price": "1105",
-      "current_price": "1065",
-      "change": "-40.00",
-      "change_percent": "-3.62%",
-      "buy_volume": "595",
-      "sell_volume": "343",
-      "bid_volumes": [
-        "22",
-        "192",
-        "175",
-        "178",
-        "28"
-      ],
-      "ask_volumes": [
-        "24",
-        "35",
-        "54",
-        "66",
-        "164"
-      ]
-    },
-    {
-      "code": "2426",
-      "name": "鼎元",
-      "market": "TSE",
-      "yesterday_buy": -2378,
-      "close_price": "99.80",
-      "current_price": "96.00",
-      "change": "-3.80",
-      "change_percent": "-3.81%",
-      "buy_volume": "699",
-      "sell_volume": "41",
-      "bid_volumes": [
-        "70",
-        "133",
-        "170",
-        "120",
-        "206"
-      ],
-      "ask_volumes": [
-        "2",
-        "3",
-        "10",
-        "10",
-        "16"
+        "21",
+        "69"
       ]
     },
     {
@@ -3778,25 +1750,649 @@
       "name": "玉晶光",
       "market": "TSE",
       "yesterday_buy": -788,
-      "close_price": "1005",
-      "current_price": "965.0",
-      "change": "-40.00",
-      "change_percent": "-3.98%",
-      "buy_volume": "121",
-      "sell_volume": "13",
+      "close_price": "965.0",
+      "current_price": "972.0",
+      "change": "+7.00",
+      "change_percent": "+0.73%",
+      "buy_volume": "199",
+      "sell_volume": "33",
       "bid_volumes": [
-        "30",
-        "39",
-        "27",
+        "56",
+        "54",
+        "16",
+        "35",
+        "38"
+      ],
+      "ask_volumes": [
+        "3",
+        "4",
+        "1",
+        "12",
+        "13"
+      ]
+    },
+    {
+      "code": "2352",
+      "name": "佳世達",
+      "market": "TSE",
+      "yesterday_buy": 1584,
+      "close_price": "29.00",
+      "current_price": "29.20",
+      "change": "+0.20",
+      "change_percent": "+0.69%",
+      "buy_volume": "632",
+      "sell_volume": "1273",
+      "bid_volumes": [
         "13",
-        "12"
+        "12",
+        "508",
+        "55",
+        "44"
+      ],
+      "ask_volumes": [
+        "262",
+        "238",
+        "321",
+        "309",
+        "143"
+      ]
+    },
+    {
+      "code": "2915",
+      "name": "潤泰全",
+      "market": "TSE",
+      "yesterday_buy": 1296,
+      "close_price": "58.60",
+      "current_price": "59.00",
+      "change": "+0.40",
+      "change_percent": "+0.68%",
+      "buy_volume": "236",
+      "sell_volume": "381",
+      "bid_volumes": [
+        "4",
+        "16",
+        "22",
+        "44",
+        "150"
+      ],
+      "ask_volumes": [
+        "1",
+        "79",
+        "114",
+        "143",
+        "44"
+      ]
+    },
+    {
+      "code": "1301",
+      "name": "台塑",
+      "market": "TSE",
+      "yesterday_buy": 9983,
+      "close_price": "64.60",
+      "current_price": "65.00",
+      "change": "+0.40",
+      "change_percent": "+0.62%",
+      "buy_volume": "3084",
+      "sell_volume": "1993",
+      "bid_volumes": [
+        "1576",
+        "314",
+        "282",
+        "285",
+        "627"
+      ],
+      "ask_volumes": [
+        "183",
+        "439",
+        "238",
+        "398",
+        "735"
+      ]
+    },
+    {
+      "code": "2395",
+      "name": "研華",
+      "market": "TSE",
+      "yesterday_buy": 1299,
+      "close_price": "686.0",
+      "current_price": "690.0",
+      "change": "+4.00",
+      "change_percent": "+0.58%",
+      "buy_volume": "450",
+      "sell_volume": "345",
+      "bid_volumes": [
+        "34",
+        "188",
+        "67",
+        "69",
+        "92"
+      ],
+      "ask_volumes": [
+        "35",
+        "5",
+        "78",
+        "146",
+        "81"
+      ]
+    },
+    {
+      "code": "2027",
+      "name": "大成鋼",
+      "market": "TSE",
+      "yesterday_buy": 3700,
+      "close_price": "47.10",
+      "current_price": "47.35",
+      "change": "+0.25",
+      "change_percent": "+0.53%",
+      "buy_volume": "1518",
+      "sell_volume": "327",
+      "bid_volumes": [
+        "322",
+        "335",
+        "165",
+        "587",
+        "109"
+      ],
+      "ask_volumes": [
+        "65",
+        "64",
+        "55",
+        "68",
+        "75"
+      ]
+    },
+    {
+      "code": "3005",
+      "name": "神基",
+      "market": "TSE",
+      "yesterday_buy": 2176,
+      "close_price": "118.0",
+      "current_price": "118.5",
+      "change": "+0.50",
+      "change_percent": "+0.42%",
+      "buy_volume": "1202",
+      "sell_volume": "974",
+      "bid_volumes": [
+        "61",
+        "146",
+        "208",
+        "238",
+        "549"
+      ],
+      "ask_volumes": [
+        "66",
+        "437",
+        "151",
+        "215",
+        "105"
+      ]
+    },
+    {
+      "code": "8112",
+      "name": "至上",
+      "market": "TSE",
+      "yesterday_buy": -1453,
+      "close_price": "82.80",
+      "current_price": "83.10",
+      "change": "+0.30",
+      "change_percent": "+0.36%",
+      "buy_volume": "999",
+      "sell_volume": "139",
+      "bid_volumes": [
+        "168",
+        "303",
+        "114",
+        "324",
+        "90"
       ],
       "ask_volumes": [
         "2",
+        "5",
+        "18",
+        "79",
+        "35"
+      ]
+    },
+    {
+      "code": "6116",
+      "name": "彩晶",
+      "market": "TSE",
+      "yesterday_buy": -1137,
+      "close_price": "13.95",
+      "current_price": "14.00",
+      "change": "+0.05",
+      "change_percent": "+0.36%",
+      "buy_volume": "4467",
+      "sell_volume": "3745",
+      "bid_volumes": [
+        "45",
+        "611",
+        "1160",
+        "1867",
+        "784"
+      ],
+      "ask_volumes": [
+        "892",
+        "518",
+        "910",
+        "605",
+        "820"
+      ]
+    },
+    {
+      "code": "6505",
+      "name": "台塑化",
+      "market": "TSE",
+      "yesterday_buy": 14769,
+      "close_price": "86.20",
+      "current_price": "86.50",
+      "change": "+0.30",
+      "change_percent": "+0.35%",
+      "buy_volume": "359",
+      "sell_volume": "1271",
+      "bid_volumes": [
+        "7",
+        "14",
+        "19",
+        "184",
+        "135"
+      ],
+      "ask_volumes": [
+        "322",
+        "188",
+        "134",
+        "375",
+        "252"
+      ]
+    },
+    {
+      "code": "00900",
+      "name": "富邦特選高股息30",
+      "market": "TSE",
+      "yesterday_buy": 7154,
+      "close_price": "19.77",
+      "current_price": "19.84",
+      "change": "+0.07",
+      "change_percent": "+0.35%",
+      "buy_volume": "728",
+      "sell_volume": "804",
+      "bid_volumes": [
+        "50",
+        "400",
+        "2",
+        "74",
+        "202"
+      ],
+      "ask_volumes": [
+        "557",
+        "71",
+        "23",
+        "91",
+        "62"
+      ]
+    },
+    {
+      "code": "2412",
+      "name": "中華電",
+      "market": "TSE",
+      "yesterday_buy": 9509,
+      "close_price": "145.0",
+      "current_price": "145.5",
+      "change": "+0.50",
+      "change_percent": "+0.34%",
+      "buy_volume": "6683",
+      "sell_volume": "11109",
+      "bid_volumes": [
+        "858",
+        "1265",
+        "979",
+        "2643",
+        "938"
+      ],
+      "ask_volumes": [
+        "817",
+        "3621",
+        "3650",
+        "2077",
+        "944"
+      ]
+    },
+    {
+      "code": "00878",
+      "name": "國泰永續高股息",
+      "market": "TSE",
+      "yesterday_buy": 10184,
+      "close_price": "34.73",
+      "current_price": "34.83",
+      "change": "+0.10",
+      "change_percent": "+0.29%",
+      "buy_volume": "1109",
+      "sell_volume": "561",
+      "bid_volumes": [
+        "153",
+        "58",
+        "195",
+        "344",
+        "359"
+      ],
+      "ask_volumes": [
+        "5",
+        "13",
+        "177",
+        "170",
+        "196"
+      ]
+    },
+    {
+      "code": "2388",
+      "name": "威盛",
+      "market": "TSE",
+      "yesterday_buy": -915,
+      "close_price": "69.70",
+      "current_price": "69.90",
+      "change": "+0.20",
+      "change_percent": "+0.29%",
+      "buy_volume": "509",
+      "sell_volume": "49",
+      "bid_volumes": [
+        "32",
+        "133",
+        "166",
+        "51",
+        "127"
+      ],
+      "ask_volumes": [
         "1",
         "1",
+        "2",
+        "12",
+        "33"
+      ]
+    },
+    {
+      "code": "2002",
+      "name": "中鋼",
+      "market": "TSE",
+      "yesterday_buy": -2169,
+      "close_price": "18.70",
+      "current_price": "18.75",
+      "change": "+0.05",
+      "change_percent": "+0.27%",
+      "buy_volume": "17942",
+      "sell_volume": "9927",
+      "bid_volumes": [
+        "2",
+        "3568",
+        "5208",
+        "6668",
+        "2496"
+      ],
+      "ask_volumes": [
+        "812",
+        "1123",
+        "2916",
+        "2174",
+        "2902"
+      ]
+    },
+    {
+      "code": "1314",
+      "name": "中石化",
+      "market": "TSE",
+      "yesterday_buy": 27311,
+      "close_price": "8.96",
+      "current_price": "8.96",
+      "change": "+0.00",
+      "change_percent": "+0.00%",
+      "buy_volume": "1548",
+      "sell_volume": "1547",
+      "bid_volumes": [
         "4",
-        "5"
+        "1",
+        "1193",
+        "128",
+        "222"
+      ],
+      "ask_volumes": [
+        "6",
+        "65",
+        "384",
+        "357",
+        "735"
+      ]
+    },
+    {
+      "code": "3231",
+      "name": "緯創",
+      "market": "TSE",
+      "yesterday_buy": 11571,
+      "close_price": "186.5",
+      "current_price": "186.5",
+      "change": "+0.00",
+      "change_percent": "+0.00%",
+      "buy_volume": "7547",
+      "sell_volume": "2189",
+      "bid_volumes": [
+        "1082",
+        "3084",
+        "1300",
+        "1151",
+        "930"
+      ],
+      "ask_volumes": [
+        "88",
+        "12",
+        "345",
+        "282",
+        "1462"
+      ]
+    },
+    {
+      "code": "2317",
+      "name": "鴻海",
+      "market": "TSE",
+      "yesterday_buy": 9815,
+      "close_price": "250.5",
+      "current_price": "250.5",
+      "change": "+0.00",
+      "change_percent": "+0.00%",
+      "buy_volume": "9178",
+      "sell_volume": "3560",
+      "bid_volumes": [
+        "985",
+        "1833",
+        "2501",
+        "2610",
+        "1249"
+      ],
+      "ask_volumes": [
+        "46",
+        "58",
+        "706",
+        "757",
+        "1993"
+      ]
+    },
+    {
+      "code": "2615",
+      "name": "萬海",
+      "market": "TSE",
+      "yesterday_buy": 7026,
+      "close_price": "120.5",
+      "current_price": "120.5",
+      "change": "+0.00",
+      "change_percent": "+0.00%",
+      "buy_volume": "3100",
+      "sell_volume": "3609",
+      "bid_volumes": [
+        "48",
+        "405",
+        "964",
+        "1136",
+        "547"
+      ],
+      "ask_volumes": [
+        "14",
+        "1564",
+        "1123",
+        "718",
+        "190"
+      ]
+    },
+    {
+      "code": "9945",
+      "name": "潤泰新",
+      "market": "TSE",
+      "yesterday_buy": 5282,
+      "close_price": "28.95",
+      "current_price": "28.95",
+      "change": "+0.00",
+      "change_percent": "+0.00%",
+      "buy_volume": "1194",
+      "sell_volume": "2008",
+      "bid_volumes": [
+        "322",
+        "79",
+        "143",
+        "129",
+        "521"
+      ],
+      "ask_volumes": [
+        "133",
+        "552",
+        "85",
+        "1129",
+        "109"
+      ]
+    },
+    {
+      "code": "1402",
+      "name": "遠東新",
+      "market": "TSE",
+      "yesterday_buy": 3693,
+      "close_price": "28.10",
+      "current_price": "28.10",
+      "change": "+0.00",
+      "change_percent": "+0.00%",
+      "buy_volume": "954",
+      "sell_volume": "1866",
+      "bid_volumes": [
+        "67",
+        "23",
+        "271",
+        "196",
+        "397"
+      ],
+      "ask_volumes": [
+        "14",
+        "551",
+        "425",
+        "474",
+        "402"
+      ]
+    },
+    {
+      "code": "2820",
+      "name": "華票",
+      "market": "TSE",
+      "yesterday_buy": 2946,
+      "close_price": "17.45",
+      "current_price": "17.45",
+      "change": "+0.00",
+      "change_percent": "+0.00%",
+      "buy_volume": "854",
+      "sell_volume": "963",
+      "bid_volumes": [
+        "14",
+        "12",
+        "92",
+        "322",
+        "414"
+      ],
+      "ask_volumes": [
+        "190",
+        "165",
+        "284",
+        "196",
+        "128"
+      ]
+    },
+    {
+      "code": "3706",
+      "name": "神達",
+      "market": "TSE",
+      "yesterday_buy": 2749,
+      "close_price": "80.50",
+      "current_price": "80.50",
+      "change": "+0.00",
+      "change_percent": "+0.00%",
+      "buy_volume": "465",
+      "sell_volume": "318",
+      "bid_volumes": [
+        "22",
+        "14",
+        "33",
+        "111",
+        "285"
+      ],
+      "ask_volumes": [
+        "9",
+        "41",
+        "102",
+        "53",
+        "113"
+      ]
+    },
+    {
+      "code": "2851",
+      "name": "中再保",
+      "market": "TSE",
+      "yesterday_buy": 2041,
+      "close_price": "47.00",
+      "current_price": "47.00",
+      "change": "+0.00",
+      "change_percent": "+0.00%",
+      "buy_volume": "110",
+      "sell_volume": "84",
+      "bid_volumes": [
+        "2",
+        "2",
+        "29",
+        "48",
+        "29"
+      ],
+      "ask_volumes": [
+        "22",
+        "12",
+        "13",
+        "5",
+        "32"
+      ]
+    },
+    {
+      "code": "2312",
+      "name": "金寶",
+      "market": "TSE",
+      "yesterday_buy": 1351,
+      "close_price": "31.00",
+      "current_price": "31.00",
+      "change": "+0.00",
+      "change_percent": "+0.00%",
+      "buy_volume": "2104",
+      "sell_volume": "287",
+      "bid_volumes": [
+        "510",
+        "432",
+        "403",
+        "428",
+        "331"
+      ],
+      "ask_volumes": [
+        "13",
+        "4",
+        "79",
+        "63",
+        "128"
       ]
     },
     {
@@ -3804,103 +2400,1507 @@
       "name": "定穎投控",
       "market": "TSE",
       "yesterday_buy": -1118,
-      "close_price": "123.5",
+      "close_price": "118.5",
       "current_price": "118.5",
-      "change": "-5.00",
-      "change_percent": "-4.05%",
-      "buy_volume": "1098",
-      "sell_volume": "150",
+      "change": "+0.00",
+      "change_percent": "+0.00%",
+      "buy_volume": "1269",
+      "sell_volume": "136",
       "bid_volumes": [
-        "194",
-        "251",
-        "171",
-        "203",
-        "279"
+        "278",
+        "343",
+        "224",
+        "245",
+        "179"
       ],
       "ask_volumes": [
-        "47",
-        "13",
-        "44",
+        "5",
+        "27",
+        "21",
         "31",
-        "15"
+        "52"
       ]
     },
     {
-      "code": "2368",
-      "name": "金像電",
+      "code": "2413",
+      "name": "環科",
       "market": "TSE",
-      "yesterday_buy": -3391,
-      "close_price": "992.0",
-      "current_price": "950.0",
-      "change": "-42.00",
-      "change_percent": "-4.23%",
-      "buy_volume": "301",
-      "sell_volume": "19",
+      "yesterday_buy": -809,
+      "close_price": "53.10",
+      "current_price": "53.10",
+      "change": "+0.00",
+      "change_percent": "+0.00%",
+      "buy_volume": "173",
+      "sell_volume": "146",
       "bid_volumes": [
-        "129",
+        "31",
+        "48",
+        "7",
+        "57",
+        "30"
+      ],
+      "ask_volumes": [
         "28",
+        "5",
+        "11",
+        "58",
+        "44"
+      ]
+    },
+    {
+      "code": "00953B",
+      "name": "群益優選非投等債",
+      "market": "TSE",
+      "yesterday_buy": -6816,
+      "close_price": "9.58",
+      "current_price": "9.57",
+      "change": "-0.01",
+      "change_percent": "-0.10%",
+      "buy_volume": "24206",
+      "sell_volume": "27009",
+      "bid_volumes": [
+        "9290",
+        "6226",
+        "4059",
+        "3195",
+        "1436"
+      ],
+      "ask_volumes": [
+        "4859",
+        "8743",
+        "6181",
+        "6394",
+        "832"
+      ]
+    },
+    {
+      "code": "4938",
+      "name": "和碩",
+      "market": "TSE",
+      "yesterday_buy": 1576,
+      "close_price": "90.40",
+      "current_price": "90.30",
+      "change": "-0.10",
+      "change_percent": "-0.11%",
+      "buy_volume": "561",
+      "sell_volume": "1563",
+      "bid_volumes": [
+        "12",
+        "89",
+        "81",
+        "85",
+        "294"
+      ],
+      "ask_volumes": [
+        "436",
+        "312",
+        "438",
         "49",
+        "328"
+      ]
+    },
+    {
+      "code": "1605",
+      "name": "華新",
+      "market": "TSE",
+      "yesterday_buy": 1648,
+      "close_price": "37.15",
+      "current_price": "37.10",
+      "change": "-0.05",
+      "change_percent": "-0.13%",
+      "buy_volume": "3513",
+      "sell_volume": "3302",
+      "bid_volumes": [
+        "1939",
+        "288",
+        "420",
+        "375",
+        "491"
+      ],
+      "ask_volumes": [
+        "339",
+        "146",
+        "82",
+        "39",
+        "2696"
+      ]
+    },
+    {
+      "code": "5469",
+      "name": "瀚宇博",
+      "market": "TSE",
+      "yesterday_buy": -821,
+      "close_price": "73.00",
+      "current_price": "72.80",
+      "change": "-0.20",
+      "change_percent": "-0.27%",
+      "buy_volume": "157",
+      "sell_volume": "58",
+      "bid_volumes": [
+        "34",
+        "26",
+        "47",
+        "16",
+        "34"
+      ],
+      "ask_volumes": [
+        "6",
+        "3",
+        "4",
+        "13",
+        "32"
+      ]
+    },
+    {
+      "code": "1434",
+      "name": "福懋",
+      "market": "TSE",
+      "yesterday_buy": 1393,
+      "close_price": "17.85",
+      "current_price": "17.80",
+      "change": "-0.05",
+      "change_percent": "-0.28%",
+      "buy_volume": "524",
+      "sell_volume": "406",
+      "bid_volumes": [
+        "57",
+        "161",
+        "61",
+        "190",
+        "55"
+      ],
+      "ask_volumes": [
+        "6",
+        "103",
+        "144",
+        "99",
+        "54"
+      ]
+    },
+    {
+      "code": "2382",
+      "name": "廣達",
+      "market": "TSE",
+      "yesterday_buy": 7974,
+      "close_price": "344.0",
+      "current_price": "343.0",
+      "change": "-1.00",
+      "change_percent": "-0.29%",
+      "buy_volume": "1872",
+      "sell_volume": "1062",
+      "bid_volumes": [
+        "155",
+        "315",
+        "414",
+        "546",
+        "442"
+      ],
+      "ask_volumes": [
+        "40",
+        "13",
+        "123",
+        "386",
+        "500"
+      ]
+    },
+    {
+      "code": "9904",
+      "name": "寶成",
+      "market": "TSE",
+      "yesterday_buy": 5464,
+      "close_price": "24.80",
+      "current_price": "24.70",
+      "change": "-0.10",
+      "change_percent": "-0.40%",
+      "buy_volume": "2458",
+      "sell_volume": "3854",
+      "bid_volumes": [
+        "49",
+        "231",
+        "233",
+        "973",
+        "972"
+      ],
+      "ask_volumes": [
+        "368",
+        "1143",
+        "690",
+        "600",
+        "1053"
+      ]
+    },
+    {
+      "code": "1101",
+      "name": "台泥",
+      "market": "TSE",
+      "yesterday_buy": 12095,
+      "close_price": "24.45",
+      "current_price": "24.35",
+      "change": "-0.10",
+      "change_percent": "-0.41%",
+      "buy_volume": "4128",
+      "sell_volume": "6832",
+      "bid_volumes": [
+        "354",
+        "196",
+        "730",
+        "1592",
+        "1256"
+      ],
+      "ask_volumes": [
+        "722",
+        "1860",
+        "1163",
+        "2205",
+        "882"
+      ]
+    },
+    {
+      "code": "1313",
+      "name": "聯成",
+      "market": "TSE",
+      "yesterday_buy": 2818,
+      "close_price": "12.30",
+      "current_price": "12.25",
+      "change": "-0.05",
+      "change_percent": "-0.41%",
+      "buy_volume": "356",
+      "sell_volume": "932",
+      "bid_volumes": [
+        "7",
+        "120",
+        "37",
+        "49",
+        "143"
+      ],
+      "ask_volumes": [
+        "312",
+        "179",
+        "128",
+        "35",
+        "278"
+      ]
+    },
+    {
+      "code": "1102",
+      "name": "亞泥",
+      "market": "TSE",
+      "yesterday_buy": 3545,
+      "close_price": "35.30",
+      "current_price": "35.15",
+      "change": "-0.15",
+      "change_percent": "-0.42%",
+      "buy_volume": "772",
+      "sell_volume": "1504",
+      "bid_volumes": [
+        "75",
+        "106",
+        "236",
+        "228",
+        "127"
+      ],
+      "ask_volumes": [
+        "45",
+        "150",
+        "311",
+        "656",
+        "342"
+      ]
+    },
+    {
+      "code": "00919",
+      "name": "群益台灣精選高息",
+      "market": "TSE",
+      "yesterday_buy": 2945,
+      "close_price": "32.11",
+      "current_price": "31.96",
+      "change": "-0.15",
+      "change_percent": "-0.47%",
+      "buy_volume": "2155",
+      "sell_volume": "3962",
+      "bid_volumes": [
+        "1100",
+        "259",
+        "162",
+        "142",
+        "492"
+      ],
+      "ask_volumes": [
+        "1636",
+        "1604",
+        "30",
+        "243",
+        "449"
+      ]
+    },
+    {
+      "code": "2323",
+      "name": "中環",
+      "market": "TSE",
+      "yesterday_buy": 2235,
+      "close_price": "10.75",
+      "current_price": "10.70",
+      "change": "-0.05",
+      "change_percent": "-0.47%",
+      "buy_volume": "2279",
+      "sell_volume": "776",
+      "bid_volumes": [
+        "269",
+        "520",
+        "620",
+        "587",
+        "283"
+      ],
+      "ask_volumes": [
+        "35",
+        "95",
+        "134",
+        "186",
+        "326"
+      ]
+    },
+    {
+      "code": "2880",
+      "name": "華南金",
+      "market": "TSE",
+      "yesterday_buy": 3474,
+      "close_price": "47.90",
+      "current_price": "47.65",
+      "change": "-0.25",
+      "change_percent": "-0.52%",
+      "buy_volume": "1701",
+      "sell_volume": "1483",
+      "bid_volumes": [
+        "49",
+        "377",
+        "882",
+        "310",
+        "83"
+      ],
+      "ask_volumes": [
+        "201",
+        "345",
+        "458",
+        "268",
+        "211"
+      ]
+    },
+    {
+      "code": "3481",
+      "name": "群創",
+      "market": "TSE",
+      "yesterday_buy": -4975,
+      "close_price": "48.50",
+      "current_price": "48.25",
+      "change": "-0.25",
+      "change_percent": "-0.52%",
+      "buy_volume": "13677",
+      "sell_volume": "254",
+      "bid_volumes": [
+        "2554",
+        "2609",
+        "1892",
+        "3540",
+        "3082"
+      ],
+      "ask_volumes": [
+        "7",
+        "13",
+        "5",
+        "94",
+        "135"
+      ]
+    },
+    {
+      "code": "00712",
+      "name": "復華富時不動產",
+      "market": "TSE",
+      "yesterday_buy": -101582,
+      "close_price": "8.02",
+      "current_price": "7.97",
+      "change": "-0.05",
+      "change_percent": "-0.62%",
+      "buy_volume": "61735",
+      "sell_volume": "77413",
+      "bid_volumes": [
+        "9308",
+        "21654",
+        "21622",
+        "3384",
+        "5767"
+      ],
+      "ask_volumes": [
+        "37239",
+        "13895",
+        "12649",
+        "11904",
+        "1726"
+      ]
+    },
+    {
+      "code": "4958",
+      "name": "臻鼎-KY",
+      "market": "TSE",
+      "yesterday_buy": -7426,
+      "close_price": "476.0",
+      "current_price": "473.0",
+      "change": "-3.00",
+      "change_percent": "-0.63%",
+      "buy_volume": "1588",
+      "sell_volume": "265",
+      "bid_volumes": [
+        "576",
+        "196",
+        "450",
+        "181",
+        "185"
+      ],
+      "ask_volumes": [
+        "6",
+        "7",
+        "88",
+        "134",
+        "30"
+      ]
+    },
+    {
+      "code": "1216",
+      "name": "統一",
+      "market": "TSE",
+      "yesterday_buy": 1998,
+      "close_price": "75.50",
+      "current_price": "75.00",
+      "change": "-0.50",
+      "change_percent": "-0.66%",
+      "buy_volume": "2512",
+      "sell_volume": "3542",
+      "bid_volumes": [
+        "344",
+        "322",
+        "547",
+        "530",
+        "769"
+      ],
+      "ask_volumes": [
+        "247",
+        "1772",
+        "231",
+        "80",
+        "1212"
+      ]
+    },
+    {
+      "code": "2618",
+      "name": "長榮航",
+      "market": "TSE",
+      "yesterday_buy": 6816,
+      "close_price": "42.05",
+      "current_price": "41.75",
+      "change": "-0.30",
+      "change_percent": "-0.71%",
+      "buy_volume": "2081",
+      "sell_volume": "2752",
+      "bid_volumes": [
+        "322",
+        "235",
+        "338",
+        "363",
+        "823"
+      ],
+      "ask_volumes": [
+        "294",
+        "435",
+        "531",
+        "571",
+        "921"
+      ]
+    },
+    {
+      "code": "1326",
+      "name": "台化",
+      "market": "TSE",
+      "yesterday_buy": 8650,
+      "close_price": "68.60",
+      "current_price": "68.10",
+      "change": "-0.50",
+      "change_percent": "-0.73%",
+      "buy_volume": "3303",
+      "sell_volume": "1793",
+      "bid_volumes": [
+        "439",
+        "500",
+        "451",
+        "957",
+        "956"
+      ],
+      "ask_volumes": [
+        "12",
+        "277",
+        "445",
+        "527",
+        "532"
+      ]
+    },
+    {
+      "code": "2812",
+      "name": "台中銀",
+      "market": "TSE",
+      "yesterday_buy": 2275,
+      "close_price": "19.50",
+      "current_price": "19.35",
+      "change": "-0.15",
+      "change_percent": "-0.77%",
+      "buy_volume": "10485",
+      "sell_volume": "7019",
+      "bid_volumes": [
+        "403",
+        "1536",
+        "2911",
+        "2354",
+        "3281"
+      ],
+      "ask_volumes": [
+        "357",
+        "769",
+        "1326",
+        "3727",
+        "840"
+      ]
+    },
+    {
+      "code": "1708",
+      "name": "東鹼",
+      "market": "TSE",
+      "yesterday_buy": 1917,
+      "close_price": "51.10",
+      "current_price": "50.70",
+      "change": "-0.40",
+      "change_percent": "-0.78%",
+      "buy_volume": "317",
+      "sell_volume": "290",
+      "bid_volumes": [
+        "7",
+        "82",
+        "90",
+        "102",
+        "36"
+      ],
+      "ask_volumes": [
+        "25",
+        "23",
+        "57",
+        "11",
+        "174"
+      ]
+    },
+    {
+      "code": "2836",
+      "name": "高雄銀",
+      "market": "TSE",
+      "yesterday_buy": 1936,
+      "close_price": "12.50",
+      "current_price": "12.40",
+      "change": "-0.10",
+      "change_percent": "-0.80%",
+      "buy_volume": "1729",
+      "sell_volume": "926",
+      "bid_volumes": [
+        "76",
+        "386",
+        "557",
+        "511",
+        "199"
+      ],
+      "ask_volumes": [
+        "97",
+        "291",
+        "236",
+        "142",
+        "160"
+      ]
+    },
+    {
+      "code": "2603",
+      "name": "長榮",
+      "market": "TSE",
+      "yesterday_buy": 3142,
+      "close_price": "242.5",
+      "current_price": "240.5",
+      "change": "-2.00",
+      "change_percent": "-0.82%",
+      "buy_volume": "1561",
+      "sell_volume": "2488",
+      "bid_volumes": [
+        "45",
+        "80",
+        "374",
+        "602",
+        "460"
+      ],
+      "ask_volumes": [
+        "367",
+        "499",
+        "493",
+        "538",
+        "591"
+      ]
+    },
+    {
+      "code": "2515",
+      "name": "中工",
+      "market": "TSE",
+      "yesterday_buy": 5845,
+      "close_price": "12.05",
+      "current_price": "11.95",
+      "change": "-0.10",
+      "change_percent": "-0.83%",
+      "buy_volume": "3547",
+      "sell_volume": "2403",
+      "bid_volumes": [
+        "737",
+        "1316",
+        "423",
+        "681",
+        "390"
+      ],
+      "ask_volumes": [
+        "647",
+        "318",
+        "254",
+        "446",
+        "738"
+      ]
+    },
+    {
+      "code": "2889",
+      "name": "國票金",
+      "market": "TSE",
+      "yesterday_buy": -1549,
+      "close_price": "17.30",
+      "current_price": "17.15",
+      "change": "-0.15",
+      "change_percent": "-0.87%",
+      "buy_volume": "2495",
+      "sell_volume": "2670",
+      "bid_volumes": [
+        "164",
+        "450",
+        "190",
+        "535",
+        "1156"
+      ],
+      "ask_volumes": [
+        "62",
+        "1030",
+        "674",
+        "481",
+        "423"
+      ]
+    },
+    {
+      "code": "2883",
+      "name": "凱基金",
+      "market": "TSE",
+      "yesterday_buy": 11260,
+      "close_price": "39.65",
+      "current_price": "39.30",
+      "change": "-0.35",
+      "change_percent": "-0.88%",
+      "buy_volume": "1643",
+      "sell_volume": "6996",
+      "bid_volumes": [
+        "189",
+        "82",
+        "140",
+        "450",
+        "782"
+      ],
+      "ask_volumes": [
+        "517",
+        "1746",
+        "2004",
+        "526",
+        "2203"
+      ]
+    },
+    {
+      "code": "2354",
+      "name": "鴻準",
+      "market": "TSE",
+      "yesterday_buy": 1593,
+      "close_price": "66.30",
+      "current_price": "65.70",
+      "change": "-0.60",
+      "change_percent": "-0.90%",
+      "buy_volume": "453",
+      "sell_volume": "1032",
+      "bid_volumes": [
+        "43",
         "52",
+        "108",
+        "53",
+        "197"
+      ],
+      "ask_volumes": [
+        "214",
+        "238",
+        "294",
+        "122",
+        "164"
+      ]
+    },
+    {
+      "code": "5880",
+      "name": "合庫金",
+      "market": "TSE",
+      "yesterday_buy": 7514,
+      "close_price": "27.55",
+      "current_price": "27.30",
+      "change": "-0.25",
+      "change_percent": "-0.91%",
+      "buy_volume": "3523",
+      "sell_volume": "8871",
+      "bid_volumes": [
+        "74",
+        "647",
+        "1160",
+        "903",
+        "739"
+      ],
+      "ask_volumes": [
+        "1191",
+        "1871",
+        "1993",
+        "2107",
+        "1709"
+      ]
+    },
+    {
+      "code": "2610",
+      "name": "華航",
+      "market": "TSE",
+      "yesterday_buy": 7536,
+      "close_price": "20.35",
+      "current_price": "20.15",
+      "change": "-0.20",
+      "change_percent": "-0.98%",
+      "buy_volume": "13858",
+      "sell_volume": "7672",
+      "bid_volumes": [
+        "1017",
+        "2878",
+        "3191",
+        "3264",
+        "3508"
+      ],
+      "ask_volumes": [
+        "113",
+        "668",
+        "2416",
+        "2004",
+        "2471"
+      ]
+    },
+    {
+      "code": "5876",
+      "name": "上海商銀",
+      "market": "TSE",
+      "yesterday_buy": 2869,
+      "close_price": "49.95",
+      "current_price": "49.45",
+      "change": "-0.50",
+      "change_percent": "-1.00%",
+      "buy_volume": "781",
+      "sell_volume": "1442",
+      "bid_volumes": [
+        "60",
+        "262",
+        "193",
+        "181",
+        "85"
+      ],
+      "ask_volumes": [
+        "252",
+        "228",
+        "513",
+        "136",
+        "313"
+      ]
+    },
+    {
+      "code": "00918",
+      "name": "大華優利高填息30",
+      "market": "TSE",
+      "yesterday_buy": -135658,
+      "close_price": "34.50",
+      "current_price": "34.15",
+      "change": "-0.35",
+      "change_percent": "-1.01%",
+      "buy_volume": "7206",
+      "sell_volume": "3071",
+      "bid_volumes": [
+        "596",
+        "1018",
+        "1341",
+        "857",
+        "3394"
+      ],
+      "ask_volumes": [
+        "2769",
+        "193",
+        "57",
+        "49",
+        "3"
+      ]
+    },
+    {
+      "code": "2399",
+      "name": "映泰",
+      "market": "TSE",
+      "yesterday_buy": 4263,
+      "close_price": "49.00",
+      "current_price": "48.45",
+      "change": "-0.55",
+      "change_percent": "-1.12%",
+      "buy_volume": "206",
+      "sell_volume": "84",
+      "bid_volumes": [
+        "37",
+        "61",
+        "19",
+        "46",
         "43"
       ],
       "ask_volumes": [
-        "2",
-        "2",
-        "8",
+        "1",
+        "30",
+        "12",
+        "33",
+        "8"
+      ]
+    },
+    {
+      "code": "1409",
+      "name": "新纖",
+      "market": "TSE",
+      "yesterday_buy": 5456,
+      "close_price": "24.80",
+      "current_price": "24.50",
+      "change": "-0.30",
+      "change_percent": "-1.21%",
+      "buy_volume": "1643",
+      "sell_volume": "655",
+      "bid_volumes": [
+        "407",
+        "262",
+        "246",
+        "270",
+        "458"
+      ],
+      "ask_volumes": [
+        "71",
+        "34",
+        "34",
+        "359",
+        "157"
+      ]
+    },
+    {
+      "code": "2897",
+      "name": "王道銀行",
+      "market": "TSE",
+      "yesterday_buy": 2502,
+      "close_price": "11.25",
+      "current_price": "11.10",
+      "change": "-0.15",
+      "change_percent": "-1.33%",
+      "buy_volume": "5902",
+      "sell_volume": "2793",
+      "bid_volumes": [
+        "340",
+        "1707",
+        "1382",
+        "1412",
+        "1061"
+      ],
+      "ask_volumes": [
+        "63",
+        "172",
+        "523",
+        "426",
+        "1609"
+      ]
+    },
+    {
+      "code": "2882",
+      "name": "國泰金",
+      "market": "TSE",
+      "yesterday_buy": -1413,
+      "close_price": "112.0",
+      "current_price": "110.5",
+      "change": "-1.50",
+      "change_percent": "-1.34%",
+      "buy_volume": "11930",
+      "sell_volume": "8197",
+      "bid_volumes": [
+        "1514",
+        "1116",
+        "2950",
+        "5100",
+        "1250"
+      ],
+      "ask_volumes": [
+        "3482",
+        "1750",
+        "1284",
+        "398",
+        "1283"
+      ]
+    },
+    {
+      "code": "2353",
+      "name": "宏碁",
+      "market": "TSE",
+      "yesterday_buy": 8122,
+      "close_price": "32.40",
+      "current_price": "31.95",
+      "change": "-0.45",
+      "change_percent": "-1.39%",
+      "buy_volume": "3771",
+      "sell_volume": "563",
+      "bid_volumes": [
+        "459",
+        "361",
+        "1061",
+        "1113",
+        "777"
+      ],
+      "ask_volumes": [
+        "1",
+        "33",
+        "142",
+        "292",
+        "95"
+      ]
+    },
+    {
+      "code": "2845",
+      "name": "遠東銀",
+      "market": "TSE",
+      "yesterday_buy": 3815,
+      "close_price": "13.75",
+      "current_price": "13.55",
+      "change": "-0.20",
+      "change_percent": "-1.45%",
+      "buy_volume": "6660",
+      "sell_volume": "3331",
+      "bid_volumes": [
+        "982",
+        "1642",
+        "2093",
+        "833",
+        "1110"
+      ],
+      "ask_volumes": [
+        "195",
+        "739",
+        "554",
+        "744",
+        "1099"
+      ]
+    },
+    {
+      "code": "2890",
+      "name": "永豐金",
+      "market": "TSE",
+      "yesterday_buy": 3166,
+      "close_price": "45.95",
+      "current_price": "45.25",
+      "change": "-0.70",
+      "change_percent": "-1.52%",
+      "buy_volume": "1683",
+      "sell_volume": "3104",
+      "bid_volumes": [
+        "414",
+        "75",
+        "558",
+        "69",
+        "567"
+      ],
+      "ask_volumes": [
+        "420",
+        "421",
+        "500",
+        "998",
+        "765"
+      ]
+    },
+    {
+      "code": "2886",
+      "name": "兆豐金",
+      "market": "TSE",
+      "yesterday_buy": 5936,
+      "close_price": "51.90",
+      "current_price": "51.10",
+      "change": "-0.80",
+      "change_percent": "-1.54%",
+      "buy_volume": "4552",
+      "sell_volume": "7859",
+      "bid_volumes": [
+        "1387",
+        "131",
+        "461",
+        "1640",
+        "933"
+      ],
+      "ask_volumes": [
+        "635",
+        "1408",
+        "1428",
+        "1425",
+        "2963"
+      ]
+    },
+    {
+      "code": "2609",
+      "name": "陽明",
+      "market": "TSE",
+      "yesterday_buy": 23166,
+      "close_price": "62.00",
+      "current_price": "61.00",
+      "change": "-1.00",
+      "change_percent": "-1.61%",
+      "buy_volume": "726",
+      "sell_volume": "4554",
+      "bid_volumes": [
+        "18",
+        "33",
+        "48",
+        "163",
+        "464"
+      ],
+      "ask_volumes": [
+        "774",
+        "1559",
+        "1108",
+        "624",
+        "489"
+      ]
+    },
+    {
+      "code": "1312",
+      "name": "國喬",
+      "market": "TSE",
+      "yesterday_buy": 6626,
+      "close_price": "14.95",
+      "current_price": "14.70",
+      "change": "-0.25",
+      "change_percent": "-1.67%",
+      "buy_volume": "3379",
+      "sell_volume": "1325",
+      "bid_volumes": [
+        "107",
+        "686",
+        "493",
+        "968",
+        "1125"
+      ],
+      "ask_volumes": [
+        "194",
+        "353",
+        "286",
+        "334",
+        "158"
+      ]
+    },
+    {
+      "code": "2371",
+      "name": "大同",
+      "market": "TSE",
+      "yesterday_buy": 14312,
+      "close_price": "29.70",
+      "current_price": "29.20",
+      "change": "-0.50",
+      "change_percent": "-1.68%",
+      "buy_volume": "895",
+      "sell_volume": "1831",
+      "bid_volumes": [
+        "148",
+        "33",
+        "322",
+        "178",
+        "214"
+      ],
+      "ask_volumes": [
+        "379",
+        "336",
+        "251",
+        "205",
+        "660"
+      ]
+    },
+    {
+      "code": "00632R",
+      "name": "元大台灣50反1",
+      "market": "TSE",
+      "yesterday_buy": -25109,
+      "close_price": "9.84",
+      "current_price": "9.67",
+      "change": "-0.17",
+      "change_percent": "-1.73%",
+      "buy_volume": "72968",
+      "sell_volume": "38213",
+      "bid_volumes": [
+        "5228",
+        "19094",
+        "22285",
+        "13156",
+        "13205"
+      ],
+      "ask_volumes": [
+        "721",
+        "11387",
+        "11497",
+        "7322",
+        "7286"
+      ]
+    },
+    {
+      "code": "1710",
+      "name": "東聯",
+      "market": "TSE",
+      "yesterday_buy": 3699,
+      "close_price": "16.65",
+      "current_price": "16.35",
+      "change": "-0.30",
+      "change_percent": "-1.80%",
+      "buy_volume": "1821",
+      "sell_volume": "598",
+      "bid_volumes": [
+        "19",
+        "256",
+        "284",
+        "375",
+        "887"
+      ],
+      "ask_volumes": [
+        "106",
+        "3",
+        "72",
+        "171",
+        "246"
+      ]
+    },
+    {
+      "code": "2104",
+      "name": "國際中橡",
+      "market": "TSE",
+      "yesterday_buy": 2389,
+      "close_price": "10.75",
+      "current_price": "10.55",
+      "change": "-0.20",
+      "change_percent": "-1.86%",
+      "buy_volume": "1601",
+      "sell_volume": "736",
+      "bid_volumes": [
+        "166",
+        "275",
+        "346",
+        "377",
+        "437"
+      ],
+      "ask_volumes": [
+        "34",
+        "162",
+        "224",
+        "150",
+        "166"
+      ]
+    },
+    {
+      "code": "2884",
+      "name": "玉山金",
+      "market": "TSE",
+      "yesterday_buy": 12662,
+      "close_price": "47.30",
+      "current_price": "46.40",
+      "change": "-0.90",
+      "change_percent": "-1.90%",
+      "buy_volume": "677",
+      "sell_volume": "3623",
+      "bid_volumes": [
+        "23",
+        "243",
+        "22",
+        "274",
+        "115"
+      ],
+      "ask_volumes": [
+        "1634",
+        "298",
+        "779",
+        "535",
+        "377"
+      ]
+    },
+    {
+      "code": "2834",
+      "name": "臺企銀",
+      "market": "TSE",
+      "yesterday_buy": 27385,
+      "close_price": "18.75",
+      "current_price": "18.35",
+      "change": "-0.40",
+      "change_percent": "-2.13%",
+      "buy_volume": "19590",
+      "sell_volume": "8233",
+      "bid_volumes": [
+        "3342",
+        "3659",
+        "4069",
+        "6018",
+        "2502"
+      ],
+      "ask_volumes": [
+        "27",
+        "156",
+        "525",
+        "3625",
+        "3900"
+      ]
+    },
+    {
+      "code": "2103",
+      "name": "台橡",
+      "market": "TSE",
+      "yesterday_buy": 3638,
+      "close_price": "28.20",
+      "current_price": "27.60",
+      "change": "-0.60",
+      "change_percent": "-2.13%",
+      "buy_volume": "805",
+      "sell_volume": "202",
+      "bid_volumes": [
+        "128",
+        "195",
+        "202",
+        "181",
+        "99"
+      ],
+      "ask_volumes": [
+        "1",
+        "36",
+        "15",
+        "73",
+        "77"
+      ]
+    },
+    {
+      "code": "1714",
+      "name": "和桐",
+      "market": "TSE",
+      "yesterday_buy": 2506,
+      "close_price": "16.05",
+      "current_price": "15.70",
+      "change": "-0.35",
+      "change_percent": "-2.18%",
+      "buy_volume": "2366",
+      "sell_volume": "382",
+      "bid_volumes": [
+        "136",
+        "583",
+        "567",
+        "696",
+        "384"
+      ],
+      "ask_volumes": [
+        "91",
+        "17",
+        "75",
+        "57",
+        "142"
+      ]
+    },
+    {
+      "code": "2801",
+      "name": "彰銀",
+      "market": "TSE",
+      "yesterday_buy": 4399,
+      "close_price": "29.60",
+      "current_price": "28.95",
+      "change": "-0.65",
+      "change_percent": "-2.20%",
+      "buy_volume": "9399",
+      "sell_volume": "2812",
+      "bid_volumes": [
+        "802",
+        "2050",
+        "2057",
+        "2358",
+        "2132"
+      ],
+      "ask_volumes": [
+        "27",
+        "58",
+        "236",
+        "112",
+        "2379"
+      ]
+    },
+    {
+      "code": "2892",
+      "name": "第一金",
+      "market": "TSE",
+      "yesterday_buy": 10917,
+      "close_price": "40.75",
+      "current_price": "39.80",
+      "change": "-0.95",
+      "change_percent": "-2.33%",
+      "buy_volume": "2364",
+      "sell_volume": "9213",
+      "bid_volumes": [
+        "18",
+        "411",
+        "823",
+        "662",
+        "450"
+      ],
+      "ask_volumes": [
+        "495",
+        "2313",
+        "1509",
+        "3257",
+        "1639"
+      ]
+    },
+    {
+      "code": "2891",
+      "name": "中信金",
+      "market": "TSE",
+      "yesterday_buy": 7261,
+      "close_price": "71.20",
+      "current_price": "69.50",
+      "change": "-1.70",
+      "change_percent": "-2.39%",
+      "buy_volume": "8965",
+      "sell_volume": "799",
+      "bid_volumes": [
+        "1405",
+        "2567",
+        "2294",
+        "2100",
+        "599"
+      ],
+      "ask_volumes": [
+        "54",
+        "39",
         "5",
+        "604",
+        "97"
+      ]
+    },
+    {
+      "code": "1718",
+      "name": "中纖",
+      "market": "TSE",
+      "yesterday_buy": 12216,
+      "close_price": "10.90",
+      "current_price": "10.60",
+      "change": "-0.30",
+      "change_percent": "-2.75%",
+      "buy_volume": "5051",
+      "sell_volume": "1475",
+      "bid_volumes": [
+        "1364",
+        "1131",
+        "1276",
+        "864",
+        "416"
+      ],
+      "ask_volumes": [
+        "146",
+        "187",
+        "571",
+        "398",
+        "173"
+      ]
+    },
+    {
+      "code": "1304",
+      "name": "台聚",
+      "market": "TSE",
+      "yesterday_buy": 2089,
+      "close_price": "12.60",
+      "current_price": "12.25",
+      "change": "-0.35",
+      "change_percent": "-2.78%",
+      "buy_volume": "1122",
+      "sell_volume": "292",
+      "bid_volumes": [
+        "101",
+        "370",
+        "449",
+        "124",
+        "78"
+      ],
+      "ask_volumes": [
+        "67",
+        "41",
+        "36",
+        "119",
+        "29"
+      ]
+    },
+    {
+      "code": "2605",
+      "name": "新興",
+      "market": "TSE",
+      "yesterday_buy": 7393,
+      "close_price": "37.15",
+      "current_price": "36.10",
+      "change": "-1.05",
+      "change_percent": "-2.83%",
+      "buy_volume": "448",
+      "sell_volume": "414",
+      "bid_volumes": [
+        "50",
+        "40",
+        "237",
+        "56",
+        "65"
+      ],
+      "ask_volumes": [
+        "399",
+        "9",
+        "3",
+        "1",
         "2"
       ]
     },
     {
-      "code": "8039",
-      "name": "台虹",
+      "code": "1310",
+      "name": "台苯",
       "market": "TSE",
-      "yesterday_buy": -2296,
-      "close_price": "275.5",
-      "current_price": "257.0",
-      "change": "-18.50",
-      "change_percent": "-6.72%",
-      "buy_volume": "728",
-      "sell_volume": "355",
+      "yesterday_buy": 2834,
+      "close_price": "9.03",
+      "current_price": "8.75",
+      "change": "-0.28",
+      "change_percent": "-3.10%",
+      "buy_volume": "253",
+      "sell_volume": "136",
       "bid_volumes": [
-        "11",
-        "165",
-        "241",
-        "113",
-        "198"
+        "13",
+        "83",
+        "78",
+        "55",
+        "24"
       ],
       "ask_volumes": [
-        "75",
-        "91",
-        "10",
-        "95",
-        "84"
-      ]
-    },
-    {
-      "code": "6213",
-      "name": "聯茂",
-      "market": "TSE",
-      "yesterday_buy": -11702,
-      "close_price": "550.0",
-      "current_price": "495.0",
-      "change": "-55.00",
-      "change_percent": "-10.00%",
-      "buy_volume": "0",
-      "sell_volume": "1574",
-      "bid_volumes": [
-        "-",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "ask_volumes": [
-        "964",
-        "88",
-        "392",
-        "25",
-        "105"
+        "3",
+        "78",
+        "22",
+        "30",
+        "3"
       ]
     }
   ]
